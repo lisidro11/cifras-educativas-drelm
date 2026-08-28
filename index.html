@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c3d6d">
+<title>DRELM · Cifras Educativas 2025</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="styles.css?v=27">
+</head>
+<body>
+<div class="app-shell">
+
+<aside class="sidebar">
+  <div class="side-brand">
+    <div class="crest">D</div>
+    <div>
+      <strong>DRELM</strong>
+      <small>Dirección Regional de Educación<br>de Lima Metropolitana</small>
+    </div>
+  </div>
+
+  <button class="side-item active" data-view="resumen">⌂ <span>Resumen DRELM</span></button>
+  <button class="side-item" data-view="ebr">▣ <span>EBR</span></button>
+  <button class="side-item" data-view="eba">▤ <span>EBA</span></button>
+  <button class="side-item" data-view="ebe">◇ <span>EBE</span></button>
+  <button class="side-item" data-view="superior">⌂ <span>Superior</span></button>
+  <button class="side-item" data-view="cetpro">⬡ <span>CETPRO</span></button>
+  <button class="side-item" data-view="infra">▦ <span>Infraestructura FUIE</span></button>
+<button class="side-item" data-view="buscar">▧ <span>II.EE. / Ficha</span></button>
+
+  <div class="side-bottom">
+    <small>Censo Educativo 2025</small>
+    <small>Datos integrados DRELM</small>
+    <small>Versión V5</small>
+  </div>
+</aside>
+
+<div class="main-area">
+<header class="topbar">
+  <nav id="topnav">
+    <button class="active" data-view="resumen">Resumen</button>
+    <button data-view="ebr">EBR</button>
+    <button data-view="eba">EBA</button>
+    <button data-view="ebe">EBE</button>
+    <button data-view="superior">Superior</button>
+    <button data-view="cetpro">CETPRO</button>
+    <button data-view="infra">Infraestructura FUIE</button>
+<button data-view="buscar">II.EE. / Ficha</button>
+  </nav>
+  <div class="top-source"><b>Censo Educativo 2025</b><span>Lima Metropolitana</span></div>
+</header>
+
+<main>
+
+<section id="resumen" class="view active">
+  <div class="page-head">
+    <div>
+      <small>DRELM · LIMA METROPOLITANA</small>
+      <h1>Resumen de cifras educativas 2025</h1>
+      <p>Vista integrada de gestión pública y privada.</p>
+    </div>
+    <div class="filters compact">
+      <label>Gestión
+        <div class="segmented" id="scope">
+          <button class="active" data-scope="total">Total</button>
+          <button data-scope="publica">Pública</button>
+          <button data-scope="privada">Privada</button>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="kpis" id="mainKpis"></div>
+
+  <div class="grid two">
+    <article class="card">
+      <div class="cardhead"><h2>Estudiantes por ámbito</h2><span>Gestión seleccionada</span></div>
+      <div id="sectorBars" class="bars"></div>
+    </article>
+    <article class="card">
+      <div class="cardhead"><h2>Resumen por modalidad</h2><span>Gestión seleccionada</span></div>
+      <div id="ugelBars" class="bars"></div>
+    </article>
+  </div>
+
+  <div class="modulegrid" id="moduleCards"></div>
+</section>
+
+<section id="ebr" class="view moduleView"></section>
+<section id="eba" class="view moduleView"></section>
+<section id="ebe" class="view moduleView"></section>
+<section id="superior" class="view moduleView"></section>
+<section id="cetpro" class="view moduleView"></section>
+
+<section id="infra" class="view">
+  <div class="page-head">
+    <div>
+      <small>MÓDULO ESPECIALIZADO · FUIE</small>
+      <h1>Infraestructura educativa pública</h1>
+      <p>Información de infraestructura vinculada por código de local.</p>
+    </div>
+  </div>
+  <div class="kpis" id="infraKpis"></div>
+  <div class="grid two">
+    <article class="card"><h2>Estado de conservación de aulas</h2><div id="aulaBars" class="bars"></div></article>
+    <article class="card"><h2>Servicios básicos en locales FUIE</h2><div id="fuieServices" class="servicegrid"></div></article>
+  </div>
+</section>
+<section id="buscar" class="view">
+  <div class="page-head">
+    <div>
+      <small>BUSCADOR INTEGRADO</small>
+      <h1>Instituciones y servicios educativos</h1>
+      <p>Busca por código modular, código local, nombre, UGEL, distrito o gestión.</p>
+    </div>
+  </div>
+
+  <article class="card searchcard">
+    <div class="searchline searchline-v10">
+      <input id="q" placeholder="Buscar por nombre, código modular, UGEL, distrito o modalidad...">
+      <input id="localQ" placeholder="Código local">
+      <select id="gestionFilter">
+        <option value="">Toda gestión</option>
+        <option>Pública</option>
+        <option>Privada</option>
+      </select>
+    </div>
+    <div id="resultInfo"></div>
+    <div id="results"></div>
+  </article>
+
+  <article id="ficha" class="card ficha" hidden>
+    <div class="fichahead">
+      <div>
+        <small>FICHA INTEGRAL DEL SERVICIO EDUCATIVO</small>
+        <h2 id="fTitle"></h2>
+        <p id="fSub"></p>
+      </div>
+      <button onclick="window.print()">Imprimir / PDF</button>
+    </div>
+    <div id="fKpis" class="kpis mini"></div>
+    <div class="tabs" id="fTabs">
+      <button class="active" data-tab="general">Datos generales</button>
+      <button data-tab="censo">Detalle de la ficha</button>
+      <button id="infraTabBtn" data-tab="fuie">Infraestructura FUIE</button>
+    </div>
+    <div id="generalTab" class="tabpage active"></div>
+    <div id="censoTab" class="tabpage">
+      <div class="loading" id="detailLoading">Seleccione esta pestaña para cargar la estructura combinada de la ficha.</div>
+      <div id="detailGroups"></div>
+    </div>
+    <div id="fuieTab" class="tabpage">
+      <div class="loading" id="fuieLoading">Infraestructura disponible solo cuando el código local tiene registro FUIE.</div>
+      <div id="fuieGroups"></div>
+    </div>
+  </article>
+</section>
+
+</main>
+<footer>Dirección Regional de Educación de Lima Metropolitana · Censo Educativo 2025</footer>
+</div>
+</div>
+
+<script src="data.js?v=27"></script>
+<script src="app.js?v=27"></script>
+</body>
+</html>
