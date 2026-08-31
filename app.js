@@ -1406,5 +1406,87 @@ async function loadSelectedLocalLevel(z){
 }
 
 async function loadDetail(source,cod){$("#detailLoading").textContent="Cargando estructura de la ficha…";try{await loadScript(`details/${source}.js`,`detail-${source}`);const obj=window[`DRELM_DETAIL_${source}`],d=obj?obj[cod]:null;$("#detailLoading").textContent="";renderGroups($("#detailGroups"),d?d.groups:[])}catch(e){$("#detailLoading").textContent="No se pudo cargar el detalle de esta ficha."}}
-async function loadFuie(codlocal){if(!codlocal||!FCORE[codlocal])return;$("#fuieLoading").textContent="Cargando FUIE…";try{await loadScript("details/FUIE.js","detail-fuie");const d=window.DRELM_FUIE_DETAIL?window.DRELM_FUIE_DETAIL[codlocal]:null;$("#fuieLoading").textContent="";renderGroups($("#fuieGroups"),d?filterZeroOnlyGroups(d.groups):[])}catch(e){$("#fuieLoading").textContent="No se pudo cargar la FUIE."}}
+async function loadFuie(codlocal){
+  if(!codlocal || !FCORE[codlocal]) return;
 
+  const loading = $("#fuieLoading");
+  const container = $("#fuieGroups");
+  const codigo = String(codlocal).trim();
+
+  loading.textContent = "Cargando FUIE…";
+  container.innerHTML = "";
+
+  try{
+
+    // Consultar el índice exacto de los 2,027 locales
+    const indice = window.DRELM_FUIE_INDEX || {};
+    const archivo = indice[codigo];
+
+    if(!archivo){
+      loading.textContent =
+        `No se encontró información FUIE para el código local ${codigo}.`;
+      return;
+    }
+
+    console.log(`CL ${codigo} → ${archivo}`);
+
+    // Retirar cualquier detalle FUIE cargado anteriormente
+    document
+      .querySelectorAll('script[data-fuie-detail="1"]')
+      .forEach(s => s.remove());
+
+    window.DRELM_FUIE_DETAIL = undefined;
+    window.DRELM_FUIE_DETAILS = undefined;
+
+    // Cargar únicamente el archivo donde está realmente el local
+    await new Promise((resolve,reject)=>{
+
+      const script = document.createElement("script");
+
+      script.src =
+        `details/fuie_ugel/${archivo}`;
+
+      script.dataset.fuieDetail = "1";
+
+      script.onload = resolve;
+
+      script.onerror = () =>
+        reject(
+          new Error(`No se pudo cargar ${archivo}`)
+        );
+
+      document.body.appendChild(script);
+    });
+
+    // Obtener el registro exacto del código local
+    const detalle = (window.DRELM_FUIE_DETAIL || window.DRELM_FUIE_DETAILS)?.[codigo];
+
+    if(!detalle){
+      loading.textContent =
+        `Se cargó ${archivo}, pero no se encontró el local ${codigo}.`;
+      return;
+    }
+
+    loading.textContent = "";
+
+    // Mantener el mismo diseño FUIE de tu aplicación
+    const grupos =
+      filterZeroOnlyGroups(
+        detalle.groups || []
+      );
+
+    renderGroups(
+      container,
+      grupos
+    );
+
+  }catch(error){
+
+    console.error("Error FUIE V30:", error);
+
+    loading.textContent =
+      "No se pudo cargar la información FUIE.";
+
+    container.innerHTML = "";
+  }
+}

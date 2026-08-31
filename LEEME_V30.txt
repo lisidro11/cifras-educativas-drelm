@@ -1,0 +1,61 @@
+PASO 1
+======
+Copia "generar_fuie_index.py" a la raíz de:
+
+Cifras educativas V30
+
+Debe quedar al mismo nivel que:
+app.js
+data.js
+index.html
+styles.css
+
+PASO 2
+======
+Abre CMD dentro de "Cifras educativas V30" y ejecuta:
+
+python generar_fuie_index.py
+
+Debe crear:
+
+details\fuie_ugel\FUIE_INDEX.js
+
+Al final debe mostrar:
+
+PRUEBA CL 288493:
+FUIE_SIN_UGEL.js
+
+PASO 3
+======
+En index.html agrega esta línea ANTES de cargar app.js:
+
+<script src="details/fuie_ugel/FUIE_INDEX.js?v=30"></script>
+
+Ejemplo:
+
+<script src="data.js?v=30"></script>
+<script src="details/fuie_ugel/FUIE_INDEX.js?v=30"></script>
+<script src="app.js?v=30"></script>
+
+PASO 4
+======
+En app.js reemplaza solamente la función completa:
+
+async function loadFuie(codlocal){ ... }
+
+por la función que está en:
+
+loadFuie_V30.js
+
+PASO 5
+======
+Guarda todo, abre index.html y presiona Ctrl+F5.
+
+Prueba:
+CL 288493 > Ver ficha del local > Infraestructura FUIE
+
+IMPORTANTE
+==========
+NO borres V29.
+NO borres details\FUIE.js todavía.
+NO cambies data.js, styles.css ni carreras-ficha-v28.js.
