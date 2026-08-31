@@ -1,0 +1,13 @@
+V28 - Mejora de carreras en ficha local
+
+1. Copia index.html a la carpeta principal de la app y reemplaza el anterior.
+2. Copia carreras-ficha-v28.js a la misma carpeta donde están app.js y data.js.
+3. No borres app.js, data.js, styles.css, details, sw.js ni manifest.webmanifest.
+4. Abre nuevamente index.html y presiona Ctrl + F5.
+
+Mejora:
+- En Datos generales > Carreras registradas en el local, ahora se muestran las carreras/programas.
+- Solo se muestran carreras con matrícula mayor a 0.
+- Incluye matrícula 2026-1, porcentaje y total.
+- Si no hay carreras válidas, el bloque no aparece.
+- Se actualiza la etiqueta visual a Versión V28.
