@@ -7,9 +7,19 @@
 <title>DRELM · Cifras Educativas 2025</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=47">
+<link rel="stylesheet" href="styles.css?v=49">
 </head>
 <body>
+<header class="institutional-banner">
+  <div class="institutional-banner-inner">
+    <img class="institutional-logo" src="assets/logo-drelm-minedu.png" alt="Ministerio de Educación - Dirección Regional de Educación de Lima Metropolitana">
+    <div class="institutional-title-wrap">
+      <div class="institutional-title">Cifras educativas de Lima Metropolitana</div>
+      <div class="institutional-subtitle">Información estadística integrada de la DRELM</div>
+    </div>
+  </div>
+</header>
+
 <div class="app-shell">
 
 <aside class="sidebar">
@@ -22,6 +32,7 @@
   </div>
 
   <button class="side-item active" data-view="resumen">⌂ <span>Resumen DRELM</span></button>
+  <button class="side-item" data-view="indicadores">▥ <span>Indicadores</span></button>
   <button class="side-item" data-view="ebr">▣ <span>EBR</span></button>
   <button class="side-item" data-view="eba">▤ <span>EBA</span></button>
   <button class="side-item" data-view="ebe">◇ <span>EBE</span></button>
@@ -41,6 +52,7 @@
 <header class="topbar">
   <nav id="topnav">
     <button class="active" data-view="resumen">Resumen</button>
+    <button data-view="indicadores">Indicadores</button>
     <button data-view="ebr">EBR</button>
     <button data-view="eba">EBA</button>
     <button data-view="ebe">EBE</button>
@@ -58,7 +70,7 @@
   <div class="page-head">
     <div>
       <small>DRELM · LIMA METROPOLITANA</small>
-      <h1>Resumen de cifras educativas 2025</h1>
+      <h1>Resumen de cifras educativas</h1>
       <p>Vista integrada de gestión pública y privada.</p>
     </div>
     <div class="filters compact">
@@ -75,27 +87,29 @@
 
   <div class="kpis" id="mainKpis"></div>
   <div class="summary-analytics-grid">
-    <section class="district-dashboard" id="districtDashboard">
-      <div class="district-map-title">
-        <h2>Mapa distrital de Lima Metropolitana</h2>
-        <span>Pasa el mouse para consultar cifras y haz clic en un distrito para ver sus instituciones educativas.</span>
-      </div>
-      <div class="district-layout">
-        <div class="ugel-table-column" id="ugelTablesLeft"></div>
-        <div class="district-map-panel">
-          <div id="realDistrictMap" class="real-district-map"><div class="map-loading">Cargando mapa distrital…</div></div>
-          <div class="district-map-legend" id="districtMapLegend"></div>
-          <div class="district-tooltip" id="districtTooltip"></div>
+    <div class="summary-left-stack">
+      <section class="district-dashboard" id="districtDashboard">
+        <div class="district-map-title">
+          <h2>Mapa distrital de Lima Metropolitana</h2>
+          <span>Pasa el mouse para consultar cifras y haz clic en un distrito para ver sus instituciones educativas.</span>
         </div>
-        <div class="ugel-table-column" id="ugelTablesRight"></div>
-      </div>
-    </section>
-
-    <aside class="summary-side-stack">
-      <article class="card summary-management-card">
+        <div class="district-layout">
+          <div class="ugel-table-column" id="ugelTablesLeft"></div>
+          <div class="district-map-panel">
+            <div id="realDistrictMap" class="real-district-map"><div class="map-loading">Cargando mapa distrital…</div></div>
+            <div class="district-map-legend" id="districtMapLegend"></div>
+            <div class="district-tooltip" id="districtTooltip"></div>
+          </div>
+          <div class="ugel-table-column" id="ugelTablesRight"></div>
+        </div>
+      </section>
+      <article class="card summary-management-card summary-management-below-map">
         <div class="cardhead"><h2>Composición por gestión</h2><span>Pública / Privada</span></div>
         <div id="summaryManagement"></div>
       </article>
+    </div>
+
+    <aside class="summary-side-stack">
       <article class="card summary-modal-side">
         <div class="cardhead"><h2>Resumen por modalidad</h2><span>Según Padrón Educativo</span></div>
         <div id="ugelBars"></div>
@@ -126,6 +140,70 @@
 
   <div id="sectorBars" hidden></div>
   <div class="modulegrid" id="moduleCards"></div>
+</section>
+
+
+
+<section id="indicadores" class="view">
+  <div class="page-head indicators-head">
+    <div>
+      <small>DRELM · LIMA METROPOLITANA</small>
+      <h1>Indicadores educativos</h1>
+      <p>Información organizada por modalidad y nivel educativo según el Padrón Web IE.</p>
+    </div>
+    <div class="ind-export-actions">
+        <button type="button" id="btnIndExcel" class="ind-export-btn">↓ Exportar Excel</button>
+        <button type="button" id="btnIndPdf" class="ind-export-btn">🖨 Imprimir</button>
+      </div>
+      <div class="module-filters indicators-filters">
+      <label>Gestión
+        <select id="indGestion"><option value="">Total</option><option>Pública</option><option>Privada</option></select>
+      </label>
+      <label>UGEL
+        <select id="indUgel"><option value="">Todas</option></select>
+      </label>
+    </div>
+  </div>
+
+  <div class="ind-four-grid">
+    <article class="card ind-summary-card">
+      <div class="ind-number ind-blue">01</div><h2>Matrícula</h2>
+      <div class="table-scroll"><table class="ind-hier-table"><thead><tr><th>Modalidad / nivel</th><th>Total</th></tr></thead><tbody id="indMatriculaRows"></tbody><tfoot id="indMatriculaTotal"></tfoot></table></div>
+      <div class="ind-mini-source">Fuente: Censo Educativo 2025</div>
+    </article>
+    <article class="card ind-summary-card">
+      <div class="ind-number ind-red">02</div><h2>Docentes</h2>
+      <div class="table-scroll"><table class="ind-hier-table"><thead><tr><th>Modalidad / nivel</th><th>Total</th></tr></thead><tbody id="indDocentesRows"></tbody><tfoot id="indDocentesTotal"></tfoot></table></div>
+      <div class="ind-mini-source">Fuente: Censo Educativo 2025</div>
+    </article>
+    <article class="card ind-summary-card">
+      <div class="ind-number ind-green">03</div><h2>Servicios educativos</h2>
+      <div class="table-scroll"><table class="ind-hier-table"><thead><tr><th>Modalidad / nivel</th><th>Total</th></tr></thead><tbody id="indServiciosRows"></tbody><tfoot id="indServiciosTotal"></tfoot></table></div>
+      <div class="ind-mini-source">Fuente: ESCALE – Padrón Web IE</div>
+    </article>
+    <article class="card ind-summary-card">
+      <div class="ind-number ind-purple">04</div><h2>Locales educativos</h2>
+      <div class="table-scroll"><table class="ind-hier-table"><thead><tr><th>Modalidad / nivel</th><th>Total</th></tr></thead><tbody id="indLocalesRows"></tbody><tfoot id="indLocalesTotal"></tfoot></table></div>
+      <div class="ind-mini-source">Fuente: ESCALE – Padrón Web IE</div>
+    </article>
+  </div>
+
+  <article class="card ind-ugel-detail">
+    <div class="cardhead ind-ugel-head">
+      <div><h2>Información por UGEL y nivel educativo</h2><span>Modalidades y niveles definidos por el Padrón Web IE</span></div>
+      <label>Indicador
+        <select id="indUgelMetric">
+          <option value="estudiantes">Estudiantes</option>
+          <option value="docentes">Docentes</option>
+          <option value="servicios">Servicios educativos</option>
+          <option value="locales">Locales educativos</option>
+        </select>
+      </label>
+    </div>
+    <div class="table-scroll"><table class="ind-ugel-matrix"><thead id="indUgelMatrixHead"></thead><tbody id="indUgelMatrixRows"></tbody><tfoot id="indUgelMatrixTotal"></tfoot></table></div>
+  </article>
+
+  <div class="ind-source-note"><strong>Fuente:</strong> Estudiantes y docentes: Censo Educativo 2025. Servicios y locales educativos: ESCALE – Padrón Web IE (actualizado al 13/08/2026). <strong>Elaborado por:</strong> EEM-OPP-DRELM.</div>
 </section>
 
 <section id="ebr" class="view moduleView"></section>
@@ -208,7 +286,12 @@
 <script src="padron.js?v=44"></script>
 <script src="details/fuie_ugel/FUIE_INDEX.js?v=30"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="app.js?v=47"></script>
+<script src="app.js?v=49"></script>
 <script src="carreras-ficha-v28.js?v=30"></script>
+
+<footer class="institutional-footer">
+  <div><strong>Fuente:</strong> ESCALE – Padrón Web IE (actualizado al 13/08/2026) y Censo Educativo 2025.</div>
+  <div><strong>Elaborado por:</strong> EEM-OPP-DRELM</div>
+</footer>
 </body>
 </html>

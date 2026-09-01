@@ -960,3 +960,852 @@ main{max-width:1700px}
   .summary-analytics-grid .district-map-panel{height:450px!important;min-height:450px!important}
   .summary-analytics-grid .real-district-map{height:410px!important;min-height:410px!important}
 }
+
+/* V49: único cambio visual solicitado - composición por gestión en anillos */
+.management-donut-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px}
+.management-donut-item{display:grid;grid-template-columns:76px minmax(0,1fr);align-items:center;gap:9px;padding:8px;border:1px solid #e2eaf3;border-radius:12px;background:#fff}
+.management-donut{--public-pct:50%;width:72px;height:72px;border-radius:50%;background:conic-gradient(#1F5AA6 0 var(--public-pct),#7B8794 var(--public-pct) 100%);display:grid;place-items:center;box-shadow:inset 0 0 0 1px rgba(10,60,100,.05)}
+.management-donut-hole{width:48px;height:48px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;box-shadow:0 0 0 1px #eef3f8}
+.management-donut-hole b{font-size:13px;color:#0b4a7b}.management-donut-hole small{font-size:7px;color:#6a7e91;margin-top:2px}
+.management-donut-copy{display:grid;gap:4px;min-width:0}.management-donut-copy>b{font-size:10px;color:#0b426e}.management-donut-copy span{font-size:8px;color:#5f7488;white-space:nowrap}.management-donut-copy i,.management-donut-note i{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:4px}.management-donut-copy i.public,.management-donut-note i.public{background:#1F5AA6}.management-donut-copy i.private,.management-donut-note i.private{background:#7B8794}
+.management-donut-note{display:flex;justify-content:flex-end;gap:14px;margin-top:9px;font-size:8px;color:#63788b}
+@media(max-width:1200px){.management-donut-grid{grid-template-columns:1fr}.management-donut-item{grid-template-columns:66px 1fr}.management-donut{width:62px;height:62px}.management-donut-hole{width:42px;height:42px}}
+
+
+/* V51: únicamente ubicación y paleta de Composición por gestión */
+.summary-left-stack{display:grid;gap:10px;min-width:0}
+.summary-management-below-map{margin:0;padding:11px}
+.summary-management-below-map .management-donut-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.summary-management-below-map .management-donut-item{grid-template-columns:76px minmax(0,1fr)}
+@media(max-width:1350px){.summary-management-below-map .management-donut-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:980px){.summary-management-below-map .management-donut-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.summary-management-below-map .management-donut-grid{grid-template-columns:1fr}}
+
+
+/* V53 — Composición por tipo de gestión en EBR/EBA/EBE/Superior/CETPRO.
+   El Resumen no se modifica. */
+.module-management-donuts-card{
+  padding-bottom:12px;
+}
+.module-management-donuts{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin-top:8px;
+}
+.module-management-donut-item{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  border:1px solid #d9e4ef;
+  border-radius:12px;
+  background:#fff;
+}
+.module-management-donut{
+  --public-color:#1F5AA6;
+  --private-color:#7B8794;
+  width:70px;
+  height:70px;
+  flex:0 0 70px;
+  border-radius:50%;
+  background:conic-gradient(
+    var(--public-color) 0 var(--public-pct),
+    var(--private-color) var(--public-pct) 100%
+  );
+  display:grid;
+  place-items:center;
+  position:relative;
+}
+.module-management-donut::after{
+  content:"";
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#fff;
+  position:absolute;
+}
+.module-management-donut-center{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  line-height:1.05;
+}
+.module-management-donut-center b{
+  display:block;
+  color:#064779;
+  font-size:14px;
+}
+.module-management-donut-center small{
+  display:block;
+  color:#718397;
+  font-size:8px;
+  margin-top:2px;
+}
+.module-management-donut-copy{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.module-management-donut-copy strong{
+  color:#064779;
+  font-size:12px;
+}
+.module-management-donut-copy span{
+  color:#65788c;
+  font-size:10px;
+  white-space:nowrap;
+}
+.module-dot{
+  display:inline-block;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  margin-right:5px;
+}
+.module-dot-public{background:#1F5AA6;}
+.module-dot-private{background:#7B8794;}
+.module-management-legend{
+  margin-top:8px;
+  display:flex;
+  justify-content:flex-end;
+  gap:14px;
+  color:#65788c;
+  font-size:9px;
+}
+@media (max-width:900px){
+  .module-management-donuts{grid-template-columns:1fr;}
+}
+
+/* V54 — cabecera y pie institucional. No modifica los íconos ni la navegación existente. */
+.institutional-banner{
+  background:linear-gradient(90deg,#064779 0%,#0B5AA7 100%);
+  color:#fff;width:100%;border-bottom:1px solid rgba(255,255,255,.18)
+}
+.institutional-banner-inner{
+  max-width:1700px;margin:0 auto;min-height:78px;padding:10px 18px;
+  display:flex;align-items:center;gap:24px
+}
+.institutional-logo{
+  width:auto;height:56px;max-width:460px;object-fit:contain;background:#fff
+}
+.institutional-title-wrap{flex:1;text-align:center;padding-right:80px}
+.institutional-title{font-size:25px;font-weight:800;letter-spacing:.2px;line-height:1.08}
+.institutional-subtitle{margin-top:4px;font-size:12px;opacity:.9}
+.institutional-footer{
+  width:100%;margin-top:18px;padding:12px 20px;border-top:1px solid #d5e1ec;
+  background:#fff;color:#526a80;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;font-size:11px
+}
+.institutional-footer strong{color:#064779}
+@media(max-width:900px){
+  .institutional-banner-inner{min-height:auto;gap:12px;padding:9px 12px}
+  .institutional-logo{height:42px;max-width:46vw}
+  .institutional-title-wrap{padding-right:0;text-align:left}
+  .institutional-title{font-size:17px}
+  .institutional-subtitle{font-size:10px}
+  .institutional-footer{flex-direction:column;align-items:flex-start;gap:5px}
+}
+
+/* V55: fuente institucional visible al pie */
+.dashboard-source-strip{
+  margin:12px 14px 0;
+  padding:11px 16px;
+  background:#f7fafc;
+  border:1px solid #d5e1ec;
+  border-radius:10px 10px 0 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:18px;
+  color:#536b80;
+  font-size:11px;
+}
+.dashboard-source-strip strong{color:#064779}
+@media(max-width:800px){
+  .dashboard-source-strip{flex-direction:column;align-items:flex-start;gap:4px}
+}
+
+/* V57 — Indicadores */
+.indicators-filters{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.indicators-filters label{font-size:11px;font-weight:700;color:#49657d}
+.indicators-filters select{display:block;margin-top:5px;min-width:150px;padding:8px 28px 8px 9px;border:1px solid #cad9e7;border-radius:8px;background:#fff;color:#174a73}
+.ind-chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.ind-chart-card,.ind-table-card{margin-top:12px}
+.ind-bars{display:flex;flex-direction:column;gap:9px;padding:8px 2px}
+.ind-bar-row{display:grid;grid-template-columns:80px 1fr 90px;gap:9px;align-items:center;font-size:11px}
+.ind-bar-row b{color:#174a73}.ind-bar-row strong{text-align:right;color:#064779}
+.ind-bar-track{height:12px;border-radius:8px;background:#e8eef4;overflow:hidden}
+.ind-bar-track span{display:block;height:100%;border-radius:8px;background:#1F5AA6}
+.ind-table{width:100%;border-collapse:collapse;font-size:11px}
+.ind-table th{background:#eaf3fb;color:#064779;text-align:left;padding:8px;border-bottom:1px solid #c9d9e7}
+.ind-table td{padding:8px;border-bottom:1px solid #e0e8ef;color:#405c72}
+.ind-table th:not(:first-child),.ind-table td:not(:first-child){text-align:right}
+.ind-table tfoot td{font-weight:800;background:#eef4f8;color:#064779}
+.ind-source-note{margin-top:12px;padding:10px 12px;border:1px solid #d5e1ec;border-radius:9px;background:#f8fbfd;color:#587085;font-size:10px}
+.ind-source-note strong{color:#064779}
+.ind-empty{padding:16px;color:#718397;text-align:center}
+@media(max-width:900px){.ind-chart-grid{grid-template-columns:1fr}.indicators-filters{width:100%}.indicators-filters label{flex:1;min-width:130px}.indicators-filters select{width:100%;min-width:0}}
+
+/* V58 — boletín interactivo de indicadores */
+.ind-four-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.ind-summary-card{position:relative;padding-top:14px}
+.ind-summary-card>h2{display:inline-block;margin:0 0 10px 42px;color:#064779;font-size:17px}
+.ind-number{position:absolute;top:10px;left:12px;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:14px}
+.ind-blue{background:#0b4ca3}.ind-red{background:#df1717}.ind-green{background:#087c3d}.ind-purple{background:#6a269c}
+.ind-hier-table{width:100%;border-collapse:collapse;font-size:11px}
+.ind-hier-table th{background:#0b4ca3;color:#fff;padding:7px 9px;text-align:left}
+.ind-hier-table th:last-child,.ind-hier-table td:last-child{text-align:right}
+.ind-hier-table td{padding:5px 9px;border-bottom:1px solid #dce5ee}
+.ind-hier-table .ind-parent td{font-weight:800;color:#064779;background:#f5f9fc}
+.ind-hier-table .ind-child td:first-child{padding-left:25px;color:#405c72}
+.ind-hier-table tfoot td{background:#064779;color:#fff;font-weight:900}
+.ind-summary-card:nth-child(2) .ind-hier-table th,.ind-summary-card:nth-child(2) .ind-hier-table tfoot td{background:#d71920}
+.ind-summary-card:nth-child(3) .ind-hier-table th,.ind-summary-card:nth-child(3) .ind-hier-table tfoot td{background:#087c3d}
+.ind-summary-card:nth-child(4) .ind-hier-table th,.ind-summary-card:nth-child(4) .ind-hier-table tfoot td{background:#6a269c}
+.ind-mini-source{margin-top:6px;color:#63798d;font-size:9px}
+.ind-ugel-detail{margin-top:14px}
+.ind-ugel-head{align-items:flex-end}
+.ind-ugel-head>div:first-child{flex:1}.ind-ugel-head label{font-size:10px;font-weight:700;color:#526b80}
+.ind-ugel-head select{display:block;margin-top:4px;padding:7px 28px 7px 8px;border:1px solid #cbd9e6;border-radius:7px;background:#fff;color:#064779}
+.ind-ugel-matrix{width:100%;border-collapse:collapse;font-size:9px;min-width:1050px}
+.ind-ugel-matrix th{padding:6px 5px;border:1px solid #c9d9e8;background:#0b4ca3;color:#fff;text-align:center}
+.ind-ugel-matrix td{padding:5px;border:1px solid #dbe4ec;text-align:right}
+.ind-ugel-matrix td:first-child{text-align:left;color:#064779}
+.ind-ugel-matrix tfoot td{font-weight:900;background:#eaf3fb;color:#064779}
+@media(max-width:950px){.ind-four-grid{grid-template-columns:1fr}}
+
+/* V59 — Indicadores: Pública / Privada / Total y totales por modalidad */
+.ind-hier-table th:not(:first-child),
+.ind-hier-table td:not(:first-child){text-align:right}
+.ind-hier-table th:nth-child(2),
+.ind-hier-table th:nth-child(3),
+.ind-hier-table th:nth-child(4){width:15%}
+
+.ind-mod-total-head{
+  background:#d8e6f4 !important;
+  color:#064779 !important;
+  font-weight:900 !important;
+}
+.ind-mod-total-cell{
+  background:#edf4fa !important;
+  color:#064779 !important;
+  font-weight:800 !important;
+  border-left:2px solid #b8ccdf !important;
+  border-right:2px solid #b8ccdf !important;
+}
+.ind-grand-total-head{
+  background:#083f78 !important;
+  color:#fff !important;
+  font-weight:900 !important;
+  min-width:84px;
+}
+.ind-grand-total-cell{
+  background:#d9e9f7 !important;
+  color:#053d70 !important;
+  font-weight:900 !important;
+}
+.ind-ugel-matrix tfoot .ind-mod-total-cell,
+.ind-ugel-matrix tfoot .ind-grand-total-cell{
+  background:#c7def2 !important;
+}
+
+/* V60 — exportación e informe resumen */
+.ind-export-actions{display:flex;gap:8px;align-items:flex-end;margin-left:auto}
+.ind-export-btn{
+  border:1px solid #9dbbd5;background:#fff;color:#064779;border-radius:8px;
+  padding:9px 12px;font-size:11px;font-weight:800;cursor:pointer
+}
+.ind-export-btn:hover{background:#eef6fc}
+.v60-resumen-modalidad .table-scroll{max-height:520px}
+.v60-summary-table{width:100%;border-collapse:collapse;font-size:9px}
+.v60-summary-table th{background:#0b4ca3;color:#fff;padding:6px;text-align:right}
+.v60-summary-table th:first-child{text-align:left}
+.v60-summary-table td{padding:5px 6px;border-bottom:1px solid #dce5ee;text-align:right}
+.v60-summary-table td:first-child{text-align:left}
+.v60-parent td{font-weight:800;color:#064779;background:#f1f6fa}
+.v60-child td:first-child{padding-left:18px;color:#506b80}
+.v60-total td{background:#064779;color:#fff;font-weight:900}
+.v60-source{font-size:8px;color:#687e91;margin-top:6px}
+@media(max-width:900px){
+  .ind-export-actions{width:100%;margin-left:0}
+  .ind-export-btn{flex:1}
+}
+
+/* V61 — Resumen por modalidad: indicadores integrados */
+.v60-summary-table th:first-child,
+.v60-summary-table td:first-child{width:38%}
+.v60-summary-table th:not(:first-child),
+.v60-summary-table td:not(:first-child){width:15.5%}
+
+/* V62 — resumen jerárquico desplegable */
+.v62-parent{cursor:pointer}
+.v62-parent:hover td{background:#e5f0f8}
+.v62-toggle{
+  border:0;background:transparent;color:#0b5aa7;font-size:9px;
+  width:17px;padding:0;margin-right:2px;cursor:pointer;font-weight:900
+}
+.v62-child td{background:#fff;color:#506b80}
+.v62-child td:first-child{padding-left:27px}
+.v62-child td:not(:first-child){font-weight:500}
+
+/* V63 — imprimir la vista actual conservando colores */
+@media print{
+  *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+  body.print-indicadores{background:#fff !important}
+  body.print-indicadores .institutional-banner,
+  body.print-indicadores .institutional-footer,
+  body.print-indicadores nav,
+  body.print-indicadores .topnav,
+  body.print-indicadores .sidebar,
+  body.print-indicadores .ind-export-actions,
+  body.print-indicadores .indicators-filters{display:none !important}
+  body.print-indicadores .view{display:none !important}
+  body.print-indicadores #indicadores{
+    display:block !important;width:100% !important;margin:0 !important;padding:5mm !important;
+    background:#fff !important
+  }
+  body.print-indicadores #indicadores .ind-four-grid{
+    display:grid !important;grid-template-columns:1fr 1fr !important;gap:8px !important
+  }
+  body.print-indicadores #indicadores .card{
+    break-inside:avoid !important;page-break-inside:avoid !important
+  }
+  body.print-indicadores #indicadores .table-scroll{
+    overflow:visible !important;max-height:none !important
+  }
+  body.print-indicadores #indicadores .ind-ugel-matrix{
+    min-width:0 !important;width:100% !important;font-size:6.3px !important
+  }
+  @page{size:A4 landscape;margin:6mm}
+}
+
+/* V64 — Responsive móvil sin alterar el diseño de escritorio */
+
+/* navegación superior desplazable en pantallas pequeñas */
+@media (max-width: 900px){
+  html,body{
+    max-width:100%;
+    overflow-x:hidden;
+  }
+
+  .institutional-banner-inner{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:8px;
+  }
+
+  .institutional-logo{
+    max-width:100%;
+    height:auto;
+    max-height:48px;
+  }
+
+  .institutional-title-wrap{
+    width:100%;
+    text-align:left;
+    padding-right:0;
+  }
+
+  .institutional-title{
+    font-size:18px;
+  }
+
+  .institutional-subtitle{
+    font-size:10px;
+  }
+
+  .topbar{
+    display:block;
+    overflow:hidden;
+  }
+
+  #topnav{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    gap:2px;
+    width:100%;
+    padding-bottom:3px;
+  }
+
+  #topnav button{
+    flex:0 0 auto;
+    white-space:nowrap;
+    min-height:40px;
+  }
+
+  .top-source{
+    display:none;
+  }
+
+  .sidebar{
+    display:none !important;
+  }
+
+  .app-shell,
+  .main-area,
+  main{
+    width:100%;
+    max-width:100%;
+    margin:0;
+  }
+
+  main{
+    padding-left:8px;
+    padding-right:8px;
+  }
+
+  .page-head{
+    flex-direction:column;
+    align-items:stretch;
+    gap:10px;
+  }
+
+  .page-head h1{
+    font-size:23px;
+    line-height:1.1;
+  }
+
+  .filters,
+  .module-filters,
+  .indicators-filters{
+    width:100%;
+  }
+
+  .filters.compact,
+  .module-filters,
+  .indicators-filters{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .filters.compact > *,
+  .module-filters > *,
+  .indicators-filters > *{
+    flex:1 1 140px;
+    min-width:0;
+  }
+
+  .segmented{
+    display:flex;
+    width:100%;
+  }
+
+  .segmented button{
+    flex:1;
+  }
+
+  .kpis{
+    grid-template-columns:1fr 1fr !important;
+    gap:8px !important;
+  }
+
+  .kpi{
+    min-width:0;
+    padding:10px !important;
+  }
+
+  .kpi-icon{
+    flex:0 0 auto;
+  }
+
+  .kpi-copy b{
+    font-size:19px !important;
+  }
+
+  /* Resumen */
+  .summary-analytics-grid{
+    display:block !important;
+  }
+
+  .summary-left-stack,
+  .summary-right-stack{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .district-dashboard{
+    overflow:hidden;
+  }
+
+  .district-layout{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px !important;
+  }
+
+  .ugel-table-column{
+    width:100% !important;
+  }
+
+  .district-map-panel{
+    order:-1;
+    width:100% !important;
+    min-height:420px;
+  }
+
+  .real-district-map{
+    min-height:380px !important;
+    width:100% !important;
+  }
+
+  .district-map-title h2{
+    font-size:17px;
+  }
+
+  .summary-management-below-map{
+    overflow-x:auto;
+  }
+
+  .summary-management-donuts{
+    grid-template-columns:1fr 1fr !important;
+  }
+
+  .v60-resumen-modalidad .table-scroll{
+    overflow-x:auto !important;
+    max-height:none !important;
+  }
+
+  .v60-summary-table{
+    min-width:560px;
+  }
+
+  /* Indicadores */
+  .ind-export-actions{
+    display:grid !important;
+    grid-template-columns:1fr 1fr;
+    width:100%;
+    gap:8px;
+    margin:0;
+  }
+
+  .ind-export-btn{
+    width:100%;
+  }
+
+  .ind-four-grid{
+    grid-template-columns:1fr !important;
+    gap:10px !important;
+  }
+
+  .ind-summary-card{
+    width:100%;
+  }
+
+  .ind-hier-table{
+    min-width:520px;
+  }
+
+  .ind-summary-card .table-scroll,
+  .ind-ugel-detail .table-scroll{
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  .ind-ugel-matrix{
+    min-width:1150px !important;
+    font-size:9px;
+  }
+
+  .ind-ugel-head{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch !important;
+    gap:8px;
+  }
+
+  .ind-ugel-head label{
+    width:100%;
+  }
+
+  .ind-ugel-head select{
+    width:100%;
+  }
+
+  /* módulos EBR/EBA/EBE/Superior/CETPRO */
+  .module-management-donuts{
+    grid-template-columns:1fr !important;
+  }
+
+  .module-management-donut-item{
+    width:100%;
+  }
+
+  .card,
+  .panel{
+    max-width:100%;
+  }
+
+  .table-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+
+  table{
+    max-width:none;
+  }
+
+  /* Ficha */
+  .ficha-grid,
+  .detail-grid,
+  .institution-grid{
+    grid-template-columns:1fr !important;
+  }
+
+  /* pie */
+  .institutional-footer{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+    padding:10px 12px;
+  }
+}
+
+@media (max-width: 560px){
+  .kpis{
+    grid-template-columns:1fr !important;
+  }
+
+  .institutional-title{
+    font-size:16px;
+  }
+
+  .institutional-subtitle{
+    display:none;
+  }
+
+  .page-head h1{
+    font-size:20px;
+  }
+
+  .summary-management-donuts{
+    grid-template-columns:1fr !important;
+  }
+
+  .ind-export-actions{
+    grid-template-columns:1fr;
+  }
+
+  .district-map-panel{
+    min-height:350px;
+  }
+
+  .real-district-map{
+    min-height:320px !important;
+  }
+
+  .ugel-table-column table{
+    min-width:520px;
+  }
+
+  .v60-summary-table{
+    min-width:520px;
+  }
+
+  .ind-hier-table{
+    min-width:500px;
+  }
+}
+
+/* V65 — gráficos por nivel/programa e indicador en EBR, EBA, EBE, Superior y CETPRO */
+.module-dist-head{align-items:flex-start;gap:10px;flex-wrap:wrap}
+.module-dist-head>div:first-child{flex:1;min-width:220px}
+.module-metric-tabs{display:flex;gap:5px;flex-wrap:wrap}
+.module-metric-tabs button{
+  border:1px solid #bdd0e2;background:#fff;color:#174a73;border-radius:7px;
+  padding:6px 10px;font-size:10px;font-weight:800;cursor:pointer
+}
+.module-metric-tabs button.active{background:#1769aa;border-color:#1769aa;color:#fff}
+.module-stack-legend{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:10px 14px;
+  margin:8px 0 12px;color:#506b80;font-size:9px
+}
+.module-stack-legend span{display:flex;align-items:center;gap:5px}
+.module-stack-legend i,.module-level-dot{
+  display:inline-block;width:8px;height:8px;border-radius:50%;flex:0 0 auto
+}
+.module-stack-chart{
+  height:270px;display:flex;align-items:flex-end;justify-content:space-around;
+  gap:10px;padding:18px 12px 4px;border-bottom:1px solid #dce6ef;
+  background:repeating-linear-gradient(to top,#fff 0,#fff 54px,#e8eef4 55px)
+}
+.module-stack-col{
+  height:100%;flex:1;min-width:48px;max-width:92px;
+  display:flex;flex-direction:column;justify-content:flex-end;align-items:center
+}
+.module-stack-total{font-size:9px;color:#064779;margin-bottom:5px}
+.module-stack-track{
+  width:56px;min-height:18px;display:flex;flex-direction:column-reverse;
+  overflow:hidden;border-radius:5px 5px 0 0;box-shadow:0 1px 3px rgba(0,0,0,.08)
+}
+.module-stack-seg{
+  display:flex;align-items:center;justify-content:center;min-height:2px;
+  color:#fff;font-style:normal;font-size:8px;font-weight:800
+}
+.module-stack-seg em{font-style:normal}
+.module-stack-ugel{font-size:8px;color:#405c72;margin-top:5px;white-space:nowrap}
+.module-level-detail{margin-top:12px}
+.module-level-table{width:100%;border-collapse:collapse;font-size:9px}
+.module-level-table th{background:#edf4fa;color:#064779;padding:6px;text-align:left}
+.module-level-table th:not(:first-child),.module-level-table td:not(:first-child){text-align:right}
+.module-level-table td{padding:5px 6px;border-bottom:1px solid #dce5ee}
+.module-level-table td:first-child{display:flex;align-items:center;gap:6px}
+.module-level-table tfoot td{font-weight:900;background:#e6f0f7;color:#064779}
+@media(max-width:900px){
+  .module-metric-tabs{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:3px}
+  .module-metric-tabs button{flex:0 0 auto}
+  .module-stack-chart{overflow-x:auto;justify-content:flex-start;padding-left:8px}
+  .module-stack-col{flex:0 0 65px}
+  .module-stack-track{width:48px}
+}
+
+/* V66 — cuadro UGEL x nivel sincronizado con gráfico */
+.module-table-dynamic-head h2{font-size:13px;line-height:1.2}
+.module-ugel-level-table{font-size:9px}
+.module-ugel-level-table th{
+  background:#edf4fa;color:#064779;text-align:right;padding:7px 6px;
+  white-space:normal;line-height:1.05
+}
+.module-ugel-level-table th:first-child,
+.module-ugel-level-table td:first-child{text-align:left}
+.module-ugel-level-table td{text-align:right;padding:7px 6px;border-bottom:1px solid #dce5ee}
+.module-ugel-level-table .module-ugel-total{
+  background:#e3eef7;font-weight:900;color:#064779
+}
+.module-ugel-level-table tfoot td{
+  background:#eef4f8;font-weight:900;color:#064779
+}
+.module-ugel-level-table tfoot .module-ugel-total{background:#cfe2f1}
+.module-level-detail:empty{display:none}
+@media(max-width:900px){
+  .module-ugel-level-card .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .module-ugel-level-table{min-width:620px}
+}
+
+/* V67 — controles compartidos arriba y CETPRO con indicadores directos */
+.module-analysis-shell{margin-top:14px}
+.module-analysis-toolbar{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:14px;
+  margin-bottom:9px;padding:10px 12px;border:1px solid #cfdeea;border-radius:11px;
+  background:#fff
+}
+.module-analysis-toolbar small{display:block;color:#6e8498;font-size:8px;font-weight:800;letter-spacing:.3px}
+.module-analysis-toolbar h2{margin:2px 0 0;color:#064779;font-size:14px}
+.module-analysis-toolbar .module-metric-tabs{margin-left:auto}
+.module-cetpro-direct-card{width:100%}
+.module-cetpro-direct-table{width:100%;font-size:10px}
+.module-cetpro-direct-table th{background:#edf4fa;color:#064779;padding:8px 7px;text-align:right}
+.module-cetpro-direct-table th:first-child,.module-cetpro-direct-table td:first-child{text-align:left}
+.module-cetpro-direct-table td{padding:8px 7px;text-align:right;border-bottom:1px solid #dce5ee}
+.module-cetpro-direct-table tfoot td{background:#dcebf6;color:#064779;font-weight:900}
+@media(max-width:900px){
+  .module-analysis-toolbar{flex-direction:column;align-items:stretch}
+  .module-analysis-toolbar .module-metric-tabs{margin-left:0;width:100%}
+  .module-cetpro-direct-table{min-width:680px}
+}
+
+/* V68 — acciones por módulo */
+.module-header-actions{
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.module-export-actions{
+  display:flex;
+  gap:7px;
+  align-items:center;
+}
+.module-export-btn{
+  border:1px solid #9dbbd5;
+  background:#fff;
+  color:#064779;
+  border-radius:8px;
+  padding:8px 11px;
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.module-export-btn:hover{background:#eef6fc}
+.ind-subprogram td:first-child{
+  padding-left:28px !important;
+  font-weight:700;
+  color:#145b91;
+}
+
+/* impresión de cada módulo: conserva la vista y los colores */
+@media print{
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+
+  body.print-module-view .institutional-banner,
+  body.print-module-view .institutional-footer,
+  body.print-module-view .sidebar,
+  body.print-module-view .topbar,
+  body.print-module-view #topnav{
+    display:none !important;
+  }
+
+  body.print-module-view .view{
+    display:none !important;
+  }
+
+  body.print-module-view[data-print-module="ebr"] #ebr,
+  body.print-module-view[data-print-module="eba"] #eba,
+  body.print-module-view[data-print-module="ebe"] #ebe,
+  body.print-module-view[data-print-module="superior"] #superior,
+  body.print-module-view[data-print-module="cetpro"] #cetpro{
+    display:block !important;
+    width:100% !important;
+    margin:0 !important;
+    padding:5mm !important;
+    background:#fff !important;
+  }
+
+  body.print-module-view .module-export-actions,
+  body.print-module-view .module-filters,
+  body.print-module-view .institution-map-toolbar{
+    display:none !important;
+  }
+
+  body.print-module-view .table-scroll{
+    overflow:visible !important;
+    max-height:none !important;
+  }
+
+  body.print-module-view .card,
+  body.print-module-view .institution-map-section,
+  body.print-module-view .module-analysis-shell{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  @page{
+    size:A4 landscape;
+    margin:6mm;
+  }
+}
+
+@media(max-width:900px){
+  .module-header-actions{
+    width:100%;
+    justify-content:stretch;
+  }
+  .module-export-actions{
+    width:100%;
+  }
+  .module-export-btn{
+    flex:1;
+  }
+}

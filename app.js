@@ -67,7 +67,7 @@ function agg(a){return {estudiantes:a.reduce((s,x)=>s+x.estudiantes,0),docentes:
 function scopedRows(rows=R){if(scope==="publica")return rows.filter(x=>x.gestion==="Pública");if(scope==="privada")return rows.filter(x=>x.gestion==="Privada");return rows}
 
 
-const UGEL_COLORS={"UGEL 01":"#e8b800","UGEL 02":"#2baa57","UGEL 03":"#0d568b","UGEL 04":"#72b5e8","UGEL 05":"#f36b2a","UGEL 06":"#e34755","UGEL 07":"#7044c6"};
+const UGEL_COLORS={"UGEL 01":"#e8b800","UGEL 02":"#2baa57","UGEL 03":"#0d568b","UGEL 04":"#72b5e8","UGEL 05":"#7B8794","UGEL 06":"#e34755","UGEL 07":"#7044c6"};
 const LIMA_GEOJSON_URL="https://raw.githubusercontent.com/joseluisq/peru-geojson-datasets/master/lima_callao_distritos_simple.geojson";
 let limaGeoJSONCache=null;
 function normDistrict(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().trim()}
@@ -183,7 +183,7 @@ function renderReiOverview(pRows){
   const el=document.getElementById("reiOverview");if(!el)return;
   const total=padronRieStats(pRows),ugels=["UGEL 01","UGEL 02","UGEL 03","UGEL 04","UGEL 05","UGEL 06","UGEL 07"];
   const rows=ugels.map(u=>({u,...padronRieStats(pRows.filter(x=>x.u===u))}));
-  el.innerHTML=`<div class="rei-head"><div><small>REGISTRO DE INSTITUCIONES EDUCATIVAS</small><h2>Avance de registro en RIE</h2><p>Educación Básica + CETPRO. Se excluyen PRONOEI y Educación Superior.</p></div><div class="rei-big"><span>Avance DRELM</span><b>${total.pct.toFixed(1)}%</b><small>${fmt(total.con)} de ${fmt(total.total)} códigos modulares</small></div></div>
+  el.innerHTML=`<div class="rei-head"><div><small>REGISTRO DE INSTITUCIONES EDUCATIVAS</small><h2>Servicios educativos con código de IE</h2><p>Registrados con código de IE en el Sistema de Registro de Instituciones Educativas (RIE).</p></div><div class="rei-big"><span>Avance DRELM</span><b>${total.pct.toFixed(1)}%</b><small>${fmt(total.con)} de ${fmt(total.total)} códigos modulares</small></div></div>
   <div class="rei-formula">Cálculo: códigos modulares únicos con <b>CODINST</b> ÷ total de códigos modulares únicos del ámbito considerado.</div>
   <div class="rei-table-wrap"><table class="rei-table"><thead><tr><th>UGEL</th><th>Total cód. mod.</th><th>Con código de IE</th><th>Pendientes</th><th>% avance</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${r.u}</b></td><td>${fmt(r.total)}</td><td>${fmt(r.con)}</td><td>${fmt(r.pendientes)}</td><td><div class="rei-progress"><span style="width:${Math.min(100,r.pct)}%"></span></div><b>${r.pct.toFixed(1)}%</b></td></tr>`).join("")}</tbody><tfoot><tr><td>DRELM</td><td>${fmt(total.total)}</td><td>${fmt(total.con)}</td><td>${fmt(total.pendientes)}</td><td><b>${total.pct.toFixed(1)}%</b></td></tr></tfoot></table></div>
   <small class="rei-note">Unidad de conteo: código modular único. Los anexos no incrementan el total.</small>`;
@@ -195,7 +195,7 @@ function renderSummary(){
     ["Locales educativos",fmt(pt.locales),"Códigos de local únicos · Padrón"],
     ["Estudiantes",fmt(rt.estudiantes),"Censo Educativo 2025"],
     ["Docentes",fmt(rt.docentes),"Censo Educativo 2025"],
-    ["II.EE. con código de IE",rie.pct.toFixed(1)+"%",`${fmt(rie.con)} de ${fmt(rie.total)} códigos modulares · Básica + CETPRO · sin PRONOEI`]
+    ["Servicios educativos con código de IE",rie.pct.toFixed(1)+"%",`${fmt(rie.con)} de ${fmt(rie.total)} códigos modulares · Básica + CETPRO · sin PRONOEI`]
   ]);
   const note=document.getElementById("padronSourceNote");if(note)note.innerHTML=`<b>Fuente institucional:</b> Padrón Educativo DRELM · fecha de corte <b>${PMETA.cut||"13-08-2026"}</b> · actualización quincenal. Servicios educativos = códigos modulares únicos activos; locales = códigos de local únicos.`;
   const sec={};["EBR","EBA","EBE","Superior","ETP"].forEach(s=>sec[moduleNames[s]]=a.filter(x=>x.sector===s).reduce((z,x)=>z+x.estudiantes,0));
@@ -204,7 +204,7 @@ function renderSummary(){
   $("#ugelBars").innerHTML=`<div class="summary-modal-table-wrap"><table class="summary-modal-table"><thead><tr><th>Modalidad del padrón</th><th>Estudiantes*</th><th>Docentes*</th><th>Servicios</th><th>Locales</th></tr></thead><tbody>${modalRows.map(r=>`<tr><td><span class="modal-table-name"><b>${r.nombre}</b></span></td><td>${fmt(r.estudiantes)}</td><td>${fmt(r.docentes)}</td><td>${fmt(r.servicios)}</td><td>${fmt(r.locales)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total DRELM</td><td>${fmt(rt.estudiantes)}</td><td>${fmt(rt.docentes)}</td><td>${fmt(pt.servicios)}</td><td>${fmt(pt.locales)}</td></tr></tfoot></table><small class="table-footnote">* Estudiantes y docentes se vinculan por código modular con las fuentes estadísticas disponibles.</small></div>`;
   const pubR=agg(R.filter(x=>x.gestion==="Pública")),priR=agg(R.filter(x=>x.gestion==="Privada")),pubP=padronAgg(P.filter(x=>x.g==="Pública")),priP=padronAgg(P.filter(x=>x.g==="Privada"));
   const mg=document.getElementById("summaryManagement");
-  if(mg){const items=[["Estudiantes",pubR.estudiantes,priR.estudiantes],["Docentes",pubR.docentes,priR.docentes],["Servicios educativos",pubP.servicios,priP.servicios],["Locales educativos",pubP.locales,priP.locales]];mg.innerHTML=`<div class="management-compare">${items.map(([label,pv,qv])=>{const total=pv+qv,pp=total?pv/total*100:0;return `<div class="management-line"><div class="management-line-head"><b>${label}</b><span>${pp.toFixed(1)}% pública · ${(100-pp).toFixed(1)}% privada</span></div><div class="management-stack"><span class="management-public" style="width:${pp}%"></span><span class="management-private" style="width:${100-pp}%"></span></div><div class="management-values"><span>Pública <b>${fmt(pv)}</b></span><span>Privada <b>${fmt(qv)}</b></span></div></div>`}).join("")}<div class="management-legend"><span><i class="public"></i>Pública</span><span><i class="private"></i>Privada</span></div></div>`;}
+  if(mg){const items=[["Estudiantes",pubR.estudiantes,priR.estudiantes],["Docentes",pubR.docentes,priR.docentes],["Servicios educativos",pubP.servicios,priP.servicios],["Locales educativos",pubP.locales,priP.locales]];mg.innerHTML=`<div class="management-donut-grid">${items.map(([label,pv,qv])=>{const total=pv+qv,pp=total?pv/total*100:0,qp=100-pp;return `<div class="management-donut-item"><div class="management-donut" style="--public-pct:${pp.toFixed(2)}%"><div class="management-donut-hole"><b>${pp.toFixed(1)}%</b><small>Pública</small></div></div><div class="management-donut-copy"><b>${label}</b><span><i class="public"></i>Pública ${fmt(pv)} · ${pp.toFixed(1)}%</span><span><i class="private"></i>Privada ${fmt(qv)} · ${qp.toFixed(1)}%</span></div></div>`}).join("")}</div><div class="management-donut-note"><span><i class="public"></i>Pública</span><span><i class="private"></i>Privada</span></div>`;}
   renderReiOverview(pa);renderDistrictDashboard();
   const ex=document.getElementById("exportSummaryExcel");if(ex)ex.onclick=()=>{const rows=pa.map(x=>[x.u||"",x.d||"",x.l||"",x.c||"",x.i||"",x.n||"",x.g||"",x.mod||"",x.niv||"",x.rei||"",x.geo||""]);exportExcelFile("Padron_Educativo_DRELM_"+(PMETA.cut||"corte"),["UGEL","Distrito","Código local","Código modular","Código IE (CODINST)","Institución educativa","Gestión","Modalidad","Nivel","REI","Código geográfico"],rows)};
 }
@@ -281,8 +281,24 @@ async function renderInstitutionMap(view,sector,rows){
   const previous=institutionMapRegistry.get(view);if(previous?.map){try{previous.map.remove()}catch(e){}}if(previous?.observer){try{previous.observer.disconnect()}catch(e){}}institutionMapRegistry.delete(view);
   const mapEl=document.getElementById(view+"InstitutionMap"),count=document.getElementById(view+"InstitutionCount"),search=document.getElementById(view+"MapSearch"),ug=document.getElementById(view+"MapUgel"),di=document.getElementById(view+"MapDistrict"),ge=document.getElementById(view+"MapGestion"),exp=document.getElementById(view+"MapExport"),reset=document.getElementById(view+"MapReset"),resultBox=document.getElementById(view+"MapSearchResults");if(!mapEl)return;
   const prows=padronForModule(sector),rByCode=new Map();R.forEach(r=>{const k=String(r.cod_mod||"");if(!rByCode.has(k))rByCode.set(k,[]);rByCode.get(k).push(r)});
-  const byLocal=new Map();prows.forEach(x=>{if(!x.l||!Number.isFinite(Number(x.lat))||!Number.isFinite(Number(x.lon)))return;const k=String(x.l);if(!byLocal.has(k))byLocal.set(k,[]);byLocal.get(k).push(x)});
-  const allPts=[...byLocal.entries()].map(([codlocal,services])=>{const base=services.find(x=>x.lat&&x.lon)||services[0],codes=[...new Set(services.map(x=>String(x.c)).filter(Boolean))],rr=codes.flatMap(c=>rByCode.get(c)||[]),rs=agg(rr),pp=padronAgg(services);return {codlocal,lat:Number(base.lat),lon:Number(base.lon),ugel:base.u,nombre:services.map(x=>x.n).find(Boolean)||"Local educativo",gestion:[...new Set(services.map(x=>x.g).filter(Boolean))].join(" / "),distrito:padronDistrict(base),modalidades:[...new Set(services.map(x=>x.mod).filter(Boolean))].join(" / "),estudiantes:rs.estudiantes,docentes:rs.docentes,servicios:pp.servicios,direccion:base.dir||""}}).filter(p=>p.lat<0&&p.lat>-20&&p.lon<-65&&p.lon>-85);
+  // El Padrón Educativo es la base maestra del mapa. Las demás fuentes solo complementan
+  // estudiantes/docentes cuando existe correspondencia por código modular.
+  // Para evitar que una coordenada errónea aleje el mapa hasta otra región del país,
+  // solo se dibujan puntos cuya ubicación geográfica corresponde a Lima provincia
+  // y cuyas coordenadas caen dentro del ámbito razonable de Lima Metropolitana.
+  const isValidLimaMapPoint=x=>{
+    const lat=Number(x.lat),lon=Number(x.lon),geo=String(x.geo||"").replace(/\D/g,"");
+    return !!x.l && geo.startsWith("1501") && Number.isFinite(lat) && Number.isFinite(lon) && lat>=-12.65 && lat<=-11.45 && lon>=-77.45 && lon<=-76.45;
+  };
+  const byLocal=new Map();prows.forEach(x=>{if(!x.l)return;const k=String(x.l);if(!byLocal.has(k))byLocal.set(k,[]);byLocal.get(k).push(x)});
+  const padronLocalTotal=byLocal.size;
+  const allPts=[...byLocal.entries()].map(([codlocal,services])=>{
+    const valid=services.filter(isValidLimaMapPoint);
+    if(!valid.length)return null;
+    const base=valid[0],codes=[...new Set(services.map(x=>String(x.c)).filter(Boolean))],rr=codes.flatMap(c=>rByCode.get(c)||[]),rs=agg(rr),pp=padronAgg(services);
+    return {codlocal,lat:Number(base.lat),lon:Number(base.lon),ugel:base.u,nombre:services.map(x=>x.n).find(Boolean)||"Local educativo",gestion:[...new Set(services.map(x=>x.g).filter(Boolean))].join(" / "),distrito:padronDistrict(base),modalidades:[...new Set(services.map(x=>x.mod).filter(Boolean))].join(" / "),estudiantes:rs.estudiantes,docentes:rs.docentes,servicios:pp.servicios,direccion:base.dir||""};
+  }).filter(Boolean);
+  const omittedMapLocals=Math.max(0,padronLocalTotal-allPts.length);
   if(ug){ug.innerHTML='<option value="">Todas</option>';[...new Set(allPts.map(p=>p.ugel).filter(Boolean))].sort().forEach(u=>ug.add(new Option(u,u)))}
   let leafletMap=null,markers=null,districtLayer=null,searchTimer=null,observer=null,started=false,markerByCode=new Map();const limaFallback=typeof L!=="undefined"?L.latLngBounds([[-12.55,-77.35],[-11.55,-76.55]]):null;const entry={map:null,observer:null,hasFitted:false,start:null,fit:null};institutionMapRegistry.set(view,entry);
   function activePoints(){const q=(search?.value||"").trim().toLowerCase(),uv=ug?.value||"",dv=di?.value||"",gv=ge?.value||"";return allPts.filter(p=>(!uv||p.ugel===uv)&&(!dv||p.distrito===dv)&&(!gv||p.gestion.includes(gv))&&(!q||(`${p.nombre} ${p.codlocal} ${p.distrito} ${p.ugel}`).toLowerCase().includes(q)))}
@@ -291,7 +307,7 @@ async function renderInstitutionMap(view,sector,rows){
   function popupHtml(p){return `<div class="school-popup"><b>${p.nombre}</b><span>${p.distrito} · ${p.ugel||'Sin UGEL'}</span><div><span>Código local</span><strong>${p.codlocal}</strong><span>Gestión</span><strong>${p.gestion||'-'}</strong><span>Modalidad</span><strong>${p.modalidades||'-'}</strong><span>Servicios</span><strong>${fmt(p.servicios)}</strong><span>Estudiantes</span><strong>${fmt(p.estudiantes)}</strong><span>Docentes</span><strong>${fmt(p.docentes)}</strong></div><button type="button" data-open-local="${p.codlocal}">Ver ficha de la IE</button></div>`}
   async function drawDistrictOutline(district){if(!leafletMap)return null;if(districtLayer){leafletMap.removeLayer(districtLayer);districtLayer=null}if(!district)return null;try{if(!limaGeoJSONCache){const r=await fetch(LIMA_GEOJSON_URL);if(!r.ok)throw new Error('GeoJSON');limaGeoJSONCache=await r.json()}const fs=limaGeoJSONCache.features.filter(f=>normDistrict(f.properties?.provincia)==='LIMA'&&normDistrict(f.properties?.distrito)===district);if(fs.length){districtLayer=L.geoJSON({type:'FeatureCollection',features:fs},{style:{color:'#154d79',weight:3,fillColor:'#ffffff',fillOpacity:.04,dashArray:'6 4'}}).addTo(leafletMap);return districtLayer.getBounds()}}catch(e){}return null}
   async function fitCurrent(pts,polyBounds=null,animate=false){if(!leafletMap)return;leafletMap.invalidateSize(true);if(polyBounds?.isValid())leafletMap.fitBounds(polyBounds.pad(.06),{maxZoom:15,animate});else if(pts.length===1)leafletMap.setView([pts[0].lat,pts[0].lon],17,{animate});else if(pts.length>1)leafletMap.fitBounds(L.latLngBounds(pts.map(p=>[p.lat,p.lon])).pad(.08),{maxZoom:(ug?.value?14:12),animate});else if(allPts.length)leafletMap.fitBounds(L.latLngBounds(allPts.map(p=>[p.lat,p.lon])).pad(.06),{maxZoom:11,animate});else if(limaFallback)leafletMap.fitBounds(limaFallback,{animate});entry.hasFitted=true}entry.fit=()=>fitCurrent(activePoints(),null,false);
-  async function paint(opts={fit:true,focusLocal:null}){if(!leafletMap||!markers)return;const pts=activePoints();markers.clearLayers();markerByCode=new Map();if(count)count.textContent=`${fmt(pts.length)} locales mostrados · ${fmt(pts.reduce((s,p)=>s+(p.servicios||0),0))} servicios · Padrón ${PMETA.cut||''}`;pts.forEach(p=>{const m=L.marker([p.lat,p.lon],{icon:schoolIcon(p,p.codlocal===opts.focusLocal),riseOnHover:true,keyboard:true,title:p.nombre});m.bindPopup(popupHtml(p),{maxWidth:320});m.on('popupopen',ev=>{const node=ev.popup.getElement(),b=node?.querySelector('[data-open-local]');if(b)b.onclick=()=>{showView('buscar');window.openLocalFicha?.(p.codlocal)}});m.addTo(markers);markerByCode.set(String(p.codlocal),m)});const polyBounds=await drawDistrictOutline(di?.value||"");if(opts.focusLocal&&markerByCode.has(String(opts.focusLocal))){const m=markerByCode.get(String(opts.focusLocal));leafletMap.invalidateSize(true);leafletMap.setView(m.getLatLng(),17,{animate:true});m.openPopup();entry.hasFitted=true;return}if(opts.fit!==false)await fitCurrent(pts,polyBounds,true)}
+  async function paint(opts={fit:true,focusLocal:null}){if(!leafletMap||!markers)return;const pts=activePoints();markers.clearLayers();markerByCode=new Map();if(count){const extra=omittedMapLocals?` · ${fmt(omittedMapLocals)} sin ubicación cartográfica válida`:"";count.textContent=`${fmt(pts.length)} locales mostrados · ${fmt(pts.reduce((s,p)=>s+(p.servicios||0),0))} servicios${extra} · Padrón ${PMETA.cut||''}`}pts.forEach(p=>{const m=L.marker([p.lat,p.lon],{icon:schoolIcon(p,p.codlocal===opts.focusLocal),riseOnHover:true,keyboard:true,title:p.nombre});m.bindPopup(popupHtml(p),{maxWidth:320});m.on('popupopen',ev=>{const node=ev.popup.getElement(),b=node?.querySelector('[data-open-local]');if(b)b.onclick=()=>{showView('buscar');window.openLocalFicha?.(p.codlocal)}});m.addTo(markers);markerByCode.set(String(p.codlocal),m)});const polyBounds=await drawDistrictOutline(di?.value||"");if(opts.focusLocal&&markerByCode.has(String(opts.focusLocal))){const m=markerByCode.get(String(opts.focusLocal));leafletMap.invalidateSize(true);leafletMap.setView(m.getLatLng(),17,{animate:true});m.openPopup();entry.hasFitted=true;return}if(opts.fit!==false)await fitCurrent(pts,polyBounds,true)}
   function renderMatches(){if(!resultBox||!search)return;const q=search.value.trim().toLowerCase();if(q.length<2){resultBox.innerHTML='';resultBox.hidden=true;return}const matches=activePoints().slice(0,8);if(!matches.length){resultBox.innerHTML='<div class="map-search-empty">Sin coincidencias</div>';resultBox.hidden=false;return}resultBox.innerHTML=matches.map(p=>`<button type="button" data-local="${p.codlocal}"><b>${p.nombre}</b><span>${p.codlocal} · ${p.distrito} · ${p.ugel}</span></button>`).join('');resultBox.hidden=false;resultBox.querySelectorAll('button[data-local]').forEach(b=>b.onclick=()=>{const p=allPts.find(x=>String(x.codlocal)===String(b.dataset.local));if(!p)return;search.value=p.nombre;resultBox.hidden=true;paint({fit:false,focusLocal:p.codlocal})})}
   function startMap(){if(started){if(leafletMap)requestAnimationFrame(()=>leafletMap.invalidateSize(true));return}const viewEl=mapEl.closest('.view'),box=mapEl.getBoundingClientRect();if(viewEl&&!viewEl.classList.contains('active'))return;if(box.width<300||box.height<250){setTimeout(startMap,120);return}if(typeof L==='undefined'){mapEl.innerHTML='<div class="map-loading">No se pudo iniciar el mapa con calles. Verifica la conexión a internet.</div>';return}started=true;mapEl.innerHTML='';leafletMap=L.map(mapEl,{zoomControl:true,preferCanvas:true,minZoom:8,maxZoom:19,zoomSnap:.25});entry.map=leafletMap;L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{subdomains:'abc',maxZoom:19,attribution:'&copy; OpenStreetMap contributors',crossOrigin:true,updateWhenIdle:true,keepBuffer:3}).addTo(leafletMap);markers=L.layerGroup().addTo(leafletMap);leafletMap.on('click',()=>{if(resultBox)resultBox.hidden=true});if('ResizeObserver' in window){observer=new ResizeObserver(()=>{if(!leafletMap)return;requestAnimationFrame(()=>leafletMap.invalidateSize(false))});observer.observe(mapEl);entry.observer=observer}requestAnimationFrame(()=>requestAnimationFrame(()=>{leafletMap.invalidateSize(true);paint({fit:true})}))}entry.start=startMap;
   if(search)search.addEventListener('input',()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>{renderMatches();if(started){const pts=activePoints();if(pts.length===1)paint({fit:false,focusLocal:pts[0].codlocal});else paint({fit:true})}},180)});if(ug)ug.addEventListener('change',()=>{refreshDistricts();startMap();if(started)paint({fit:true})});if(di)di.addEventListener('change',()=>{startMap();if(started)paint({fit:true})});if(ge)ge.addEventListener('change',()=>{refreshDistricts();startMap();if(started)paint({fit:true})});if(reset)reset.addEventListener('click',()=>{if(search)search.value='';if(ug)ug.value='';if(di)di.value='';if(ge)ge.value='';refreshDistricts();if(resultBox){resultBox.hidden=true;resultBox.innerHTML=''}startMap();if(started)paint({fit:true})});if(exp)exp.onclick=()=>{const pts=activePoints();exportExcelFile(`${sector}_Padron_instituciones_filtradas`,["Código local","Institución educativa","UGEL","Distrito","Gestión","Modalidad","Estudiantes","Docentes","Servicios","Dirección"],pts.map(p=>[p.codlocal,p.nombre,p.ugel,p.distrito,p.gestion,p.modalidades,p.estudiantes,p.docentes,p.servicios,p.direccion]))};startMap();
@@ -300,7 +316,12 @@ async function renderInstitutionMap(view,sector,rows){
 function renderModule(view,sector){
   const container=document.getElementById(view);
   container.innerHTML=`<div class="page-head"><div><small>${sector}</small><h1>${moduleNames[sector]}</h1><p>Resumen consolidado de gestión pública y privada. Servicios, locales, modalidad y ubicación según Padrón Educativo DRELM.</p></div>
-  <div class="module-filters">
+  <div class="module-header-actions">
+    <div class="module-export-actions">
+      <button type="button" class="module-export-btn" id="${view}ExportExcel">↓ Exportar Excel</button>
+      <button type="button" class="module-export-btn" id="${view}Print">🖨 Imprimir</button>
+    </div>
+    <div class="module-filters">
     <label>Gestión
       <select id="${view}Gestion">
         <option value="">Total</option>
@@ -311,11 +332,14 @@ function renderModule(view,sector){
     <label>UGEL
       <select id="${view}Ugel"><option value="">Todas</option></select>
     </label>
+    </div>
   </div></div>
   <div id="${view}Content"></div>`;
 
   const gestionSel=document.getElementById(view+"Gestion");
   const ugelSel=document.getElementById(view+"Ugel");
+  const exportBtn=document.getElementById(view+"ExportExcel");
+  const printBtn=document.getElementById(view+"Print");
 
   [...new Set(padronForModule(sector).map(x=>x.u).filter(Boolean))].sort().forEach(u=>{
     const o=document.createElement("option");o.value=u;o.textContent=u;ugelSel.appendChild(o);
@@ -340,21 +364,239 @@ function renderModule(view,sector){
     </article>`;
   }
 
-  function drawColumnChart(el, rows, metric){
-    const max=Math.max(...rows.map(r=>r[metric]),1);
-    el.innerHTML=`<div class="column-chart">
-      <div class="ygrid">${[100,75,50,25,0].map(v=>`<span style="bottom:${v}%"></span>`).join("")}</div>
-      <div class="columns">
-        ${rows.map(r=>`
-          <div class="col-item">
-            <div class="col-value">${fmt(r[metric])}</div>
-            <div class="col-track">
-              <div class="col-fill" style="height:${(r[metric]/max)*100}%"></div>
-            </div>
-            <div class="col-label">${r.u}</div>
-          </div>`).join("")}
+  const MODULE_LEVEL_COLORS=["#2F80ED","#8E44AD","#27AE60","#E67E22","#D94F8A","#16A085","#6C5CE7","#F2C94C"];
+
+  function moduleBreakdownGroups(prows){
+    const groups=[];
+
+    function add(label,rows){
+      if(!rows.length)return;
+      groups.push({label,rows});
+    }
+
+    if(sector==="EBR"){
+      const base=prows.filter(x=>x.mod==="EBR");
+      [...new Set(base.map(x=>x.niv).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"))
+        .forEach(n=>add(n,base.filter(x=>x.niv===n)));
+      add("PRONOEI",prows.filter(x=>x.mod==="PRONOEI"));
+    }else if(sector==="EBE"){
+      const base=prows.filter(x=>x.mod==="EBE");
+      [...new Set(base.map(x=>x.niv).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"))
+        .forEach(n=>add(n,base.filter(x=>x.niv===n)));
+      // PRITE pertenece a EBE, pero se muestra con su propio nombre, no como "Básica Especial".
+      add("PRITE",prows.filter(x=>x.mod==="PRITE"));
+    }else{
+      const mods=[...new Set(prows.map(x=>x.mod).filter(Boolean))];
+      mods.forEach(mod=>{
+        const mr=prows.filter(x=>x.mod===mod);
+        const levels=[...new Set(mr.map(x=>x.niv).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+        if(levels.length){
+          levels.forEach(n=>add(n,mr.filter(x=>x.niv===n)));
+        }else{
+          add(PADRON_MODAL_LABELS[mod]||mod,mr);
+        }
+      });
+    }
+    return groups;
+  }
+
+  function moduleMetric(prows,metric){
+    const codes=new Set(prows.map(x=>String(x.c||"")).filter(Boolean));
+    if(metric==="servicios")return codes.size;
+    if(metric==="locales")return new Set(prows.map(x=>String(x.l||"")).filter(Boolean)).size;
+    const rr=R.filter(x=>codes.has(String(x.cod_mod||"")));
+    return rr.reduce((s,x)=>s+(Number(x[metric])||0),0);
+  }
+
+  function moduleMetricLabel(metric){
+    return ({estudiantes:"Estudiantes",docentes:"Docentes",servicios:"Servicios",locales:"Locales",secciones:"Secciones"})[metric]||metric;
+  }
+
+  function moduleShortName(){
+    return sector==="ETP" ? "CETPRO" : sector==="Superior" ? "Superior" : sector;
+  }
+
+  function moduleFilterSuffix(){
+    const parts=[];
+    if(ugelSel.value) parts.push(ugelSel.value);
+    if(gestionSel.value) parts.push("Gestión "+gestionSel.value.toLowerCase());
+    return parts.length ? " – "+parts.join(" – ") : "";
+  }
+
+  function moduleDynamicTitle(metric,kind){
+    const lab=moduleMetricLabel(metric);
+    return `${moduleShortName()} – ${lab} por UGEL y nivel/programa${moduleFilterSuffix()}`;
+  }
+
+  function renderCetproDirectTable(el,prows){
+    if(!el)return;
+    const ugels=ugelSel.value ? [ugelSel.value] : [...new Set(prows.map(x=>x.u).filter(Boolean))].sort();
+    const title=`CETPRO – Indicadores por UGEL${moduleFilterSuffix()}`;
+    const rows=ugels.map(u=>{
+      const ur=prows.filter(x=>x.u===u);
+      return `<tr>
+        <td>${u}</td>
+        <td>${fmt(moduleMetric(ur,"estudiantes"))}</td>
+        <td>${fmt(moduleMetric(ur,"docentes"))}</td>
+        <td>${fmt(moduleMetric(ur,"servicios"))}</td>
+        <td>${fmt(moduleMetric(ur,"locales"))}</td>
+        <td>${fmt(moduleMetric(ur,"secciones"))}</td>
+      </tr>`;
+    }).join("");
+    el.innerHTML=`
+      <div class="cardhead module-table-dynamic-head">
+        <h2>${title}</h2><span>Todos los indicadores</span>
       </div>
-    </div>`;
+      <div class="table-scroll">
+        <table class="summary-table module-cetpro-direct-table">
+          <thead>
+            <tr><th>UGEL</th><th>Estudiantes</th><th>Docentes</th><th>Servicios educativos</th><th>Locales educativos</th><th>Secciones</th></tr>
+          </thead>
+          <tbody>${rows}</tbody>
+          <tfoot>
+            <tr>
+              <td>Total CETPRO</td>
+              <td>${fmt(moduleMetric(prows,"estudiantes"))}</td>
+              <td>${fmt(moduleMetric(prows,"docentes"))}</td>
+              <td>${fmt(moduleMetric(prows,"servicios"))}</td>
+              <td>${fmt(moduleMetric(prows,"locales"))}</td>
+              <td>${fmt(moduleMetric(prows,"secciones"))}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>`;
+  }
+
+  function renderModuleUgelLevelTable(el,prows,metric){
+    if(!el)return;
+    const groups=moduleBreakdownGroups(prows);
+    const ugels=ugelSel.value ? [ugelSel.value] : [...new Set(prows.map(x=>x.u).filter(Boolean))].sort();
+    const title=moduleDynamicTitle(metric,"table");
+
+    const body=ugels.map(u=>{
+      const ur=prows.filter(x=>x.u===u);
+      const vals=groups.map(g=>{
+        const allowed=new Set(g.rows.map(x=>String(x.c||"")));
+        return moduleMetric(ur.filter(x=>allowed.has(String(x.c||""))),metric);
+      });
+      const total=moduleMetric(ur,metric);
+      return `<tr><td>${u}</td>${vals.map(v=>`<td>${fmt(v)}</td>`).join("")}<td class="module-ugel-total">${fmt(total)}</td></tr>`;
+    }).join("");
+
+    const totals=groups.map(g=>moduleMetric(g.rows,metric));
+    const grand=moduleMetric(prows,metric);
+
+    el.innerHTML=`
+      <div class="cardhead module-table-dynamic-head">
+        <h2>${title}</h2><span>${moduleMetricLabel(metric)}</span>
+      </div>
+      <div class="table-scroll">
+        <table class="summary-table module-ugel-level-table">
+          <thead><tr><th>UGEL</th>${groups.map(g=>`<th>${g.label}</th>`).join("")}<th class="module-ugel-total">Total</th></tr></thead>
+          <tbody>${body}</tbody>
+          <tfoot><tr><td>Total ${moduleShortName()}</td>${totals.map(v=>`<td>${fmt(v)}</td>`).join("")}<td class="module-ugel-total">${fmt(grand)}</td></tr></tfoot>
+        </table>
+      </div>`;
+  }
+
+  function drawStackedModuleChart(el,prows,metric){
+    const ugels=[...new Set(prows.map(x=>x.u).filter(Boolean))].sort();
+    const groups=moduleBreakdownGroups(prows);
+
+    const rows=ugels.map(u=>{
+      const ur=prows.filter(x=>x.u===u);
+      const values=groups.map(g=>{
+        const allowed=new Set(g.rows.map(x=>String(x.c||"")));
+        const rr=ur.filter(x=>allowed.has(String(x.c||"")));
+        return moduleMetric(rr,metric);
+      });
+      return {u,values,total:values.reduce((a,b)=>a+b,0)};
+    });
+
+    const max=Math.max(...rows.map(r=>r.total),1);
+    const legend=groups.map((g,i)=>`<span><i style="background:${MODULE_LEVEL_COLORS[i%MODULE_LEVEL_COLORS.length]}"></i>${g.label}</span>`).join("");
+
+    const chartTitle=document.getElementById(view+"DynamicChartTitle");
+    if(chartTitle) chartTitle.textContent=moduleDynamicTitle(metric,"chart");
+
+    el.innerHTML=`
+      <div class="module-stack-legend">${legend}</div>
+      <div class="module-stack-chart">
+        ${rows.map(r=>`
+          <div class="module-stack-col">
+            <b class="module-stack-total">${fmt(r.total)}</b>
+            <div class="module-stack-track" style="height:${Math.max(18,r.total/max*220)}px">
+              ${r.values.map((v,i)=>{
+                const pct=r.total?v/r.total*100:0;
+                return v?`<span class="module-stack-seg" style="height:${pct}%;background:${MODULE_LEVEL_COLORS[i%MODULE_LEVEL_COLORS.length]}" title="${groups[i].label}: ${fmt(v)}"><em>${v>=Math.max(1,r.total*.08)?fmt(v):""}</em></span>`:"";
+              }).join("")}
+            </div>
+            <span class="module-stack-ugel">${r.u}</span>
+          </div>`).join("")}
+      </div>`;
+
+    const detail=document.getElementById(view+"LevelDetail");
+    if(detail) detail.innerHTML="";
+  }
+
+  function moduleExportTitle(){
+    const mod=sector==="ETP"?"CETPRO":sector==="Superior"?"Superior":sector;
+    const parts=[mod];
+    if(gestionSel.value)parts.push("Gestión "+gestionSel.value.toLowerCase());
+    if(ugelSel.value)parts.push(ugelSel.value);
+    return parts.join(" – ");
+  }
+
+  function exportModuleExcel(){
+    const content=document.getElementById(view+"Content");
+    if(!content)return;
+
+    const title=moduleExportTitle();
+    const tables=[...content.querySelectorAll("table")].map((t,i)=>{
+      const heading=t.closest(".card,.table-card,.superior-table-wrap")?.parentElement?.querySelector("h2")?.textContent?.trim()
+        || t.closest(".card,.table-card")?.querySelector("h2")?.textContent?.trim()
+        || `Cuadro ${i+1}`;
+      return `<h2>${heading}</h2>${t.outerHTML}`;
+    }).join("<br><br>");
+
+    const html=`<html><head><meta charset="UTF-8"><style>
+      body{font-family:Arial,sans-serif;font-size:10pt;color:#173f61}
+      h1,h2{color:#064779}
+      .meta{margin-bottom:12px;padding:8px;background:#eef4f8}
+      table{border-collapse:collapse;width:100%;margin-bottom:14px}
+      th,td{border:1px solid #b9c8d6;padding:5px}
+      th{background:#0b4ca3;color:#fff;font-weight:bold}
+      tfoot td{font-weight:bold;background:#d9e9f7}
+    </style></head><body>
+      <h1>${title}</h1>
+      <div class="meta">
+        <b>Gestión:</b> ${gestionSel.value||"Total"} &nbsp;&nbsp;
+        <b>UGEL:</b> ${ugelSel.value||"Todas"}
+      </div>
+      ${tables}
+      <p><b>Fuente:</b> Censo Educativo 2025 y ESCALE – Padrón Web IE.</p>
+      <p><b>Elaborado por:</b> EEM-OPP-DRELM</p>
+    </body></html>`;
+
+    const blob=new Blob(["\ufeff",html],{type:"application/vnd.ms-excel"});
+    const a=document.createElement("a");
+    const url=URL.createObjectURL(blob);
+    a.href=url;
+    a.download=`${title}.xls`.replace(/[^\wÁÉÍÓÚÜÑáéíóúüñ-]+/g,"_");
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
+
+  function printModule(){
+    document.body.dataset.printModule=view;
+    document.body.classList.add("print-module-view");
+    window.print();
+    setTimeout(()=>{
+      document.body.classList.remove("print-module-view");
+      delete document.body.dataset.printModule;
+    },500);
   }
 
   function draw(){
@@ -528,22 +770,64 @@ function renderModule(view,sector){
       </section>
       `:""}
 
-      ${sector==="Superior"?"":`
-      <div class="analytics-grid exact-layout">
-        <article class="card">
-          <div class="cardhead"><h2>Resumen por UGEL (${gestionSel.value||"Total"})</h2><span>Censo 2025</span></div>
+      ${sector==="Superior"?"":sector==="ETP"?`
+      <div class="module-analysis-shell">
+        <article class="card module-cetpro-direct-card" id="${view}UgelLevelCard">
           ${tableUgel}
         </article>
-        <article class="card">
-          <div class="cardhead"><h2>Distribución de estudiantes por UGEL (${gestionSel.value||"Total"})</h2><span>Estudiantes</span></div>
-          <div id="${view}ColumnChart"></div>
-        </article>
+      </div>
+      </div>`:`
+      <div class="module-analysis-shell">
+        <div class="module-analysis-toolbar">
+          <div>
+            <small>ANÁLISIS POR UGEL Y NIVEL / PROGRAMA</small>
+            <h2>${sector} – Seleccione el indicador</h2>
+          </div>
+          <div class="module-metric-tabs" id="${view}MetricTabs">
+            <button type="button" class="active" data-metric="estudiantes">Estudiantes</button>
+            <button type="button" data-metric="docentes">Docentes</button>
+            <button type="button" data-metric="servicios">Servicios</button>
+            <button type="button" data-metric="locales">Locales</button>
+            <button type="button" data-metric="secciones">Secciones</button>
+          </div>
+        </div>
+
+        <div class="analytics-grid exact-layout">
+          <article class="card module-ugel-level-card" id="${view}UgelLevelCard">
+            <div class="cardhead"><h2>${sector} – Estudiantes por UGEL y nivel/programa</h2><span>Estudiantes</span></div>
+            ${tableUgel}
+          </article>
+          <article class="card module-distribution-card">
+            <div class="cardhead module-dist-head">
+              <div><h2 id="${view}DynamicChartTitle">${sector} – Estudiantes por UGEL y nivel/programa</h2><span>Distribución por nivel / programa</span></div>
+            </div>
+            <div id="${view}ColumnChart"></div>
+            <div class="module-level-detail" id="${view}LevelDetail"></div>
+          </article>
+        </div>
       </div>
       </div>`}
 
-      <article class="card module-management-compact">
+      <article class="card module-management-compact module-management-donuts-card">
         <div class="cardhead"><h2>Composición por tipo de gestión</h2><span>Pública / Privada</span></div>
-        <div class="module-management-bars">${[["Estudiantes",pub.estudiantes,pri.estudiantes],["Docentes",pub.docentes,pri.docentes],["Servicios educativos",pub.servicios,pri.servicios]].map(([lab,pv,qv])=>{const z=pv+qv,pc=z?pv/z*100:0;return `<div class="management-line"><div class="management-line-head"><b>${lab}</b><span>${pc.toFixed(1)}% pública · ${(100-pc).toFixed(1)}% privada</span></div><div class="management-stack"><span class="management-public" style="width:${pc}%"></span><span class="management-private" style="width:${100-pc}%"></span></div></div>`}).join("")}</div>
+        <div class="module-management-donuts">${[
+          ["Estudiantes",pub.estudiantes,pri.estudiantes],
+          ["Docentes",pub.docentes,pri.docentes],
+          ["Servicios educativos",pub.servicios,pri.servicios]
+        ].map(([lab,pv,qv])=>{
+          const z=pv+qv,pc=z?pv/z*100:0,prc=z?qv/z*100:0;
+          return `<div class="module-management-donut-item">
+            <div class="module-management-donut" style="--public-pct:${pc.toFixed(2)}%">
+              <div class="module-management-donut-center"><b>${pc.toFixed(1)}%</b><small>Pública</small></div>
+            </div>
+            <div class="module-management-donut-copy">
+              <strong>${lab}</strong>
+              <span><i class="module-dot module-dot-public"></i>Pública ${fmt(pv)} · ${pc.toFixed(1)}%</span>
+              <span><i class="module-dot module-dot-private"></i>Privada ${fmt(qv)} · ${prc.toFixed(1)}%</span>
+            </div>
+          </div>`;
+        }).join("")}</div>
+        <div class="module-management-legend"><span><i class="module-dot module-dot-public"></i>Pública</span><span><i class="module-dot module-dot-private"></i>Privada</span></div>
       </article>
 
       <section class="institution-map-section">
@@ -567,12 +851,34 @@ function renderModule(view,sector){
     `;
 
     const chartEl=document.getElementById(view+"ColumnChart");
-    if(chartEl) drawColumnChart(chartEl,ugRows,"estudiantes");
+    const tableEl=document.getElementById(view+"UgelLevelCard");
+
+    if(sector==="ETP"){
+      renderCetproDirectTable(tableEl,pr);
+    }else if(sector!=="Superior"){
+      let currentMetric="estudiantes";
+      if(chartEl) drawStackedModuleChart(chartEl,pr,currentMetric);
+      renderModuleUgelLevelTable(tableEl,pr,currentMetric);
+
+      const metricTabs=document.getElementById(view+"MetricTabs");
+      if(metricTabs){
+        metricTabs.querySelectorAll("button").forEach(btn=>{
+          btn.addEventListener("click",()=>{
+            currentMetric=btn.dataset.metric||"estudiantes";
+            metricTabs.querySelectorAll("button").forEach(x=>x.classList.toggle("active",x===btn));
+            drawStackedModuleChart(chartEl,pr,currentMetric);
+            renderModuleUgelLevelTable(tableEl,pr,currentMetric);
+          });
+        });
+      }
+    }
     renderInstitutionMap(view,sector,a);
   }
 
   gestionSel.onchange=draw;
   ugelSel.onchange=draw;
+  if(exportBtn)exportBtn.addEventListener("click",exportModuleExcel);
+  if(printBtn)printBtn.addEventListener("click",printModule);
   draw();
 }
 // V15: pintar el Resumen inmediatamente al abrir la app.
@@ -1537,3 +1843,394 @@ async function loadFuie(codlocal){
     container.innerHTML = "";
   }
 }
+
+
+
+
+
+/* V59 — Indicadores con Pública / Privada / Total y totales por modalidad. */
+const IND_MOD_ORDER=["EBR","PRONOEI","EBA","EBE","PRITE","ETP","SUPERIOR"];
+
+function indModLabel(mod){
+  return PADRON_MODAL_LABELS[mod]||mod||"Sin modalidad";
+}
+
+function indFilteredPadron(){
+  const g=document.getElementById("indGestion")?.value||"";
+  const u=document.getElementById("indUgel")?.value||"";
+  return P.filter(x=>(!g||x.g===g)&&(!u||x.u===u));
+}
+
+function indPadronByGestion(rows,gestion){
+  if(!gestion)return rows;
+  return rows.filter(x=>x.g===gestion);
+}
+
+function indMetric(rows,metric){
+  const codes=new Set(rows.map(x=>String(x.c||"")).filter(Boolean));
+  if(metric==="servicios") return codes.size;
+  if(metric==="locales") return new Set(rows.map(x=>String(x.l||"")).filter(Boolean)).size;
+  const rr=R.filter(x=>codes.has(String(x.cod_mod||"")));
+  return rr.reduce((s,x)=>s+(Number(x[metric])||0),0);
+}
+
+function indHierarchy(rows){
+  const mods=[...new Set(rows.map(x=>x.mod).filter(Boolean))].sort((a,b)=>{
+    const ia=IND_MOD_ORDER.indexOf(a), ib=IND_MOD_ORDER.indexOf(b);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
+  return mods.map(mod=>{
+    const mr=rows.filter(x=>x.mod===mod);
+    const levels=[...new Set(mr.map(x=>x.niv).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+    return {
+      mod,
+      label:indModLabel(mod),
+      rows:mr,
+      levels:levels.map(niv=>({niv,rows:mr.filter(x=>x.niv===niv)}))
+    };
+  });
+}
+
+function indMetric3(rows,metric){
+  const pub=indMetric(indPadronByGestion(rows,"Pública"),metric);
+  const pri=indMetric(indPadronByGestion(rows,"Privada"),metric);
+  const tot=indMetric(rows,metric);
+  return {pub,pri,tot};
+}
+
+function indHierRowsV59(rows,metric){
+  const defs=[
+    {label:"Educación Básica Regular (EBR)",mods:["EBR","PRONOEI"]},
+    {label:"Educación Básica Alternativa (EBA)",mods:["EBA"]},
+    {label:"Educación Básica Especial (EBE)",mods:["EBE","PRITE"]},
+    {label:"Educación Técnico-Productiva (CETPRO)",mods:["ETP"]},
+    {label:"Educación Superior no universitaria",mods:["SUPERIOR"]}
+  ];
+  return defs.map(d=>{
+    const gr=rows.filter(x=>d.mods.includes(x.mod));
+    if(!gr.length)return "";
+    const p=indMetric3(gr,metric);
+    let html=`<tr class="ind-parent">
+      <td>${d.label}</td><td>${fmt(p.pub)}</td><td>${fmt(p.pri)}</td><td>${fmt(p.tot)}</td>
+    </tr>`;
+
+    d.mods.forEach(mod=>{
+      const mr=gr.filter(x=>x.mod===mod);
+      if(!mr.length)return;
+
+      if(mod==="PRONOEI"){
+        const q=indMetric3(mr,metric);
+        html+=`<tr class="ind-child ind-subprogram">
+          <td>PRONOEI</td><td>${fmt(q.pub)}</td><td>${fmt(q.pri)}</td><td>${fmt(q.tot)}</td>
+        </tr>`;
+        return;
+      }
+      if(mod==="PRITE"){
+        const q=indMetric3(mr,metric);
+        html+=`<tr class="ind-child ind-subprogram">
+          <td>PRITE</td><td>${fmt(q.pub)}</td><td>${fmt(q.pri)}</td><td>${fmt(q.tot)}</td>
+        </tr>`;
+        return;
+      }
+
+      const levels=[...new Set(mr.map(x=>x.niv).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"es"));
+      levels.forEach(niv=>{
+        const lr=mr.filter(x=>x.niv===niv);
+        const q=indMetric3(lr,metric);
+        html+=`<tr class="ind-child">
+          <td>${niv}</td><td>${fmt(q.pub)}</td><td>${fmt(q.pri)}</td><td>${fmt(q.tot)}</td>
+        </tr>`;
+      });
+    });
+    return html;
+  }).join("");
+}
+
+function populateIndUgelV59(){
+  const el=document.getElementById("indUgel"); if(!el)return;
+  const keep=el.value;
+  const vals=[...new Set(P.map(x=>x.u).filter(Boolean))].sort();
+  el.innerHTML='<option value="">Todas</option>'+vals.map(x=>`<option>${x}</option>`).join("");
+  if(vals.includes(keep)) el.value=keep;
+}
+
+function renderIndCardsV59(){
+  const rows=indFilteredPadron();
+  const defs=[
+    ["estudiantes","indMatriculaRows","indMatriculaTotal"],
+    ["docentes","indDocentesRows","indDocentesTotal"],
+    ["servicios","indServiciosRows","indServiciosTotal"],
+    ["locales","indLocalesRows","indLocalesTotal"]
+  ];
+  defs.forEach(([metric,bodyId,totalId])=>{
+    const body=document.getElementById(bodyId), foot=document.getElementById(totalId);
+    if(!body||!foot)return;
+    body.innerHTML=indHierRowsV59(rows,metric)||'<tr><td colspan="4">Sin información</td></tr>';
+    const z=indMetric3(rows,metric);
+    foot.innerHTML=`<tr><td>TOTAL GENERAL</td><td>${fmt(z.pub)}</td><td>${fmt(z.pri)}</td><td>${fmt(z.tot)}</td></tr>`;
+  });
+}
+
+function indMatrixGroups(rows){
+  return indHierarchy(rows).map(g=>({
+    ...g,
+    hasTotal:g.levels.length>1
+  }));
+}
+
+function renderIndUgelMatrixV59(){
+  const gestion=document.getElementById("indGestion")?.value||"";
+  const metric=document.getElementById("indUgelMetric")?.value||"estudiantes";
+
+  // Comparativo UGEL: conserva todas las UGEL; el filtro de gestión sí aplica.
+  const base=P.filter(x=>!gestion||x.g===gestion);
+  const groups=indMatrixGroups(base);
+  const ugels=[...new Set(base.map(x=>x.u).filter(Boolean))].sort();
+
+  const head1=['<tr><th rowspan="2">UGEL</th>'];
+  const head2=['<tr>'];
+  groups.forEach(g=>{
+    const span=g.levels.length+(g.hasTotal?1:0);
+    head1.push(`<th colspan="${span}">${g.label}</th>`);
+    g.levels.forEach(l=>head2.push(`<th>${l.niv}</th>`));
+    if(g.hasTotal) head2.push(`<th class="ind-mod-total-head">Total</th>`);
+  });
+  head1.push('<th rowspan="2" class="ind-grand-total-head">TOTAL GENERAL</th></tr>');
+  head2.push('</tr>');
+
+  document.getElementById("indUgelMatrixHead").innerHTML=head1.join("")+head2.join("");
+
+  function rowForScope(label,rows){
+    let tds=`<td><b>${label}</b></td>`;
+    groups.forEach(g=>{
+      const gr=rows.filter(x=>x.mod===g.mod);
+      g.levels.forEach(l=>{
+        const lr=gr.filter(x=>x.niv===l.niv);
+        tds+=`<td>${fmt(indMetric(lr,metric))}</td>`;
+      });
+      if(g.hasTotal){
+        tds+=`<td class="ind-mod-total-cell">${fmt(indMetric(gr,metric))}</td>`;
+      }
+    });
+    tds+=`<td class="ind-grand-total-cell">${fmt(indMetric(rows,metric))}</td>`;
+    return `<tr>${tds}</tr>`;
+  }
+
+  document.getElementById("indUgelMatrixRows").innerHTML=
+    ugels.map(u=>rowForScope(u,base.filter(x=>x.u===u))).join("");
+
+  document.getElementById("indUgelMatrixTotal").innerHTML=
+    rowForScope("DRELM",base);
+}
+
+function renderIndicatorsV59(){
+  renderIndCardsV59();
+  renderIndUgelMatrixV59();
+}
+
+function initIndicatorsV59(){
+  populateIndUgelV59();
+
+  // Replace table headers of the four cards to Pública / Privada / Total
+  document.querySelectorAll(".ind-hier-table thead tr").forEach(tr=>{
+    tr.innerHTML='<th>Modalidad / nivel</th><th>Pública</th><th>Privada</th><th>Total</th>';
+  });
+
+  ["indGestion","indUgel"].forEach(id=>{
+    document.getElementById(id)?.addEventListener("change",renderIndicatorsV59);
+  });
+  document.getElementById("indUgelMetric")?.addEventListener("change",renderIndUgelMatrixV59);
+  renderIndicatorsV59();
+}
+setTimeout(initIndicatorsV59,0);
+
+
+/* V60 — Resumen: cuadro de matrícula por modalidad/nivel y gestión.
+   Indicadores: exportación Excel/PDF respetando filtros. */
+
+function v60FindResumenModalidadCard(){
+  const heads=[...document.querySelectorAll("#resumen h2, #resumen h3, #resumen .cardhead h2, #resumen .cardhead h3")];
+  const h=heads.find(x=>/Resumen por modalidad/i.test(x.textContent||""));
+  return h ? (h.closest(".card") || h.parentElement?.parentElement) : null;
+}
+
+function v60ResumenRows(){
+  return P;
+}
+
+function v60GestionMetric(rows,metric,gestion){
+  const rr=gestion ? rows.filter(x=>x.g===gestion) : rows;
+  return indMetric(rr,metric);
+}
+
+
+
+function v62SummaryGroups(rows=P){
+  // Business hierarchy for the executive summary:
+  // PRONOEI belongs under EBR; PRITE belongs under EBE.
+  const defs=[
+    {key:"EBR",label:"EBR",mods:["EBR","PRONOEI"]},
+    {key:"EBA",label:"EBA",mods:["EBA"]},
+    {key:"EBE",label:"EBE",mods:["EBE","PRITE"]},
+    {key:"ETP",label:"CETPRO",mods:["ETP"]},
+    {key:"SUPERIOR",label:"Superior",mods:["SUPERIOR"]}
+  ];
+  return defs.map(d=>{
+    const gr=rows.filter(x=>d.mods.includes(x.mod));
+    const children=[];
+
+    // Build children from Padron modality + level, avoiding duplicate labels.
+    d.mods.forEach(mod=>{
+      const mr=gr.filter(x=>x.mod===mod);
+      if(!mr.length)return;
+
+      if(mod==="PRONOEI"){
+        children.push({label:"PRONOEI",rows:mr});
+        return;
+      }
+      if(mod==="PRITE"){
+        children.push({label:"PRITE",rows:mr});
+        return;
+      }
+
+      [...new Set(mr.map(x=>x.niv).filter(Boolean))]
+        .sort((a,b)=>a.localeCompare(b,"es"))
+        .forEach(niv=>children.push({label:niv,rows:mr.filter(x=>x.niv===niv)}));
+    });
+
+    return {...d,rows:gr,children};
+  }).filter(g=>g.rows.length);
+}
+
+function v62MetricCells(rows){
+  return [
+    indMetric(rows,"estudiantes"),
+    indMetric(rows,"docentes"),
+    indMetric(rows,"servicios"),
+    indMetric(rows,"locales")
+  ].map(v=>`<td>${fmt(v)}</td>`).join("");
+}
+
+function v62ResumenHierarchyHTML(){
+  const groups=v62SummaryGroups(P);
+  let html="";
+  groups.forEach((g,i)=>{
+    const id=`v62grp${i}`;
+    html+=`<tr class="v60-parent v62-parent" data-v62-toggle="${id}" title="Clic para desplegar niveles">
+      <td><button class="v62-toggle" type="button" aria-expanded="false">▶</button>${g.label}</td>
+      ${v62MetricCells(g.rows)}
+    </tr>`;
+    g.children.forEach(ch=>{
+      html+=`<tr class="v62-child" data-v62-child="${id}" hidden>
+        <td>${ch.label}</td>${v62MetricCells(ch.rows)}
+      </tr>`;
+    });
+  });
+
+  html+=`<tr class="v60-total">
+    <td>TOTAL DRELM</td>${v62MetricCells(P)}
+  </tr>`;
+  return html;
+}
+
+function v62BindSummaryToggles(card){
+  card.querySelectorAll("[data-v62-toggle]").forEach(row=>{
+    row.addEventListener("click",()=>{
+      const id=row.dataset.v62Toggle;
+      const children=[...card.querySelectorAll(`[data-v62-child="${id}"]`)];
+      if(!children.length)return;
+      const open=children[0].hidden;
+      children.forEach(x=>x.hidden=!open);
+      const btn=row.querySelector(".v62-toggle");
+      if(btn){
+        btn.textContent=open?"▼":"▶";
+        btn.setAttribute("aria-expanded",String(open));
+      }
+    });
+  });
+}
+
+function v60RenderResumenModalidad(){
+  const card=v60FindResumenModalidadCard();
+  if(!card)return;
+  card.classList.add("v60-resumen-modalidad");
+  card.innerHTML=`
+    <div class="cardhead">
+      <h2>Resumen por modalidad</h2>
+      <span>Según Padrón Educativo</span>
+    </div>
+    <div class="table-scroll">
+      <table class="v60-summary-table">
+        <thead>
+          <tr>
+            <th>Modalidad</th>
+            <th>Estudiantes*</th>
+            <th>Docentes*</th>
+            <th>Servicios</th>
+            <th>Locales</th>
+          </tr>
+        </thead>
+        <tbody>${v62ResumenHierarchyHTML()}</tbody>
+      </table>
+    </div>
+    <div class="v60-source">* Estudiantes y docentes: Censo Educativo 2025. Servicios y locales: Padrón Web IE. Clic en una modalidad para ver sus niveles.</div>`;
+  v62BindSummaryToggles(card);
+}
+
+/* Exportación Excel compatible con navegador, sin librerías externas:
+   genera un .xls que Excel abre directamente y conserva formato de tablas. */
+function v60ExportIndicadoresExcel(){
+  const view=document.getElementById("indicadores");
+  if(!view)return;
+  const gestion=document.getElementById("indGestion")?.value||"Total";
+  const ugel=document.getElementById("indUgel")?.value||"Todas";
+  const metricEl=document.getElementById("indUgelMetric");
+  const indicador=metricEl?.options?.[metricEl.selectedIndex]?.text||"Estudiantes";
+
+  const cards=[...view.querySelectorAll(".ind-summary-card")].map(card=>{
+    const title=card.querySelector("h2")?.textContent?.trim()||"Indicador";
+    return `<h2>${title}</h2>${card.querySelector("table")?.outerHTML||""}`;
+  }).join("<br>");
+
+  const matrix=view.querySelector(".ind-ugel-detail table")?.outerHTML||"";
+  const html=`<html><head><meta charset="UTF-8"><style>
+  body{font-family:Arial,sans-serif;font-size:10pt;color:#173f61}
+  h1,h2{color:#064779}.meta{margin-bottom:14px;padding:8px;background:#eef4f8}
+  table{border-collapse:collapse;width:100%;margin-bottom:14px}
+  th,td{border:1px solid #b9c8d6;padding:5px}
+  th{background:#0b4ca3;color:#fff;font-weight:bold}
+  .ind-parent td{font-weight:bold;background:#eef4f8}
+  .ind-mod-total-cell{background:#edf4fa;font-weight:bold}
+  tfoot td{font-weight:bold;background:#d9e9f7}
+  </style></head><body>
+  <h1>Indicadores educativos - DRELM</h1>
+  <div class="meta"><b>Gestión:</b> ${gestion} &nbsp;&nbsp; <b>UGEL:</b> ${ugel} &nbsp;&nbsp;
+  <b>Indicador del cuadro por UGEL:</b> ${indicador}</div>
+  ${cards}
+  <h2>Información por UGEL y nivel educativo — Indicador: ${indicador}</h2>
+  ${matrix}
+  <p><b>Fuente:</b> Estudiantes y docentes: Censo Educativo 2025. Servicios y locales educativos: ESCALE – Padrón Web IE (actualizado al 13/08/2026).</p>
+  <p><b>Elaborado por:</b> EEM-OPP-DRELM</p></body></html>`;
+
+  const blob=new Blob(["\ufeff",html],{type:"application/vnd.ms-excel"});
+  const a=document.createElement("a"),url=URL.createObjectURL(blob);
+  a.href=url;
+  a.download=`Indicadores_DRELM_${indicador}_${gestion}_${ugel}.xls`.replace(/\s+/g,"_");
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+/* PDF: abre una vista de impresión limpia con los cuadros visibles.
+   El usuario elige "Guardar como PDF" en el diálogo del navegador. */
+function v60ExportIndicadoresPdf(){
+  document.body.classList.add("print-indicadores");
+  window.print();
+  setTimeout(()=>document.body.classList.remove("print-indicadores"),500);
+}
+
+function v60Init(){
+  v60RenderResumenModalidad();
+  document.getElementById("btnIndExcel")?.addEventListener("click",v60ExportIndicadoresExcel);
+  document.getElementById("btnIndPdf")?.addEventListener("click",v60ExportIndicadoresPdf);
+}
+setTimeout(v60Init,100);
