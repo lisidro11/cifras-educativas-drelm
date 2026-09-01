@@ -1,0 +1,717 @@
+
+:root{
+  --navy:#0a3d6f;
+  --navy2:#0d568f;
+  --blue:#2f7bdc;
+  --bg:#f2f6fb;
+  --text:#18324a;
+  --muted:#6e8296;
+  --line:#d5e0ea;
+  --card:#ffffff;
+  --soft:#f6f9fc;
+  --green:#20a46b;
+  --orange:#ef7c24;
+  --purple:#7b5bc9;
+  --pink:#e94477;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif}
+button,input,select{font:inherit}
+.app-shell{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+.sidebar{
+  background:linear-gradient(180deg,#083968,#0a4f84);
+  color:#fff;padding:18px 10px;position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;gap:7px
+}
+.side-brand{display:flex;gap:10px;align-items:center;padding:0 7px 16px;border-bottom:1px solid #ffffff24;margin-bottom:8px}
+.crest{width:40px;height:46px;border-radius:10px;background:#fff;color:var(--navy);display:grid;place-items:center;font-size:23px;font-weight:900}
+.side-brand strong{display:block;font-size:18px}.side-brand small{font-size:10px;line-height:1.3;opacity:.86}
+.side-item{width:100%;border:0;background:transparent;color:#fff;padding:11px 12px;border-radius:10px;text-align:left;font-weight:700;cursor:pointer;display:flex;gap:10px;align-items:center}
+.side-item.active{background:#2878d6;box-shadow:0 5px 16px #052a4f66}
+.side-bottom{margin-top:auto;padding:10px 8px;display:grid;gap:5px;opacity:.82}
+.side-bottom small{font-size:10px}
+.main-area{min-width:0}
+.topbar{
+  height:58px;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;padding:0 24px;position:sticky;top:0;z-index:15
+}
+#topnav{display:flex;gap:3px;overflow:auto}
+#topnav button{border:0;background:transparent;padding:9px 12px;border-radius:8px;color:#4a637a;font-weight:700;white-space:nowrap;cursor:pointer}
+#topnav button.active{background:#2f7bdc;color:#fff}
+.top-source{text-align:right}.top-source b,.top-source span{display:block}.top-source b{color:var(--navy);font-size:13px}.top-source span{font-size:11px;color:var(--muted)}
+main{max-width:1500px;margin:auto;padding:20px 28px}
+.view{display:none}.view.active{display:block}
+.page-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end;margin-bottom:14px}
+.page-head small{font-weight:800;color:#47759e}.page-head h1{margin:4px 0 6px;color:var(--navy);font-size:28px}.page-head p{margin:0;color:var(--muted)}
+.filters.compact label{font-size:12px;color:#5f7286;font-weight:700}
+.segmented{display:flex;gap:5px;margin-top:6px}.segmented button{border:1px solid #cdd9e4;background:#fff;color:#48627a;border-radius:7px;padding:8px 13px;font-weight:700;cursor:pointer}.segmented button.active{background:#2f7bdc;color:#fff;border-color:#2f7bdc}
+.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:14px 0}
+.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px;box-shadow:0 3px 12px #0d3d6708}
+.kpi span{display:block;color:#6e8296;font-size:11px;font-weight:800}.kpi b{display:block;color:var(--navy);font-size:25px;margin-top:7px}.kpi small{display:block;color:#8291a0;margin-top:5px;font-size:10px}
+.grid.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px;margin-bottom:14px;box-shadow:0 3px 12px #0d3d6708}.card h2{margin:0 0 12px;color:var(--navy);font-size:16px}.cardhead{display:flex;justify-content:space-between;gap:10px}.cardhead span{font-size:10px;color:#8190a0}
+.bars{display:flex;flex-direction:column;gap:9px}.bar{display:grid;grid-template-columns:120px 1fr 82px;gap:8px;align-items:center;font-size:11px}.track{height:9px;background:#e8eef4;border-radius:999px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,#2f7bdc,#61a9ee);border-radius:999px}.bar b{text-align:right;color:#29445c}
+.modulegrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}.modulecard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer}.modulecard h3{margin:8px 0 5px;color:var(--navy);font-size:15px}.modulecard p{margin:0;color:var(--muted);font-size:11px}.modulecard strong{display:block;margin-top:9px;color:#29445c}
+.module-panel .module-filters{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}.module-filters select{border:1px solid #cbd7e2;background:#fff;padding:8px 10px;border-radius:8px}
+.module-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:13px}
+.analytics-grid{display:grid;grid-template-columns:1.05fr 1.2fr;gap:14px}
+.table-card{overflow:auto}.summary-table{width:100%;border-collapse:collapse;font-size:11px}.summary-table th,.summary-table td{padding:8px 9px;border-bottom:1px solid #e8eef4;text-align:right;white-space:nowrap}.summary-table th:first-child,.summary-table td:first-child{text-align:left}.summary-table thead th{background:#f4f8fc;color:#3f607f;font-weight:800}.summary-table tfoot td{font-weight:900;color:#173f68;background:#f7f9fc}
+.manage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.manage-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}.manage-card h3{margin:0 0 10px;color:var(--navy);font-size:13px}.donut-wrap{display:flex;align-items:center;gap:12px}.donut{width:92px;height:92px;border-radius:50%;position:relative;background:conic-gradient(#2f7bdc var(--pct),#61b66a 0)}.donut:after{content:"";position:absolute;inset:19px;background:#fff;border-radius:50%}.legend-mini{font-size:11px}.legend-mini div{margin:6px 0}.legend-mini b{display:inline-block;min-width:70px;color:#173f68}
+.levelcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.levelcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px}.levelcard h3{margin:0;color:var(--navy);font-size:15px}.levelcard p{margin:4px 0 10px;color:var(--muted);font-size:10px}.levelstats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.levelstats div{background:#f5f8fb;border-radius:9px;padding:8px}.levelstats small{display:block;color:#748697;font-size:10px}.levelstats b{color:var(--navy)}
+.servicegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.svc{background:#f5f8fb;border-radius:11px;padding:12px}.svc span{display:block;color:#738293;font-size:11px}.svc b{font-size:22px;color:var(--navy)}
+.searchline{display:grid;grid-template-columns:1fr 180px;gap:8px}.searchline input,.searchline select{border:1px solid #cad7e2;border-radius:9px;padding:11px;background:#fff}
+#resultInfo{font-size:11px;color:#7b8a99;margin:9px 0}#results{display:grid;gap:7px}.result{border:1px solid var(--line);border-radius:11px;padding:10px;display:flex;justify-content:space-between;gap:10px;align-items:center}.result h4{margin:0;color:var(--navy)}.result p{margin:4px 0 0;font-size:11px;color:var(--muted)}.chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:5px}.chip{background:#eef4f9;color:#566f86;border-radius:999px;padding:4px 7px;font-size:9px}.result button,.fichahead button{border:0;background:#e8f2fb;color:var(--navy);padding:9px 11px;border-radius:8px;font-weight:800;cursor:pointer}
+.fichahead{display:flex;justify-content:space-between;gap:12px}.fichahead small{font-weight:800;color:#50779a}.fichahead h2{font-size:20px}.fichahead p{color:var(--muted)}.mini{grid-template-columns:repeat(4,1fr)}.mini .kpi b{font-size:20px}
+.tabs{display:flex;gap:6px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:9px 0;margin:12px 0;overflow:auto}.tabs button{border:0;background:transparent;color:#607487;border-radius:8px;padding:8px 11px;font-weight:700;cursor:pointer}.tabs button.active{background:#e8f2fb;color:var(--navy)}
+.tabpage{display:none}.tabpage.active{display:block}.generalgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.generalgrid div{background:#f5f8fb;border-radius:9px;padding:9px}.generalgrid small{display:block;color:#758596;font-size:10px}.generalgrid b{display:block;color:var(--navy);margin-top:4px;word-break:break-word}
+.group{border:1px solid var(--line);border-radius:12px;margin:8px 0;overflow:hidden}.group>button{width:100%;display:flex;justify-content:space-between;text-align:left;background:#f5f8fb;color:var(--navy);border:0;border-radius:0;padding:11px 13px;font-weight:800;cursor:pointer}.groupbody{display:none;padding:7px 12px 12px}.group.open .groupbody{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px}.field{padding:6px 0;border-bottom:1px solid #edf1f5}.field small{display:block;color:#748596;line-height:1.25}.field span{font-weight:600;word-break:break-word}.loading{padding:20px;text-align:center;color:#7d8c9b}
+footer{text-align:center;color:#8190a0;font-size:10px;padding:18px}
+
+@media(max-width:1100px){
+  .app-shell{grid-template-columns:78px 1fr}.side-brand div:last-child,.side-item span,.side-bottom{display:none}.side-item{justify-content:center;font-size:18px}.kpis,.module-kpis{grid-template-columns:repeat(3,1fr)}.modulegrid{grid-template-columns:repeat(3,1fr)}.manage-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:760px){
+  .app-shell{display:block}.sidebar{display:none}.topbar{padding:0 10px}.top-source{display:none}main{padding:12px}.page-head{display:block}.filters.compact{margin-top:10px}.grid.two,.analytics-grid{grid-template-columns:1fr}.kpis,.module-kpis{grid-template-columns:1fr 1fr}.modulegrid,.levelcards{grid-template-columns:1fr}.manage-grid{grid-template-columns:1fr}.generalgrid{grid-template-columns:1fr}.group.open .groupbody{grid-template-columns:1fr}
+}
+@media print{.sidebar,.topbar,footer,.searchcard,.tabs,.fichahead button{display:none!important}.app-shell{display:block}.view{display:none!important}#buscar{display:block!important}.card{border:0;box-shadow:none}.tabpage{display:block!important}.groupbody{display:grid!important;grid-template-columns:1fr 1fr!important}}
+
+
+/* === V6: diseño exacto de módulos analíticos === */
+.module-filters{display:flex;gap:14px;align-items:flex-end}
+.module-filters label{font-size:11px;color:#5c7185;font-weight:800;display:grid;gap:5px}
+.module-filters select{min-width:130px;border:1px solid #cbd7e2;background:white;padding:8px 10px;border-radius:8px;color:#304b64}
+
+.exact-layout{grid-template-columns:1.05fr 1.15fr}
+.column-chart{height:270px;position:relative;padding:18px 8px 30px 42px}
+.ygrid{position:absolute;left:42px;right:8px;top:18px;bottom:30px}
+.ygrid span{position:absolute;left:0;right:0;border-top:1px dashed #e0e8f0}
+.columns{position:absolute;left:52px;right:14px;top:18px;bottom:26px;display:flex;align-items:flex-end;justify-content:space-around;gap:12px}
+.col-item{height:100%;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-width:40px}
+.col-value{font-size:10px;color:#183f68;font-weight:800;margin-bottom:5px;white-space:nowrap}
+.col-track{height:185px;width:58%;display:flex;align-items:flex-end;justify-content:center}
+.col-fill{width:100%;min-height:2px;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#26a6c9,#2d7bd9);box-shadow:0 3px 8px #1f6faf26}
+.col-label{margin-top:7px;font-size:10px;font-weight:700;color:#4b647a;white-space:nowrap}
+
+.manage-grid.exact{grid-template-columns:repeat(4,1fr);margin-bottom:14px}
+.manage-grid.exact .manage-card{min-height:155px}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px}.dot.blue{background:#2f7bdc}.dot.green{background:#62b767}
+.legend-mini small{display:block;color:#758697;margin-left:75px;margin-top:2px}
+.donut{background:conic-gradient(#2f7bdc var(--pct),#62b767 0)}
+.detail-card{padding-bottom:10px}
+.detail-management-table{width:100%;border-collapse:collapse;font-size:9px;min-width:1380px}
+.detail-management-table th,.detail-management-table td{border:1px solid #dde6ee;padding:6px 5px;text-align:right;white-space:nowrap}
+.detail-management-table th:first-child,.detail-management-table td:first-child{text-align:left;position:sticky;left:0;background:#fff;z-index:1}
+.detail-management-table thead th{background:#f2f7fb;color:#315c81;font-weight:800}
+.detail-management-table thead tr:first-child th{background:#eaf2f9}
+.detail-management-table tfoot td{font-weight:900;color:#173f68;background:#edf4fa}
+.detail-management-table tfoot td:first-child{background:#edf4fa}
+
+@media(max-width:1100px){
+  .exact-layout{grid-template-columns:1fr}
+  .manage-grid.exact{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+  .module-filters{margin-top:12px;flex-wrap:wrap}
+  .manage-grid.exact{grid-template-columns:1fr}
+  .column-chart{height:235px;padding-left:30px}
+  .columns{left:35px}
+  .col-track{height:150px}
+  .col-value{font-size:9px}
+  .col-label{font-size:9px}
+}
+
+/* V7 — mapa territorial */
+.map-row{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:14px}
+.map-card,.map-note{min-height:330px}
+.lima-map{height:270px;position:relative;display:flex;justify-content:center;align-items:center;background:linear-gradient(180deg,#f8fbfe,#eef5fb);border-radius:12px;overflow:hidden}
+.lima-map svg{height:245px;width:min(100%,520px)}
+.lm-shape{fill:#e7f0f8;stroke:#8faec8;stroke-width:1.1}
+.coast{fill:none;stroke:#3c79a7;stroke-width:1.5}
+.ugel-point circle{fill:#2f7bdc;stroke:#fff;stroke-width:1.1}
+.ugel-point text{fill:#fff;font-size:4px;font-weight:900;pointer-events:none}
+.map-title-mini{position:absolute;top:10px;left:12px;font-size:11px;font-weight:800;color:#315b7d}
+.map-legend{position:absolute;bottom:8px;right:10px;font-size:9px;color:#6f8191}
+.map-note p{font-size:12px;color:#607487;line-height:1.55}
+.map-ranking{display:grid;gap:6px;margin-top:12px}.map-ranking div{display:flex;justify-content:space-between;gap:12px;padding:7px 8px;background:#f5f8fb;border-radius:8px;font-size:10px}.map-ranking b{color:#19466f}.map-ranking span{color:#64788a}
+.location-box{margin-top:12px;border:1px solid #d6e2ec;background:#f5f9fc;border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.location-box small{display:block;color:#718497;font-size:10px}.location-box b{display:block;color:#0a3d6f;margin:4px 0}.location-box span{font-size:11px;color:#617487}.coord-card{background:#fff;border:1px solid #d9e3ec;border-radius:9px;padding:9px;min-width:190px}.coord-card.muted b{color:#7b8996;font-size:11px}
+@media(max-width:900px){.map-row{grid-template-columns:1fr}.location-box{grid-template-columns:1fr}.coord-card{min-width:0}}
+
+/* V8 — infraestructura ampliada y ficha integral */
+.map-row{display:none!important}
+.infra-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.infra-table-card{grid-column:1/-1}
+.conservation-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.conservation{border-radius:12px;padding:12px;background:#f6f9fc;border:1px solid #e1e8ef}
+.conservation span{display:block;color:#708296;font-size:11px;font-weight:700}.conservation b{display:block;font-size:23px;color:#0a3d6f;margin:5px 0}.conservation small{font-size:10px;color:#748697}
+.conservation.good{border-top:4px solid #25a86f}.conservation.regular{border-top:4px solid #e6a31f}.conservation.bad{border-top:4px solid #e34d54}
+.spaced{margin-top:8px}
+.source-box,.private-note{margin-top:12px;border:1px solid #d5e2ed;background:#f5f9fc;border-radius:12px;padding:12px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.source-box small{display:block;color:#718497;font-size:10px}.source-box b{display:block;color:#0a3d6f;margin:3px 0}.source-box span:not(.source-tag){font-size:11px;color:#617487}.source-tag{background:#e7f1fa;color:#0a3d6f;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800}
+.related-services,.public-infra-summary{margin-top:14px}.related-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}.related-head h3{margin:0;color:#0a3d6f;font-size:14px}.related-head span{font-size:10px;color:#758697}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.related-item{border:1px solid #dce5ed;border-radius:10px;padding:9px;background:#fff}.related-item.current{border-color:#2f7bdc;background:#eef5fd}.related-item b{display:block;color:#0a3d6f;font-size:12px}.related-item span{display:block;color:#526b83;font-size:10px;margin-top:3px}.related-item small{display:block;color:#7a8998;font-size:9px;margin-top:4px}
+.private-note{display:block}.private-note b{display:block;color:#0a3d6f}.private-note span{display:block;color:#687b8d;font-size:11px;margin-top:4px}
+@media(max-width:900px){.infra-layout{grid-template-columns:1fr}.related-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.related-grid{grid-template-columns:1fr}.conservation-grid{grid-template-columns:1fr}.source-box{display:block}.source-tag{display:inline-block;margin-top:8px}}
+
+/* V9 — infraestructura reorganizada */
+.infra-layout{display:none!important}
+.infra-v9{display:grid;grid-template-columns:1fr;gap:14px}
+.conservation-main{min-height:390px}
+.stack-legend{display:flex;justify-content:flex-end;gap:18px;margin:4px 0 16px;font-size:10px;color:#627589}
+.stack-legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.stack-legend .good,.seg.good{background:#27a96f}
+.stack-legend .regular,.seg.regular{background:#e6a41f}
+.stack-legend .bad,.seg.bad{background:#e34d54}
+.stack-bars{display:grid;gap:14px}
+.stack-row{display:grid;grid-template-columns:78px 1fr 105px;gap:10px;align-items:center}
+.stack-name{font-size:11px;font-weight:800;color:#315a7c}
+.stack-outer{height:23px;background:#e8eef4;border-radius:6px;overflow:hidden}
+.stack-scaled{height:100%;display:flex;border-radius:6px;overflow:hidden}
+.stack-scaled .seg{height:100%;display:block;min-width:1px}
+.stack-total{text-align:right}.stack-total b{display:block;color:#0a3d6f;font-size:12px}.stack-total small{display:block;color:#7a8a99;font-size:9px;margin-top:2px}
+
+.answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.answer-grid.two{grid-template-columns:1fr 1fr}
+.answer-chart{border:1px solid #dce5ed;border-radius:12px;padding:12px;background:#fafcfe}
+.answer-chart h3,.terrain-summary h3{margin:0 0 12px;color:#0a3d6f;font-size:13px}
+.answer-row{display:grid;grid-template-columns:minmax(130px,1.7fr) 1fr 46px;gap:8px;align-items:center;margin:7px 0}
+.answer-label{font-size:10px;color:#566d82;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.answer-track{height:8px;background:#e8eef4;border-radius:99px;overflow:hidden}
+.answer-fill{height:100%;background:linear-gradient(90deg,#2f7bdc,#62a9ed);border-radius:99px}
+.answer-row b{text-align:right;font-size:10px;color:#173f68}
+.terrain-summary{border:1px solid #dce5ed;border-radius:12px;padding:12px;background:#f7fafc}
+.terrain-summary div{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid #e5ecf2}
+.terrain-summary div:last-child{border-bottom:0}.terrain-summary span{font-size:10px;color:#63788c}.terrain-summary b{color:#0a3d6f;font-size:12px}
+@media(max-width:900px){.answer-grid,.answer-grid.two{grid-template-columns:1fr}.stack-row{grid-template-columns:65px 1fr 85px}}
+
+/* V10 — búsqueda por código local y porcentajes en infraestructura */
+.searchline-v10{grid-template-columns:1fr 150px 180px}
+.result-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
+.secondary-action{background:#f3f6f9!important;color:#5b7185!important;border:1px solid #d5e0e9!important}
+.answer-row{grid-template-columns:minmax(130px,1.55fr) 1fr 64px}
+.answer-metric{text-align:right}.answer-metric b{display:block;font-size:10px;color:#173f68}.answer-metric small{display:block;font-size:9px;color:#788898;margin-top:2px}
+.answer-foot{margin-top:9px;padding-top:8px;border-top:1px solid #e5ecf2;font-size:9px;color:#7b8996}
+.local-service-list{display:grid;gap:8px}
+.local-service-card{display:grid;grid-template-columns:1.4fr 1fr auto;gap:10px;align-items:center;border:1px solid #dce5ed;border-radius:10px;padding:10px;background:#fff}
+.local-service-card b{display:block;color:#0a3d6f;font-size:12px}.local-service-card>div>span{display:block;color:#6b7e8f;font-size:10px;margin-top:3px}
+.local-service-meta{display:grid;gap:3px}.local-service-meta span{font-size:10px;color:#566e84}
+.local-service-card button{border:0;background:#e8f2fb;color:#0a3d6f;border-radius:8px;padding:8px 10px;font-size:10px;font-weight:800;cursor:pointer}
+@media(max-width:900px){.searchline-v10{grid-template-columns:1fr 130px}.searchline-v10 select{grid-column:1/-1}.local-service-card{grid-template-columns:1fr}}
+@media(max-width:600px){.searchline-v10{grid-template-columns:1fr}.searchline-v10 select{grid-column:auto}}
+
+/* V11 — buscador limpio: sin listado inicial */
+.search-empty{min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px dashed #cbd9e5;border-radius:12px;background:#f8fbfd;color:#667c90;margin-top:8px}
+.search-empty-icon{font-size:42px;line-height:1;color:#8da7bd;margin-bottom:8px}
+.search-empty b{font-size:14px;color:#194b75;margin-bottom:5px}
+.search-empty span{font-size:11px;color:#778a9b}
+.search-empty.compact{min-height:110px}
+
+/* V12 — mapa educativo con latitud/longitud FUIE */
+.map-dashboard{display:grid;grid-template-columns:1.35fr .65fr;gap:14px}
+.map-main-card{min-height:720px}.map-side-card{min-height:720px}
+.real-map{position:relative;min-height:655px;background:#f7fbfe;border:1px solid #dbe6ef;border-radius:12px;overflow:hidden}
+.coord-svg{width:100%;height:610px;display:block}.map-bg{fill:#f7fbfe}
+.map-dot{cursor:pointer}.map-dot circle{transition:r .15s,fill-opacity .15s}.map-dot:hover circle{r:5.2;fill-opacity:1}
+.map-legend-real{position:absolute;left:12px;bottom:30px;display:flex;flex-wrap:wrap;gap:6px 10px;background:#ffffffdf;border:1px solid #d9e4ec;border-radius:8px;padding:7px 9px;font-size:9px;color:#536a80}
+.map-legend-real span{display:flex;align-items:center;gap:4px}.map-legend-real i,.map-summary-item i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.map-help{position:absolute;right:10px;bottom:7px;font-size:8px;color:#7b8996}
+.map-summary-list{display:grid;gap:8px}.map-summary-item{border:1px solid #dce5ed;border-radius:10px;padding:10px;background:#f8fbfd;display:grid;grid-template-columns:1fr auto;gap:5px 8px;align-items:center}
+.map-summary-item div{display:flex;gap:6px;align-items:center;grid-column:1/-1}.map-summary-item b{color:#0a3d6f;font-size:12px}.map-summary-item span{font-size:10px;color:#64788a}
+.map-filters{display:flex}
+@media(max-width:950px){.map-dashboard{grid-template-columns:1fr}.map-main-card,.map-side-card{min-height:auto}.coord-svg{height:520px}.real-map{min-height:565px}}
+
+/* V13 — Educación Superior destacada por modalidad / nivel */
+.superior-breakdown{margin:10px 0 15px}
+.section-inline-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:10px}
+.section-inline-head small{font-size:9px;font-weight:900;color:#5a7fa0;letter-spacing:.05em}
+.section-inline-head h2{margin:3px 0 0;color:#0a3d6f;font-size:18px}
+.section-inline-head>span{font-size:10px;color:#718497}
+
+.superior-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.superior-card{background:#fff;border:1px solid #d7e2eb;border-radius:15px;padding:14px;box-shadow:0 3px 12px #0d3d6708;position:relative;overflow:hidden}
+.superior-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+.superior-card.tech:before{background:#2f7bdc}
+.superior-card.ped:before{background:#28a36a}
+.superior-card.art:before{background:#8156c8}
+.superior-card-top{display:flex;gap:10px;align-items:center}
+.superior-icon{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#f2f6fb;font-size:19px}
+.superior-card small{display:block;color:#7b8a98;font-size:9px}
+.superior-card h3{margin:2px 0 0;color:#0a3d6f;font-size:14px}
+.superior-main-number{font-size:28px;line-height:1;color:#0a3d6f;font-weight:900;margin-top:15px}
+.superior-main-label{font-size:10px;color:#697d8f;margin-top:5px}
+.superior-progress{height:7px;border-radius:999px;background:#e8eef4;overflow:hidden;margin:10px 0 12px}
+.superior-card.tech .superior-progress span{background:#2f7bdc}
+.superior-card.ped .superior-progress span{background:#28a36a}
+.superior-card.art .superior-progress span{background:#8156c8}
+.superior-progress span{display:block;height:100%;border-radius:999px}
+.superior-mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.superior-mini-grid div{background:#f6f9fc;border-radius:9px;padding:8px}
+.superior-mini-grid span{display:block;font-size:9px;color:#748697}
+.superior-mini-grid b{display:block;margin-top:3px;color:#173f68;font-size:13px}
+
+.superior-comparison{margin-bottom:0}
+.superior-columns{height:235px;display:flex;align-items:flex-end;gap:40px;justify-content:center;padding:8px 22px 28px}
+.sup-col-item{height:100%;width:min(150px,28%);display:flex;flex-direction:column;justify-content:flex-end;align-items:center}
+.sup-col-value{font-size:11px;color:#143f68;font-weight:900;margin-bottom:5px}
+.sup-col-track{height:165px;width:68%;display:flex;align-items:flex-end;background:#f2f6fa;border-radius:7px 7px 0 0;overflow:hidden}
+.sup-col-fill{width:100%;background:linear-gradient(180deg,#43a0df,#2f7bdc);border-radius:7px 7px 0 0}
+.sup-col-item:nth-child(1) .sup-col-fill{background:linear-gradient(180deg,#59bb85,#28a36a)}
+.sup-col-item:nth-child(3) .sup-col-fill{background:linear-gradient(180deg,#a184e0,#8156c8)}
+.sup-col-label{font-size:10px;color:#526a80;text-align:center;margin-top:8px;font-weight:800;line-height:1.2}
+
+@media(max-width:900px){
+  .superior-cards{grid-template-columns:1fr}
+  .superior-columns{gap:14px}
+  .sup-col-item{width:30%}
+}
+
+/* V14 — Superior en cuadro + iconografía transversal */
+.kpi-icon-card{display:flex;align-items:center;gap:12px}
+.kpi-icon{width:42px;height:42px;border-radius:12px;background:#edf4fb;display:grid;place-items:center;font-size:22px;flex:0 0 auto}
+.kpi-copy{min-width:0}.kpi-copy span{display:block}.kpi-copy b{display:block}
+
+.level-title{display:flex;gap:9px;align-items:center;margin-bottom:9px}
+.level-title>span{width:34px;height:34px;border-radius:9px;background:#f0f5fa;display:grid;place-items:center;font-size:18px}
+.level-title h3,.level-title p{margin:0}
+.level-title p{margin-top:3px}
+
+.superior-cards{display:none!important}
+.superior-table-wrap{background:#fff;border:1px solid #d7e2eb;border-radius:15px;overflow:hidden;margin-bottom:12px}
+.superior-table{width:100%;border-collapse:collapse;font-size:11px}
+.superior-table th,.superior-table td{padding:11px 12px;border-bottom:1px solid #e8eef4;text-align:right}
+.superior-table th:first-child,.superior-table td:first-child{text-align:left}
+.superior-table thead th{background:#f3f7fb;color:#3e6080;font-weight:800}
+.superior-table tbody tr:last-child td{border-bottom:0}
+.superior-table tbody tr.ped{border-left:5px solid #28a36a}
+.superior-table tbody tr.tech{border-left:5px solid #2f7bdc}
+.superior-table tbody tr.art{border-left:5px solid #8156c8}
+.sup-mode{display:flex;gap:9px;align-items:center}
+.sup-mode-icon{width:34px;height:34px;border-radius:9px;background:#f1f5f9;display:grid;place-items:center;font-size:18px}
+.sup-mode b{display:block;color:#0a3d6f;font-size:12px}.sup-mode small{display:block;color:#7a8998;font-size:9px;margin-top:2px}
+.sup-pct{height:7px;background:#e8eef4;border-radius:99px;overflow:hidden;min-width:85px}.sup-pct span{display:block;height:100%;background:#2f7bdc;border-radius:99px}.superior-table tr.ped .sup-pct span{background:#28a36a}.superior-table tr.art .sup-pct span{background:#8156c8}
+.superior-table td>small{display:block;margin-top:3px;color:#788898}
+
+@media(max-width:900px){
+  .superior-table-wrap{overflow:auto}
+  .superior-table{min-width:760px}
+}
+
+/* V15 — iconos consistentes en todas las modalidades */
+.module-kpis .kpi-icon-card{display:flex;align-items:center;gap:12px}
+.module-kpis .kpi-icon{width:43px;height:43px;border-radius:12px;background:#edf4fb;display:grid;place-items:center;font-size:23px;flex:0 0 auto}
+.module-kpis .kpi-copy{min-width:0}
+.module-kpis .kpi-copy span,.module-kpis .kpi-copy b,.module-kpis .kpi-copy small{display:block}
+.module-kpis .kpi-copy b{margin-top:3px}
+
+/* V17 — fichas jerárquicas sin textos redundantes */
+.subgroup-head{
+  grid-column:1/-1;
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+  margin:8px 0 1px;padding:8px 10px;
+  background:#f4f8fc;border-left:4px solid #347fd7;border-radius:8px;
+  color:#174c7e;font-weight:800;font-size:10px;
+}
+.sublevel-2{color:#3d678d}
+.sublevel-3{color:#667f96}
+.subsep{color:#9cb0c2;font-weight:500}
+.clean-field small{
+  text-transform:none!important;
+  letter-spacing:0!important;
+  color:#667d93;
+  line-height:1.25;
+  font-size:10px;
+}
+.clean-field span{
+  margin-top:3px;
+}
+
+/* V18 — presentación de fichas mediante cuadros/tarjetas */
+.groupbody{
+  align-items:stretch;
+}
+.info-card{
+  grid-column:1/-1;
+  border:1px solid #d7e3ef;
+  background:#fff;
+  border-radius:12px;
+  padding:12px;
+  margin:4px 0 8px;
+  box-shadow:0 1px 2px rgba(22,65,105,.04);
+}
+.info-card-title{
+  display:flex;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:0 2px 9px;
+  margin-bottom:4px;
+  color:#174c7e;
+  font-size:11px;
+  font-weight:800;
+  border-bottom:1px solid #e5edf5;
+}
+.info-card-title b{
+  color:#9aafc2;
+  font-weight:600;
+}
+.info-card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px 12px;
+}
+.info-item{
+  min-width:0;
+  background:#f5f8fc;
+  border:1px solid #edf2f7;
+  border-radius:9px;
+  padding:9px 11px;
+}
+.info-question{
+  color:#627c95;
+  font-size:10px;
+  line-height:1.25;
+  margin-bottom:4px;
+}
+.info-answer{
+  color:#003f78;
+  font-size:13px;
+  line-height:1.25;
+  font-weight:800;
+  overflow-wrap:anywhere;
+}
+.info-card-simple .info-card-grid{
+  grid-template-columns:repeat(2,minmax(0,1fr));
+}
+@media (max-width:800px){
+  .info-card-grid,.info-card-simple .info-card-grid{
+    grid-template-columns:1fr;
+  }
+}
+
+/* V19 — cuadros ejecutivos y matrices de ficha */
+.summary-modal-table-wrap,.matrix-wrap{width:100%;overflow-x:auto}
+.summary-modal-table,.matrix-table{width:100%;border-collapse:collapse;font-size:11px}
+.summary-modal-table th,.summary-modal-table td,.matrix-table th,.matrix-table td{
+  padding:9px 10px;border-bottom:1px solid #dce6f0;text-align:right;white-space:nowrap
+}
+.summary-modal-table th:first-child,.summary-modal-table td:first-child,
+.matrix-table th:first-child,.matrix-table td:first-child{text-align:left}
+.summary-modal-table thead th,.matrix-table thead th{
+  background:#eef4fa;color:#174c7e;font-weight:800
+}
+.summary-modal-table .total-row td,.matrix-table .matrix-total td{
+  background:#f2f6fb;color:#003f78;font-weight:900
+}
+.modal-icon{display:inline-flex;width:25px;height:25px;align-items:center;justify-content:center;margin-right:7px;background:#edf4fb;border-radius:7px}
+.matrix-wrap{grid-column:1/-1;background:#fff;border:1px solid #d7e3ef;border-radius:10px;overflow:hidden}
+.matrix-table{font-size:12px}
+.matrix-table td{font-size:12px;color:#274b6d}
+.matrix-table td b{color:#003f78}
+.related-item:not(.current){cursor:pointer;transition:.15s}
+.related-item:not(.current):hover{transform:translateY(-1px);border-color:#75a9df;background:#f5faff}
+.related-item em{display:block;margin-top:6px;color:#347fd7;font-size:10px;font-style:normal;font-weight:800}
+.related-item.current em{color:#688097}
+
+/* V20 — ficha centrada en el local y detalle separado por nivel */
+.personnel-matrix{grid-column:1/-1}
+.personnel-extra td:first-child{padding-left:24px;color:#5e7890}
+.local-level-summary{margin-top:14px}
+.local-level-summary .matrix-table td:first-child b{display:block;color:#003f78}
+.local-level-summary .matrix-table td:first-child small{display:block;color:#7b8996;font-size:9px;margin-top:2px}
+.local-level-summary .matrix-table tfoot td{background:#eef4fa;color:#003f78;font-weight:900}
+.local-level-detail{
+  border:1px solid #cdddea;
+  border-radius:14px;
+  background:#fff;
+  overflow:hidden;
+  margin:12px 0 18px;
+  box-shadow:0 2px 8px rgba(12,61,109,.06)
+}
+.level-detail-head{
+  display:flex;gap:12px;align-items:center;
+  padding:14px 16px;background:linear-gradient(90deg,#edf5fc,#f8fbfe);
+  border-bottom:1px solid #d7e4ef
+}
+.level-detail-icon{
+  width:42px;height:42px;border-radius:11px;background:#fff;
+  display:grid;place-items:center;font-size:22px;border:1px solid #dbe6ef
+}
+.level-detail-head small{display:block;color:#668097;font-size:9px}
+.level-detail-head h3{margin:2px 0;color:#003f78;font-size:16px}
+.level-detail-head p{margin:2px 0 0;color:#687e91;font-size:10px}
+.local-level-body{padding:10px 12px 12px}
+.local-level-body .group{margin:8px 0}
+@media(max-width:800px){
+  .level-detail-head{align-items:flex-start}
+}
+
+/* V21 — ficha única por código local + niveles desplegables */
+.local-result{align-items:center}
+.local-result-main{min-width:0;flex:1}
+.local-code-badge{
+  display:inline-block;background:#0a3d6f;color:#fff;border-radius:7px;
+  padding:4px 8px;font-size:10px;font-weight:900;margin-bottom:6px
+}
+.local-result-stats{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;color:#60758a;font-size:10px}
+.local-result-stats b{color:#003f78}
+.local-data-block{margin-top:4px}
+.level-selector-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.level-selector{
+  border:1px solid #d4e1ec;background:#fff;border-radius:11px;padding:9px 12px;
+  display:flex;align-items:center;gap:8px;color:#365a79;cursor:pointer;text-align:left
+}
+.level-selector:hover{border-color:#7aaddd;background:#f7fbff}
+.level-selector.active{background:#e8f3ff;border-color:#2f7bdc;color:#003f78;box-shadow:0 0 0 1px #2f7bdc inset}
+.level-selector-icon{font-size:19px}
+.level-selector b{display:block;font-size:11px}.level-selector small{display:block;font-size:8px;margin-top:2px;color:#6e8295}
+.level-quick-stats{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:10px
+}
+.level-quick-stats div{background:#f4f8fc;border-radius:9px;padding:8px 9px}
+.level-quick-stats small{display:block;font-size:9px;color:#71869a}
+.level-quick-stats b{display:block;margin-top:3px;color:#003f78;font-size:11px}
+.compact-personnel{max-width:760px}
+.aux-summary{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.aux-total{grid-column:1/-1;background:#eef4fa;border-radius:10px;padding:10px 12px;display:flex;justify-content:space-between;color:#174c7e}
+.aux-total b{font-size:16px}
+.aux-table-wrap{width:100%}
+.selected-level-detail{margin-top:4px}
+@media(max-width:900px){
+  .level-quick-stats{grid-template-columns:repeat(3,1fr)}
+  .aux-summary{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .level-quick-stats{grid-template-columns:1fr 1fr}
+  .level-selector{width:100%}
+}
+
+/* V22 — restauración Datos generales + mejoras solo en Detalle */
+.local-level-table tbody tr{cursor:pointer;transition:.12s}
+.local-level-table tbody tr:hover{background:#f5faff}
+.local-level-table tbody tr.selected-level-row{background:#eaf4ff}
+.local-level-table tbody tr.selected-level-row td:first-child{box-shadow:inset 4px 0 #2f7bdc}
+
+.detail-level-selector{
+  border:1px solid #d5e2ed;background:#f8fbfe;border-radius:12px;
+  padding:11px 12px;margin:4px 0 12px
+}
+.detail-level-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+.detail-level-title b{color:#003f78;font-size:12px}
+.detail-level-title span{color:#71869a;font-size:9px}
+.detail-level-buttons{display:flex;gap:7px;flex-wrap:wrap}
+.detail-level-buttons button{
+  border:1px solid #d3e0eb;background:#fff;color:#3b5f7d;border-radius:9px;
+  padding:8px 10px;display:grid;grid-template-columns:auto 1fr;gap:2px 7px;
+  text-align:left;cursor:pointer;min-width:150px
+}
+.detail-level-buttons button>span{grid-row:1/3;font-size:18px}
+.detail-level-buttons button b{font-size:10px;color:#174c7e}
+.detail-level-buttons button small{font-size:8px;color:#75889a}
+.detail-level-buttons button.active{background:#e8f3ff;border-color:#2f7bdc;box-shadow:0 0 0 1px #2f7bdc inset}
+
+.detail-summary-cards{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;
+  padding:11px 12px 0
+}
+.detail-summary-cards div{
+  background:#f3f7fb;border:1px solid #e1eaf2;border-radius:9px;padding:9px 10px
+}
+.detail-summary-cards span{display:block;color:#71869a;font-size:9px}
+.detail-summary-cards b{display:block;color:#003f78;font-size:16px;margin-top:3px}
+
+.enrollment-summary-cards{
+  grid-column:1/-1;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px
+}
+.enroll-card{
+  border:1px solid #dce7f0;background:#f5f9fc;border-radius:10px;padding:10px 12px
+}
+.enroll-card span{display:block;color:#6d8296;font-size:9px}
+.enroll-card b{display:block;color:#003f78;font-size:19px;margin-top:3px}
+.enroll-card.total{border-top:4px solid #2f7bdc}
+.enroll-card.men{border-top:4px solid #4e8bcf}
+.enroll-card.women{border-top:4px solid #d05a9d}
+
+@media(max-width:800px){
+  .detail-summary-cards{grid-template-columns:1fr 1fr}
+  .enrollment-summary-cards{grid-template-columns:1fr}
+}
+
+/* V23 — Superior/Institutos: duración de carrera, ciclo y género */
+.duration-list{grid-column:1/-1;display:grid;gap:12px}
+.duration-block{
+  border:1px solid #d7e3ef;border-radius:12px;background:#fff;overflow:hidden
+}
+.duration-title{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 12px;background:#f2f7fb;border-bottom:1px solid #dde7f0
+}
+.duration-title span{font-size:9px;color:#72879a;text-transform:uppercase;font-weight:800}
+.duration-title b{font-size:12px;color:#003f78}
+.duration-title em{
+  margin-left:auto;font-size:9px;font-style:normal;color:#557088;
+  background:#fff;border:1px solid #d9e4ed;border-radius:999px;padding:4px 7px
+}
+.duration-block .matrix-wrap{border:0;border-radius:0}
+
+/* V24 — cuadros compactos universales */
+.compact-matrix .matrix-table td:first-child{font-weight:700;color:#06477f}
+.compact-matrix .matrix-table td.num{text-align:right}
+.compact-matrix .matrix-table tbody tr:hover{background:#f7fbff}
+
+/* V25 — FUIE con cuadros + ubicación geográfica útil */
+.fui-matricula-summary{grid-column:1/-1}
+.fui-matricula-summary .matrix-table td.num{text-align:right}
+.fui-location-card{grid-column:1/-1;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.fui-location-data{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.fui-location-data>div{background:#f5f8fc;border:1px solid #e5edf4;border-radius:9px;padding:9px 10px}
+.fui-location-data small,.general-location-action small{display:block;color:#71869a;font-size:9px}
+.fui-location-data b,.general-location-action b{display:block;color:#003f78;margin-top:3px}
+.location-link,.general-location-action a{text-decoration:none;background:#e8f3ff;color:#003f78;border:1px solid #a9cbed;border-radius:10px;padding:10px 12px;font-weight:800}
+.location-link{display:flex;gap:8px;align-items:center}
+.location-link>span{font-size:22px}.location-link b{display:block;font-size:11px}.location-link small{display:block;color:#62809a;font-size:8px;margin-top:2px}
+.general-location-action{margin:10px 0 2px;padding:10px 12px;border:1px solid #d8e4ee;border-radius:10px;background:#f7fbfe;display:flex;justify-content:space-between;align-items:center;gap:12px}
+@media(max-width:800px){
+  .fui-location-card{grid-template-columns:1fr}
+  .fui-location-data{grid-template-columns:1fr}
+  .general-location-action{display:block}
+  .general-location-action a{display:inline-block;margin-top:8px}
+}
+
+/* V27 — Carreras / Programas de estudio en Superior */
+.superior-careers-panel{margin:14px 0}
+.career-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.career-kpis>div{background:#fff;border:1px solid #d7e2eb;border-radius:13px;padding:12px}
+.career-kpis span{display:block;color:#71869a;font-size:9px}
+.career-kpis b{display:block;color:#003f78;font-size:22px;margin-top:4px}
+.career-ranking{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}
+.career-ranking>div{display:flex;justify-content:space-between;gap:10px;background:#f5f8fc;border-radius:8px;padding:7px 9px}
+.career-ranking span{font-size:9px;color:#526c84;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.career-ranking b{font-size:10px;color:#003f78}
+.service-careers-block{padding:12px;margin:10px 12px 0;background:#f8fbfe;border:1px solid #d9e5ef;border-radius:11px}
+.career-table td:first-child{white-space:normal}
+.career-table td.num,.career-table th:not(:first-child){text-align:right}
+.career-empty{padding:18px;text-align:center;color:#72879a;background:#f7fafc;border-radius:9px}
+.local-careers-summary{margin-top:12px}
+.career-service-card{display:flex;justify-content:space-between;gap:12px;align-items:center;background:#f5f9fc;border:1px solid #dce7f0;border-radius:9px;padding:9px 10px;margin-top:6px}
+.career-service-card b{display:block;color:#003f78;font-size:11px}
+.career-service-card small{display:block;color:#7a8a99;font-size:8px;margin-top:2px}
+.career-service-card>span{font-size:10px;color:#58728a;font-weight:800}
+@media(max-width:800px){
+  .career-kpis{grid-template-columns:1fr}
+  .career-ranking{grid-template-columns:1fr}
+}
+
+/* V32 - Mapa distrital real de Lima Metropolitana */
+.district-dashboard{margin:14px 0 18px;background:#fff;border:1px solid #d7e2ef;border-radius:16px;padding:14px 14px 12px;box-shadow:0 2px 8px rgba(13,67,120,.04)}
+.district-map-title{text-align:center;margin-bottom:10px}.district-map-title h2{margin:0;color:#073f73;font-size:18px}.district-map-title span{display:block;margin-top:3px;color:#71839a;font-size:11px}
+.district-layout{display:grid;grid-template-columns:minmax(265px,1fr) minmax(330px,1.35fr) minmax(265px,1fr);gap:12px;align-items:start}
+.ugel-table-column{display:flex;flex-direction:column;gap:10px}.ugel-summary-box{border:1px solid var(--ugel-color);border-radius:7px;overflow:hidden;background:#fff}.ugel-summary-title{background:var(--ugel-color);color:#fff;text-align:center;font-weight:800;padding:5px;font-size:12px}.ugel-summary-box table{width:100%;border-collapse:collapse;font-size:9px}.ugel-summary-box th,.ugel-summary-box td{padding:3px 4px;border-bottom:1px solid #e8eef5;text-align:right;white-space:nowrap}.ugel-summary-box th:first-child,.ugel-summary-box td:first-child{text-align:left;max-width:110px;overflow:hidden;text-overflow:ellipsis}.ugel-summary-box thead th{background:#f7f9fc;color:#30445d;font-weight:800}.ugel-summary-box tfoot td{font-weight:800;background:#fafbfd;border-top:1px solid #cbd7e4}.ugel-summary-box tbody tr{cursor:default}.ugel-summary-box tbody tr:hover{background:#edf5ff}
+.district-map-panel{position:relative;min-height:540px;display:flex;flex-direction:column;align-items:center;justify-content:center}.real-district-map{width:100%;height:500px;display:flex;align-items:center;justify-content:center}.real-district-map svg{width:100%;height:100%;overflow:visible}.district-shape{stroke:#fff;stroke-width:.8;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .12s,opacity .12s,stroke-width .12s}.district-shape:hover,.district-shape.is-hover{filter:brightness(1.08);stroke:#082f55;stroke-width:2;opacity:1}.map-loading{font-size:12px;color:#71839a}.district-map-legend{display:flex;flex-wrap:wrap;gap:7px 10px;justify-content:center;font-size:9px;font-weight:700;color:#41546b;margin-top:4px}.district-map-legend span{display:flex;align-items:center;gap:4px}.district-map-legend i{width:9px;height:9px;border-radius:2px;display:inline-block}.district-tooltip{position:fixed;display:none;z-index:9999;min-width:210px;background:rgba(5,40,75,.96);color:#fff;border-radius:9px;padding:10px 12px;box-shadow:0 8px 24px rgba(0,0,0,.22);pointer-events:none;font-size:11px}.district-tooltip.show{display:block}.district-tooltip b{display:block;font-size:13px;margin-bottom:5px}.district-tooltip .tt-ugel{font-weight:800;margin-bottom:6px}.district-tooltip-grid{display:grid;grid-template-columns:1fr auto;gap:3px 12px}.district-tooltip-grid strong{text-align:right}.map-source-note{text-align:center;color:#8a99aa;font-size:8px;margin-top:4px}
+@media(max-width:1180px){.district-layout{grid-template-columns:1fr 1.2fr}.ugel-table-column:last-child{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,1fr)}.district-map-panel{min-height:460px}.real-district-map{height:430px}}
+@media(max-width:800px){.district-layout{display:block}.ugel-table-column,.ugel-table-column:last-child{display:block}.ugel-summary-box{margin-bottom:8px}.district-map-panel{min-height:420px}.real-district-map{height:400px}}
+
+/* === V33: resumen depurado, navegación superior única === */
+.sidebar{display:none!important}
+.app-shell{display:block!important}
+.main-area{width:100%;min-width:0}
+main{max-width:1700px}
+/* En Resumen se conserva el cuadro analítico por modalidad y se retiran duplicados visuales */
+#resumen > .grid.two{grid-template-columns:1fr!important}
+#resumen > .grid.two > article:first-child{display:none!important}
+#resumen #moduleCards{display:none!important}
+#resumen > .grid.two > article:last-child{width:100%}
+@media(max-width:1100px){.app-shell{display:block!important}}
+
+/* === V34: resumen ejecutivo compacto + detalle por distrito === */
+.summary-analytics-grid{display:grid;grid-template-columns:minmax(0,3.2fr) minmax(300px,1fr);gap:14px;align-items:start;margin-top:14px}
+.summary-analytics-grid .district-dashboard{margin:0;padding:12px 12px 10px}
+.summary-analytics-grid .district-layout{grid-template-columns:minmax(245px,.92fr) minmax(300px,1.15fr) minmax(245px,.92fr);gap:10px}
+.summary-analytics-grid .district-map-panel{min-height:420px;justify-content:flex-start}
+.summary-analytics-grid .real-district-map{height:365px}
+.summary-analytics-grid .district-map-title{margin-bottom:8px}
+.summary-analytics-grid .ugel-table-column{gap:8px}
+.summary-analytics-grid .ugel-summary-box table{font-size:8px}
+.summary-analytics-grid .ugel-summary-box th,.summary-analytics-grid .ugel-summary-box td{padding:2.5px 3px}
+.summary-analytics-grid .ugel-summary-title{padding:4px;font-size:11px}
+.summary-analytics-grid .summary-modal-side{margin:0;position:sticky;top:58px;padding:12px}
+.summary-modal-side .cardhead{margin-bottom:8px}
+.summary-modal-side .cardhead h2{font-size:16px}
+.summary-modal-compact{display:flex;flex-direction:column;gap:7px}
+.modal-compact-row{border:1px solid #dfe8f1;border-radius:10px;padding:9px;background:#fff}
+.modal-compact-name{display:flex;align-items:center;gap:7px;color:#0a416f;font-size:11px;line-height:1.2;margin-bottom:7px}
+.modal-compact-name .modal-icon{font-size:15px}
+.modal-compact-metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:5px 8px}
+.modal-compact-metrics span{display:flex;justify-content:space-between;gap:6px;background:#f6f9fc;border-radius:6px;padding:4px 6px}
+.modal-compact-metrics small{color:#6d8094;font-size:8px}.modal-compact-metrics b{font-size:9px;color:#073f73}
+.modal-compact-total{display:flex;justify-content:space-between;gap:8px;background:#edf4fb;border-radius:9px;padding:9px;color:#073f73;font-size:10px;font-weight:800}
+.ugel-summary-box tbody tr{cursor:pointer}.ugel-summary-box tbody tr.is-selected{background:#e7f1fb;box-shadow:inset 3px 0 0 var(--ugel-color)}
+.district-shape.is-selected{stroke:#062c52;stroke-width:3;filter:brightness(1.06)}
+
+.district-detail-panel{margin:14px 0 18px;background:#fff;border:1px solid #d7e2ef;border-radius:16px;padding:14px;scroll-margin-top:70px}
+.district-detail-panel[hidden]{display:none!important}
+.district-detail-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:10px}
+.district-detail-head small{display:block;color:#2c78bb;font-weight:800;font-size:10px;margin-bottom:2px}.district-detail-head h2{margin:0;color:#073f73;font-size:20px}.district-detail-head p{margin:3px 0 0;color:#71839a;font-size:10px}
+.district-detail-close{border:1px solid #ccd9e6;background:#fff;color:#476179;border-radius:8px;padding:7px 10px;font-weight:700;cursor:pointer}
+.district-detail-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+.district-detail-kpis>div{background:#f6f9fc;border:1px solid #e0e8f0;border-radius:10px;padding:9px 11px}.district-detail-kpis span{display:block;color:#71839a;font-size:9px}.district-detail-kpis b{display:block;color:#073f73;font-size:18px;margin-top:2px}
+.district-detail-tools{display:flex;justify-content:space-between;align-items:end;gap:12px;margin:10px 0}.district-detail-tools label{display:flex;flex-direction:column;gap:4px;color:#526980;font-size:9px;font-weight:700;min-width:320px}.district-detail-tools input{border:1px solid #cad8e6;border-radius:8px;padding:8px 10px;font-size:12px;outline:none}.district-detail-tools input:focus{border-color:#2d7fd0;box-shadow:0 0 0 2px rgba(45,127,208,.12)}.district-detail-tools span{color:#65798d;font-size:10px;font-weight:700}
+.district-school-table-wrap{overflow:auto;max-height:520px;border:1px solid #dce6ef;border-radius:10px}
+.district-school-table{width:100%;border-collapse:collapse;font-size:9px}.district-school-table th{position:sticky;top:0;z-index:1;background:#eaf2fa;color:#244764;text-align:left;padding:7px 8px;white-space:nowrap}.district-school-table td{padding:6px 8px;border-top:1px solid #e7edf3;vertical-align:top}.district-school-table td.num{text-align:right;white-space:nowrap}.district-school-table tbody tr:hover{background:#f5f9fd}.district-school-table td:nth-child(2){min-width:190px}.district-school-table td:nth-child(4){min-width:170px}.district-school-table td:nth-child(7){min-width:190px;color:#65798d}.district-ficha-btn{border:0;border-radius:7px;background:#2478cf;color:white;padding:6px 9px;font-size:9px;font-weight:800;white-space:nowrap;cursor:pointer}.district-ficha-btn:hover{filter:brightness(.95)}.district-no-results{text-align:center!important;padding:20px!important;color:#71839a}
+
+@media(max-width:1450px){.summary-analytics-grid{grid-template-columns:1fr}.summary-analytics-grid .summary-modal-side{position:static}.summary-modal-compact{display:grid;grid-template-columns:repeat(3,1fr)}.modal-compact-total{grid-column:1/-1}.summary-analytics-grid .real-district-map{height:410px}}
+@media(max-width:1050px){.summary-analytics-grid .district-layout{grid-template-columns:1fr 1.15fr}.summary-analytics-grid .ugel-table-column:last-child{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,1fr)}.district-detail-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.summary-analytics-grid .district-layout{display:block}.summary-analytics-grid .ugel-table-column:last-child{display:block}.summary-modal-compact{display:block}.modal-compact-row{margin-bottom:7px}.district-detail-kpis{grid-template-columns:1fr 1fr}.district-detail-tools{display:block}.district-detail-tools label{min-width:0}.district-detail-tools span{display:block;margin-top:7px}.summary-analytics-grid .real-district-map{height:360px}}
+
+/* V35 · resumen ejecutivo + mapas por modalidad */
+.summary-side-stack{display:grid;gap:12px;min-width:0;align-content:start}
+.summary-side-stack .card{margin:0;padding:12px}
+.summary-management-card .cardhead,.summary-modal-side .cardhead{margin-bottom:8px}
+.summary-management-card .cardhead h2,.summary-modal-side .cardhead h2{font-size:15px}
+.management-compare{display:grid;gap:10px}
+.management-line{border-bottom:1px solid #e5edf6;padding-bottom:9px}
+.management-line:last-of-type{border-bottom:0}
+.management-line-head,.management-values{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.management-line-head b{font-size:11px;color:#073d70}.management-line-head span{font-size:9px;color:#6b7f93}
+.management-stack{height:9px;border-radius:999px;overflow:hidden;background:#eef3f8;display:flex;margin:6px 0 5px}
+.management-stack span{height:100%;display:block}.management-public{background:#2f80ed}.management-private{background:#2baa57}
+.management-values{font-size:9px;color:#657b91}.management-values b{color:#073d70}
+.management-legend{display:flex;gap:14px;justify-content:flex-end;font-size:9px;color:#657b91}.management-legend span{display:flex;align-items:center;gap:4px}.management-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}.management-legend .public{background:#2f80ed}.management-legend .private{background:#2baa57}
+.summary-modal-table-wrap{overflow:auto}.summary-modal-table{width:100%;border-collapse:collapse;font-size:9px}.summary-modal-table th,.summary-modal-table td{padding:5px 4px;border-bottom:1px solid #dce6f1;text-align:right;white-space:nowrap}.summary-modal-table th:first-child,.summary-modal-table td:first-child{text-align:left}.summary-modal-table thead th{background:#eaf2fb;color:#073d70;font-weight:800}.summary-modal-table tfoot td{font-weight:800;background:#f0f5fa}.modal-table-name{display:flex;align-items:center;gap:5px;white-space:normal}.modal-table-name i{font-style:normal}.modal-table-name b{font-size:9px}
+.summary-analytics-grid{grid-template-columns:minmax(0,3.6fr) minmax(360px,1.15fr)}
+.summary-analytics-grid .district-map-panel{min-height:360px}.summary-analytics-grid .real-district-map{height:330px}
+.institution-map-section{margin-top:16px;background:#fff;border:1px solid #d7e2ef;border-radius:16px;padding:14px}
+.institution-map-shell{position:relative;background:#f7fafc;border:1px solid #dfe8f1;border-radius:14px;overflow:hidden}
+.institution-map{height:470px;display:flex;align-items:center;justify-content:center}.institution-map svg{width:100%;height:100%;display:block}
+.institution-districts path{fill:#eef3f7;stroke:#c8d5e2;stroke-width:1.1;vector-effect:non-scaling-stroke}
+.institution-points circle{stroke:#fff;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;opacity:.86;transition:r .12s,opacity .12s}.institution-points circle:hover{r:6;opacity:1;stroke:#17324d;stroke-width:1.5}
+.institution-map-tooltip{position:fixed;z-index:1000;display:none;background:#102c46;color:#fff;border-radius:10px;padding:10px 11px;min-width:220px;max-width:310px;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.22);font-size:11px}.institution-map-tooltip.show{display:block}.institution-map-tooltip>b{display:block;font-size:12px;margin-bottom:2px}.institution-map-tooltip>span{display:block;color:#bcd0e4;font-size:10px;margin-bottom:7px}.institution-map-tooltip>div{display:grid;grid-template-columns:1fr auto;gap:3px 10px}.institution-map-tooltip strong{text-align:right}.institution-map-note{margin-top:7px;color:#6f8295;font-size:10px;text-align:center}
+@media(max-width:1450px){.summary-analytics-grid{grid-template-columns:1fr}.summary-side-stack{grid-template-columns:1fr 1fr}.summary-modal-side,.summary-management-card{position:static!important}.summary-modal-table{font-size:10px}}
+@media(max-width:850px){.summary-side-stack{grid-template-columns:1fr}.institution-map{height:390px}}
+/* V36: explorador territorial + exportación */
+.export-excel-btn{border:1px solid #b9cbe0;background:#fff;color:#0d4f84;border-radius:9px;padding:8px 11px;font-weight:800;cursor:pointer;white-space:nowrap}.export-excel-btn:hover{background:#edf6ff}.district-tool-actions{display:flex;align-items:center;gap:10px}.institution-map-toolbar{display:grid;grid-template-columns:minmax(260px,1.5fr) 150px 150px auto;gap:10px;align-items:end;margin:10px 0 12px}.institution-map-toolbar label{display:grid;gap:5px;color:#526a80;font-size:10px;font-weight:800}.institution-map-toolbar input,.institution-map-toolbar select{height:38px;border:1px solid #cbd9e7;border-radius:9px;background:#fff;padding:0 10px;color:#123b5c;font-size:12px}.institution-map-toolbar .export-excel-btn{height:38px}.institution-map{height:520px}.institution-points circle{stroke:#fff;stroke-width:1;opacity:.9;cursor:pointer;transition:.15s}.institution-points circle:hover{stroke:#0b3556;stroke-width:2;opacity:1}.module-management-compact{margin-top:14px}.module-management-bars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.module-management-bars .management-line{margin:0}.summary-modal-table-wrap{overflow-x:auto}.summary-modal-table{width:100%;border-collapse:collapse}.summary-modal-table th,.summary-modal-table td{padding:8px 7px;border-bottom:1px solid #dce6f0;text-align:right;font-size:10px}.summary-modal-table th:first-child,.summary-modal-table td:first-child{text-align:left}.summary-modal-table tfoot td{font-weight:900;background:#eef4fa}.modal-table-name{display:flex;align-items:center;gap:7px}.modal-table-name i{font-style:normal}
+@media(max-width:900px){.institution-map-toolbar{grid-template-columns:1fr 1fr}.institution-map-toolbar .map-search{grid-column:1/-1}.institution-map-toolbar .export-excel-btn{width:100%}.module-management-bars{grid-template-columns:1fr}.institution-map{height:420px}}
+
+/* V37: mapa navegable con calles, zoom automático e iconos de IE */
+.institution-map-toolbar{grid-template-columns:minmax(280px,1.5fr) 135px 180px 135px auto auto;align-items:end}
+.map-search-wrap{position:relative;min-width:0}.map-search-wrap .map-search{display:grid}.map-search-results{position:absolute;z-index:1200;left:0;right:0;top:calc(100% + 5px);background:#fff;border:1px solid #cbd9e7;border-radius:10px;box-shadow:0 10px 28px rgba(28,57,81,.18);overflow:hidden;max-height:310px;overflow-y:auto}.map-search-results button{display:grid;width:100%;text-align:left;border:0;border-bottom:1px solid #edf2f6;background:#fff;padding:9px 11px;cursor:pointer}.map-search-results button:hover{background:#f1f7fd}.map-search-results button b{font-size:11px;color:#153b5a}.map-search-results button span{font-size:9px;color:#6a7f91;margin-top:2px}.map-search-empty{padding:12px;color:#6b7e8f;font-size:11px}.map-reset-btn{height:38px;border:1px solid #b9cbe0;background:#f5f9fc;color:#174e78;border-radius:9px;padding:0 12px;font-weight:800;cursor:pointer;white-space:nowrap}.map-reset-btn:hover{background:#e8f2fa}.institution-map-shell{position:relative;border:1px solid #d6e2ec;border-radius:12px;overflow:hidden;background:#eaf1f5}.institution-map{height:560px;width:100%;background:#eaf1f5}.institution-map .leaflet-control-zoom a{color:#174e78}.institution-map .leaflet-control-attribution{font-size:9px}.school-div-icon{background:transparent!important;border:0!important}.school-map-marker{display:flex;align-items:center;justify-content:center;border-radius:50%;background:#fff;border:3px solid var(--marker-color);box-shadow:0 2px 8px rgba(0,0,0,.27);font-size:15px;line-height:1;cursor:pointer;transition:transform .12s ease,box-shadow .12s ease}.school-map-marker:hover,.school-map-marker.selected{transform:scale(1.18);box-shadow:0 4px 12px rgba(0,0,0,.34)}.school-popup{min-width:220px;display:grid;gap:5px;color:#183a55}.school-popup>b{font-size:12px}.school-popup>span{font-size:10px;color:#647c90}.school-popup>div{display:grid;grid-template-columns:1fr auto;gap:3px 12px;border-top:1px solid #e5edf4;padding-top:6px;font-size:10px}.school-popup>div strong{text-align:right}.school-popup button{margin-top:5px;border:0;background:#0d568b;color:#fff;border-radius:7px;padding:7px 9px;font-size:10px;font-weight:800;cursor:pointer}.institution-map-note{display:flex;align-items:center;gap:6px}.leaflet-popup-content{margin:11px 13px}.leaflet-popup-content-wrapper{border-radius:10px}
+@media(max-width:1200px){.institution-map-toolbar{grid-template-columns:minmax(250px,1.5fr) 1fr 1fr 1fr}.institution-map-toolbar .map-search-wrap{grid-column:1/-1}.institution-map-toolbar .map-reset-btn,.institution-map-toolbar .export-excel-btn{width:100%}.institution-map{height:500px}}
+@media(max-width:720px){.institution-map-toolbar{grid-template-columns:1fr 1fr}.institution-map-toolbar .map-search-wrap{grid-column:1/-1}.institution-map-toolbar .map-reset-btn,.institution-map-toolbar .export-excel-btn{width:100%}.institution-map{height:430px}.school-map-marker{font-size:13px}}
+
+/* V40 — Leaflet corregido: conservar la geometría interna nativa de Leaflet */
+.institution-map-shell{position:relative;min-height:540px;overflow:hidden;background:#e8eef3;border:1px solid #d6e2ec;border-radius:12px}
+.institution-map.leaflet-container{display:block!important;width:100%!important;height:540px!important;min-height:540px!important;background:#e8eef3!important;font-family:inherit}
+.institution-map.leaflet-container img.leaflet-tile{max-width:none!important;max-height:none!important}
+.institution-map.leaflet-container .leaflet-control-attribution{font-size:9px}
+.institution-map.leaflet-container .leaflet-control-zoom a{color:#174e78;width:30px;height:30px;line-height:30px;font-size:18px}
+.school-map-marker{font-size:12px!important;border-width:2px!important}
+.school-glyph{display:block;line-height:1;transform:translateY(-.5px)}
+@media(max-width:1200px){.institution-map-shell{min-height:500px}.institution-map.leaflet-container{height:500px!important;min-height:500px!important}}
+@media(max-width:720px){.institution-map-shell{min-height:420px}.institution-map.leaflet-container{height:420px!important;min-height:420px!important}}
+
+/* V41 · mapa final: base cartografica limpia y controles sobre el mapa */
+.institution-map-shell>.institution-map-tooltip:not(.show){display:none!important}
+.institution-map.leaflet-container .leaflet-tile-pane{z-index:200}
+.institution-map.leaflet-container .leaflet-overlay-pane{z-index:400}
+.institution-map.leaflet-container .leaflet-marker-pane{z-index:600}
+.institution-map.leaflet-container .leaflet-control-container{position:relative;z-index:800}

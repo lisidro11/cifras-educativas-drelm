@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0c3d6d">
+<title>DRELM · Cifras Educativas 2025</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="styles.css?v=42">
+</head>
+<body>
+<div class="app-shell">
+
+<aside class="sidebar">
+  <div class="side-brand">
+    <div class="crest">D</div>
+    <div>
+      <strong>DRELM</strong>
+      <small>Dirección Regional de Educación<br>de Lima Metropolitana</small>
+    </div>
+  </div>
+
+  <button class="side-item active" data-view="resumen">⌂ <span>Resumen DRELM</span></button>
+  <button class="side-item" data-view="ebr">▣ <span>EBR</span></button>
+  <button class="side-item" data-view="eba">▤ <span>EBA</span></button>
+  <button class="side-item" data-view="ebe">◇ <span>EBE</span></button>
+  <button class="side-item" data-view="superior">⌂ <span>Superior</span></button>
+  <button class="side-item" data-view="cetpro">⬡ <span>CETPRO</span></button>
+  <button class="side-item" data-view="infra">▦ <span>Infraestructura FUIE</span></button>
+  <button class="side-item" data-view="buscar">▧ <span>II.EE. / Ficha</span></button>
+
+  <div class="side-bottom">
+    <small>Censo Educativo 2025</small>
+    <small>Datos integrados DRELM</small>
+    <small>Versión V41</small>
+  </div>
+</aside>
+
+<div class="main-area">
+<header class="topbar">
+  <nav id="topnav">
+    <button class="active" data-view="resumen">Resumen</button>
+    <button data-view="ebr">EBR</button>
+    <button data-view="eba">EBA</button>
+    <button data-view="ebe">EBE</button>
+    <button data-view="superior">Superior</button>
+    <button data-view="cetpro">CETPRO</button>
+    <button data-view="infra">Infraestructura FUIE</button>
+    <button data-view="buscar">II.EE. / Ficha</button>
+  </nav>
+  <div class="top-source"><b>Censo Educativo 2025</b><span>Lima Metropolitana</span></div>
+</header>
+
+<main>
+
+<section id="resumen" class="view active">
+  <div class="page-head">
+    <div>
+      <small>DRELM · LIMA METROPOLITANA</small>
+      <h1>Resumen de cifras educativas 2025</h1>
+      <p>Vista integrada de gestión pública y privada.</p>
+    </div>
+    <div class="filters compact">
+      <button type="button" class="export-excel-btn" id="exportSummaryExcel">⬇ Exportar Excel</button>
+      <label>Gestión
+        <div class="segmented" id="scope">
+          <button class="active" data-scope="total">Total</button>
+          <button data-scope="publica">Pública</button>
+          <button data-scope="privada">Privada</button>
+        </div>
+      </label>
+    </div>
+  </div>
+
+  <div class="kpis" id="mainKpis"></div>
+
+  <div class="summary-analytics-grid">
+    <section class="district-dashboard" id="districtDashboard">
+      <div class="district-map-title">
+        <h2>Mapa distrital de Lima Metropolitana</h2>
+        <span>Pasa el mouse para consultar cifras y haz clic en un distrito para ver sus instituciones educativas.</span>
+      </div>
+      <div class="district-layout">
+        <div class="ugel-table-column" id="ugelTablesLeft"></div>
+        <div class="district-map-panel">
+          <div id="realDistrictMap" class="real-district-map"><div class="map-loading">Cargando mapa distrital…</div></div>
+          <div class="district-map-legend" id="districtMapLegend"></div>
+          <div class="district-tooltip" id="districtTooltip"></div>
+        </div>
+        <div class="ugel-table-column" id="ugelTablesRight"></div>
+      </div>
+    </section>
+
+    <aside class="summary-side-stack">
+      <article class="card summary-management-card">
+        <div class="cardhead"><h2>Composición por gestión</h2><span>Pública / Privada</span></div>
+        <div id="summaryManagement"></div>
+      </article>
+      <article class="card summary-modal-side">
+        <div class="cardhead"><h2>Resumen por modalidad</h2><span>Gestión seleccionada</span></div>
+        <div id="ugelBars"></div>
+      </article>
+    </aside>
+  </div>
+
+  <section id="districtDetail" class="district-detail-panel" hidden>
+    <div class="district-detail-head">
+      <div><small id="districtDetailUgel">UGEL</small><h2 id="districtDetailTitle">Detalle del distrito</h2><p>Instituciones educativas del distrito seleccionado.</p></div>
+      <button type="button" id="closeDistrictDetail" class="district-detail-close">Cerrar</button>
+    </div>
+    <div class="district-detail-kpis" id="districtDetailKpis"></div>
+    <div class="district-detail-tools">
+      <label>Buscar institución o código local
+        <input id="districtSchoolSearch" type="search" placeholder="Ej. José María Arguedas o 123456">
+      </label>
+      <div class="district-tool-actions"><span id="districtSchoolCount"></span><button type="button" class="export-excel-btn" id="exportDistrictExcel">⬇ Exportar Excel</button></div>
+    </div>
+    <div class="district-school-table-wrap">
+      <table class="district-school-table">
+        <thead><tr><th>Código local</th><th>Institución educativa</th><th>Gestión</th><th>Nivel / modalidad</th><th>Estudiantes</th><th>Docentes</th><th>Dirección</th><th></th></tr></thead>
+        <tbody id="districtSchoolRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div id="sectorBars" hidden></div>
+  <div class="modulegrid" id="moduleCards"></div>
+</section>
+
+<section id="ebr" class="view moduleView"></section>
+<section id="eba" class="view moduleView"></section>
+<section id="ebe" class="view moduleView"></section>
+<section id="superior" class="view moduleView"></section>
+<section id="cetpro" class="view moduleView"></section>
+
+<section id="infra" class="view">
+  <div class="page-head">
+    <div>
+      <small>MÓDULO ESPECIALIZADO · FUIE</small>
+      <h1>Infraestructura educativa pública</h1>
+      <p>Información de infraestructura vinculada por código de local.</p>
+    </div>
+  </div>
+  <div class="kpis" id="infraKpis"></div>
+  <div class="grid two">
+    <article class="card"><h2>Estado de conservación de aulas</h2><div id="aulaBars" class="bars"></div></article>
+    <article class="card"><h2>Servicios básicos en locales FUIE</h2><div id="fuieServices" class="servicegrid"></div></article>
+  </div>
+</section>
+
+<section id="buscar" class="view">
+  <div class="page-head">
+    <div>
+      <small>BUSCADOR INTEGRADO</small>
+      <h1>Instituciones y servicios educativos</h1>
+      <p>Busca por código modular, código local, nombre, UGEL, distrito o gestión.</p>
+    </div>
+  </div>
+
+  <article class="card searchcard">
+    <div class="searchline searchline-v10">
+      <input id="q" placeholder="Buscar por nombre, código modular, UGEL, distrito o modalidad...">
+      <input id="localQ" placeholder="Código local">
+      <select id="gestionFilter">
+        <option value="">Toda gestión</option>
+        <option>Pública</option>
+        <option>Privada</option>
+      </select>
+    </div>
+    <div id="resultInfo"></div>
+    <div id="results"></div>
+  </article>
+
+  <article id="ficha" class="card ficha" hidden>
+    <div class="fichahead">
+      <div>
+        <small>FICHA INTEGRAL DEL SERVICIO EDUCATIVO</small>
+        <h2 id="fTitle"></h2>
+        <p id="fSub"></p>
+      </div>
+      <button onclick="window.print()">Imprimir / PDF</button>
+    </div>
+    <div id="fKpis" class="kpis mini"></div>
+    <div class="tabs" id="fTabs">
+      <button class="active" data-tab="general">Datos generales</button>
+      <button data-tab="censo">Detalle de la ficha</button>
+      <button id="infraTabBtn" data-tab="fuie">Infraestructura FUIE</button>
+    </div>
+    <div id="generalTab" class="tabpage active"></div>
+    <div id="censoTab" class="tabpage">
+      <div class="loading" id="detailLoading">Seleccione esta pestaña para cargar la estructura combinada de la ficha.</div>
+      <div id="detailGroups"></div>
+    </div>
+    <div id="fuieTab" class="tabpage">
+      <div class="loading" id="fuieLoading">Infraestructura disponible solo cuando el código local tiene registro FUIE.</div>
+      <div id="fuieGroups"></div>
+    </div>
+  </article>
+</section>
+
+</main>
+<footer>Dirección Regional de Educación de Lima Metropolitana · Censo Educativo 2025</footer>
+</div>
+</div>
+
+<script src="data.js?v=30"></script>
+<script src="details/fuie_ugel/FUIE_INDEX.js?v=30"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js?v=42"></script>
+<script src="carreras-ficha-v28.js?v=30"></script>
+</body>
+</html>
