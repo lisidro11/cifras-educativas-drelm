@@ -1,0 +1,12 @@
+ACTUALIZACIÓN QUINCENAL DEL PADRÓN
+
+1. Reemplace PW_DRELM.xlsx por el nuevo padrón, conservando exactamente ese nombre.
+2. Ejecute ACTUALIZAR_PADRON.bat.
+3. Se regenerará padron.js automáticamente.
+4. Revise la app y luego publique los archivos actualizados en GitHub.
+
+Reglas de conteo:
+- Servicios educativos: COD_MOD únicos activos. Los anexos no incrementan el total.
+- Locales educativos: CODLOCAL únicos válidos.
+- Modalidad, nivel, UGEL, distrito, gestión y coordenadas: Padrón Educativo.
+- Avance RIE: COD_MOD únicos con CODINST / total COD_MOD únicos, solo Educación Básica + CETPRO; Superior se excluye.

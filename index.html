@@ -7,7 +7,7 @@
 <title>DRELM · Cifras Educativas 2025</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=42">
+<link rel="stylesheet" href="styles.css?v=47">
 </head>
 <body>
 <div class="app-shell">
@@ -33,7 +33,7 @@
   <div class="side-bottom">
     <small>Censo Educativo 2025</small>
     <small>Datos integrados DRELM</small>
-    <small>Versión V41</small>
+    <small>Versión V44</small>
   </div>
 </aside>
 
@@ -49,7 +49,7 @@
     <button data-view="infra">Infraestructura FUIE</button>
     <button data-view="buscar">II.EE. / Ficha</button>
   </nav>
-  <div class="top-source"><b>Censo Educativo 2025</b><span>Lima Metropolitana</span></div>
+  <div class="top-source"><b>Censo Educativo 2025 + Padrón 2026</b><span>Lima Metropolitana</span></div>
 </header>
 
 <main>
@@ -74,7 +74,6 @@
   </div>
 
   <div class="kpis" id="mainKpis"></div>
-
   <div class="summary-analytics-grid">
     <section class="district-dashboard" id="districtDashboard">
       <div class="district-map-title">
@@ -98,9 +97,10 @@
         <div id="summaryManagement"></div>
       </article>
       <article class="card summary-modal-side">
-        <div class="cardhead"><h2>Resumen por modalidad</h2><span>Gestión seleccionada</span></div>
+        <div class="cardhead"><h2>Resumen por modalidad</h2><span>Según Padrón Educativo</span></div>
         <div id="ugelBars"></div>
       </article>
+      <section id="reiOverview" class="rei-overview"></section>
     </aside>
   </div>
 
@@ -200,14 +200,15 @@
 </section>
 
 </main>
-<footer>Dirección Regional de Educación de Lima Metropolitana · Censo Educativo 2025</footer>
+<footer>Dirección Regional de Educación de Lima Metropolitana · Censo Educativo 2025 · Padrón Educativo 2026</footer>
 </div>
 </div>
 
 <script src="data.js?v=30"></script>
+<script src="padron.js?v=44"></script>
 <script src="details/fuie_ugel/FUIE_INDEX.js?v=30"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="app.js?v=42"></script>
+<script src="app.js?v=47"></script>
 <script src="carreras-ficha-v28.js?v=30"></script>
 </body>
 </html>
