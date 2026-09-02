@@ -1,0 +1,7 @@
+V78
+- Corrige Descargar Excel del Resumen.
+- El archivo exportado conserva las columnas del Padrón y agrega:
+  Estudiantes, Docentes y Secciones.
+- Estudiantes/docentes/secciones se vinculan al Padrón por código modular.
+- Respeta los filtros actuales del Resumen.
+- No modifica los cuadros, mapa, diseño responsive ni cálculos visibles.

@@ -1809,3 +1809,952 @@ main{max-width:1700px}
     flex:1;
   }
 }
+
+
+/* =========================================================
+   V69 — TODAS LAS TABLAS RESPONSIVE EN CELULAR / TABLET
+   Regla general: ninguna tabla se comprime hasta quedar ilegible.
+   En pantallas pequeñas se desliza horizontalmente con el dedo.
+   ========================================================= */
+
+@media (max-width: 900px){
+
+  /* Contenedores habituales de tablas */
+  .view .table-scroll,
+  .view .table-card,
+  .view .superior-table-wrap,
+  .view .ugel-table-column,
+  .view .detail-card,
+  .view .ind-summary-card,
+  .view .ind-ugel-detail,
+  .view .module-ugel-level-card,
+  .view .module-cetpro-direct-card,
+  .view .v60-resumen-modalidad,
+  .view .rei-table-wrap,
+  .view .district-school-table-wrap,
+  .view .career-table-wrap,
+  .view .infra-table-card,
+  .view .ficha-table-wrap,
+  .view .local-table-wrap{
+    overflow-x:auto !important;
+    overflow-y:visible !important;
+    -webkit-overflow-scrolling:touch !important;
+    touch-action:pan-x pan-y;
+    max-width:100% !important;
+  }
+
+  /* Respaldo: si una tabla está directamente dentro de una tarjeta,
+     la tarjeta también permite deslizamiento horizontal. */
+  .view .card:has(> table),
+  .view .card:has(> .table-scroll),
+  .view .card:has(> .table-card){
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  /* Todas las tablas conservan el ancho necesario para leer las columnas. */
+  .view table{
+    width:max-content !important;
+    min-width:100% !important;
+    max-width:none !important;
+    table-layout:auto !important;
+  }
+
+  /* Evita que títulos de columnas se partan de forma excesiva. */
+  .view table th{
+    white-space:nowrap !important;
+  }
+
+  /* Los datos se mantienen legibles; textos largos sí pueden respirar. */
+  .view table td{
+    white-space:nowrap;
+  }
+
+  .view table td:first-child{
+    white-space:normal;
+    min-width:105px;
+  }
+
+  /* Tablas especialmente anchas */
+  #indicadores .ind-ugel-matrix{
+    min-width:1180px !important;
+  }
+
+  #indicadores .ind-hier-table{
+    min-width:620px !important;
+  }
+
+  .module-ugel-level-table{
+    min-width:680px !important;
+  }
+
+  .module-cetpro-direct-table{
+    min-width:720px !important;
+  }
+
+  .detail-management-table{
+    min-width:1500px !important;
+  }
+
+  .superior-table{
+    min-width:860px !important;
+  }
+
+  .v60-summary-table{
+    min-width:620px !important;
+  }
+
+  .summary-table{
+    min-width:600px;
+  }
+
+  /* Cuadros UGEL del resumen */
+  .ugel-table-column{
+    overflow-x:auto !important;
+  }
+
+  .ugel-table-column table{
+    min-width:560px !important;
+  }
+
+  /* RIE */
+  .rei-table,
+  .rie-table{
+    min-width:640px !important;
+  }
+
+  /* Infraestructura */
+  .infra-table-card table{
+    min-width:680px !important;
+  }
+
+  /* Fichas y resultados */
+  #buscar table,
+  .ficha table,
+  .ficha-card table,
+  .local-ficha table{
+    min-width:620px !important;
+  }
+
+  /* Indicador visual sutil de que se puede deslizar */
+  .view .table-scroll::after,
+  .view .table-card::after,
+  .view .superior-table-wrap::after,
+  .view .ugel-table-column::after,
+  .view .module-ugel-level-card::after,
+  .view .module-cetpro-direct-card::after,
+  .view .ind-ugel-detail::after{
+    content:"← desliza →";
+    display:block;
+    position:sticky;
+    left:0;
+    width:max-content;
+    margin:4px 0 2px;
+    padding:2px 7px;
+    border-radius:10px;
+    background:#eef4f8;
+    color:#6b8092;
+    font-size:8px;
+    font-weight:700;
+  }
+}
+
+@media (max-width: 560px){
+
+  .view table{
+    font-size:9px !important;
+  }
+
+  .view table th,
+  .view table td{
+    padding:6px 7px !important;
+  }
+
+  .view table td:first-child{
+    min-width:115px;
+  }
+
+  #indicadores .ind-ugel-matrix{
+    min-width:1250px !important;
+  }
+
+  .detail-management-table{
+    min-width:1600px !important;
+  }
+}
+
+
+/* =========================================================
+   V70 — corrección móvil:
+   - cuadros UGEL del mapa con scroll horizontal real
+   - primera columna fija al deslizar
+   ========================================================= */
+
+.ugel-summary-scroll{
+  width:100%;
+  max-width:100%;
+}
+
+@media (max-width:900px){
+
+  /* El borde exterior conserva su forma; el scroll ocurre dentro. */
+  .ugel-summary-box{
+    overflow:hidden !important;
+    max-width:100% !important;
+  }
+
+  .ugel-summary-scroll{
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    touch-action:pan-x pan-y;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .ugel-summary-scroll table{
+    width:max-content !important;
+    min-width:620px !important;
+    max-width:none !important;
+    table-layout:auto !important;
+  }
+
+  /* En el mapa, Distrito siempre permanece visible. */
+  .ugel-summary-scroll th:first-child,
+  .ugel-summary-scroll td:first-child{
+    position:sticky !important;
+    left:0 !important;
+    z-index:3 !important;
+    min-width:125px !important;
+    max-width:125px !important;
+    width:125px !important;
+    text-align:left !important;
+    box-shadow:2px 0 3px rgba(25,62,92,.10);
+  }
+
+  .ugel-summary-scroll thead th:first-child{
+    z-index:5 !important;
+    background:#f7f9fc !important;
+  }
+
+  .ugel-summary-scroll tbody td:first-child{
+    background:#fff !important;
+  }
+
+  .ugel-summary-scroll tbody tr:hover td:first-child{
+    background:#edf5ff !important;
+  }
+
+  .ugel-summary-scroll tfoot td:first-child{
+    z-index:4 !important;
+    background:#fafbfd !important;
+  }
+
+  /* Regla general para TODAS las tablas móviles:
+     la primera columna permanece visible mientras se desliza. */
+  .view .table-scroll table th:first-child,
+  .view .table-scroll table td:first-child,
+  .view .table-card table th:first-child,
+  .view .table-card table td:first-child,
+  .view .superior-table-wrap table th:first-child,
+  .view .superior-table-wrap table td:first-child,
+  .view .module-ugel-level-card table th:first-child,
+  .view .module-ugel-level-card table td:first-child,
+  .view .module-cetpro-direct-card table th:first-child,
+  .view .module-cetpro-direct-card table td:first-child,
+  .view .ind-ugel-detail table th:first-child,
+  .view .ind-ugel-detail table td:first-child{
+    position:sticky;
+    left:0;
+    z-index:2;
+    box-shadow:2px 0 3px rgba(25,62,92,.10);
+  }
+
+  .view .table-scroll table thead th:first-child,
+  .view .table-card table thead th:first-child,
+  .view .superior-table-wrap table thead th:first-child,
+  .view .module-ugel-level-card table thead th:first-child,
+  .view .module-cetpro-direct-card table thead th:first-child,
+  .view .ind-ugel-detail table thead th:first-child{
+    z-index:4;
+    background:#edf4fa;
+  }
+
+  .view .table-scroll table tbody td:first-child,
+  .view .table-card table tbody td:first-child,
+  .view .superior-table-wrap table tbody td:first-child,
+  .view .module-ugel-level-card table tbody td:first-child,
+  .view .module-cetpro-direct-card table tbody td:first-child,
+  .view .ind-ugel-detail table tbody td:first-child{
+    background:#fff;
+  }
+
+  .view .table-scroll table tfoot td:first-child,
+  .view .table-card table tfoot td:first-child,
+  .view .superior-table-wrap table tfoot td:first-child,
+  .view .module-ugel-level-card table tfoot td:first-child,
+  .view .module-cetpro-direct-card table tfoot td:first-child,
+  .view .ind-ugel-detail table tfoot td:first-child{
+    z-index:3;
+    background:#e6f0f7;
+  }
+
+  /* Evitar que la pista "desliza" se mezcle con las tablas del mapa. */
+  .ugel-table-column::after{
+    display:none !important;
+  }
+
+  .ugel-summary-scroll::after{
+    content:"← desliza →";
+    display:block;
+    position:sticky;
+    left:6px;
+    width:max-content;
+    margin:3px 6px 4px;
+    padding:2px 7px;
+    border-radius:10px;
+    background:#eef4f8;
+    color:#6b8092;
+    font-size:8px;
+    font-weight:700;
+    z-index:6;
+  }
+}
+
+@media (max-width:560px){
+  .ugel-summary-scroll table{
+    min-width:660px !important;
+  }
+
+  .ugel-summary-scroll th:first-child,
+  .ugel-summary-scroll td:first-child{
+    min-width:135px !important;
+    max-width:135px !important;
+    width:135px !important;
+  }
+}
+
+
+/* =========================================================
+   V71 — SOLO ajuste de ancho de columnas de cuadros UGEL
+   alrededor del mapa en celular.
+   ========================================================= */
+@media (max-width:900px){
+
+  .ugel-summary-scroll table{
+    min-width:510px !important;
+  }
+
+  /* Distrito: suficiente para nombres, sin ocupar media pantalla */
+  .ugel-summary-scroll th:nth-child(1),
+  .ugel-summary-scroll td:nth-child(1){
+    min-width:108px !important;
+    width:108px !important;
+    max-width:108px !important;
+  }
+
+  /* Servicios educativos */
+  .ugel-summary-scroll th:nth-child(2),
+  .ugel-summary-scroll td:nth-child(2){
+    min-width:88px !important;
+    width:88px !important;
+    max-width:88px !important;
+    text-align:right !important;
+  }
+
+  /* Locales educativos */
+  .ugel-summary-scroll th:nth-child(3),
+  .ugel-summary-scroll td:nth-child(3){
+    min-width:82px !important;
+    width:82px !important;
+    max-width:82px !important;
+    text-align:right !important;
+  }
+
+  /* Estudiantes */
+  .ugel-summary-scroll th:nth-child(4),
+  .ugel-summary-scroll td:nth-child(4){
+    min-width:94px !important;
+    width:94px !important;
+    max-width:94px !important;
+    text-align:right !important;
+  }
+
+  /* Docentes */
+  .ugel-summary-scroll th:nth-child(5),
+  .ugel-summary-scroll td:nth-child(5){
+    min-width:82px !important;
+    width:82px !important;
+    max-width:82px !important;
+    text-align:right !important;
+  }
+
+  .ugel-summary-scroll th{
+    white-space:normal !important;
+    line-height:1.05 !important;
+    padding:5px 4px !important;
+  }
+
+  .ugel-summary-scroll td{
+    padding:5px 4px !important;
+  }
+
+  .ugel-summary-scroll td:first-child{
+    white-space:normal !important;
+    overflow-wrap:break-word;
+  }
+}
+
+@media (max-width:560px){
+  .ugel-summary-scroll table{
+    min-width:500px !important;
+  }
+
+  .ugel-summary-scroll th:nth-child(1),
+  .ugel-summary-scroll td:nth-child(1){
+    min-width:105px !important;
+    width:105px !important;
+    max-width:105px !important;
+  }
+}
+
+
+/* =========================================================
+   V72 — AJUSTE PARA PC 1280–1366 px
+   Evita que el Resumen se corte horizontalmente en laptops/PC.
+   No cambia datos ni estructura.
+   ========================================================= */
+
+@media (min-width:901px) and (max-width:1450px){
+
+  html,body{
+    max-width:100%;
+    overflow-x:hidden !important;
+  }
+
+  .app-shell,
+  .main-area,
+  main,
+  .view{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+  }
+
+  main{
+    padding-left:10px !important;
+    padding-right:10px !important;
+  }
+
+  /* navegación compacta sin forzar ancho del documento */
+  #topnav{
+    min-width:0 !important;
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+  }
+
+  #topnav button{
+    padding-left:10px !important;
+    padding-right:10px !important;
+    font-size:12px !important;
+    white-space:nowrap;
+    flex:0 0 auto;
+  }
+
+  .top-source{
+    max-width:230px;
+    font-size:10px;
+  }
+
+  /* Resumen: columna principal + lateral, ambas dentro del viewport */
+  .summary-analytics-grid{
+    grid-template-columns:minmax(0,1fr) 300px !important;
+    gap:10px !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  .summary-left-stack,
+  .summary-right-stack{
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+
+  .district-dashboard{
+    min-width:0 !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+  }
+
+  .district-layout{
+    grid-template-columns:220px minmax(340px,1fr) 220px !important;
+    gap:8px !important;
+    min-width:0 !important;
+    width:100% !important;
+  }
+
+  .ugel-table-column{
+    min-width:0 !important;
+    width:220px !important;
+    max-width:220px !important;
+  }
+
+  .ugel-summary-box{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* En PC intermedio las tablas UGEL deben caber completas, sin scroll del documento */
+  .ugel-summary-scroll{
+    overflow:hidden !important;
+  }
+
+  .ugel-summary-scroll table{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    font-size:7px !important;
+  }
+
+  .ugel-summary-scroll th,
+  .ugel-summary-scroll td{
+    padding:3px 2px !important;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .ugel-summary-scroll th:first-child,
+  .ugel-summary-scroll td:first-child{
+    width:40% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    white-space:normal !important;
+  }
+
+  .ugel-summary-scroll th:nth-child(2),
+  .ugel-summary-scroll td:nth-child(2){
+    width:15% !important;
+  }
+
+  .ugel-summary-scroll th:nth-child(3),
+  .ugel-summary-scroll td:nth-child(3){
+    width:15% !important;
+  }
+
+  .ugel-summary-scroll th:nth-child(4),
+  .ugel-summary-scroll td:nth-child(4){
+    width:16% !important;
+  }
+
+  .ugel-summary-scroll th:nth-child(5),
+  .ugel-summary-scroll td:nth-child(5){
+    width:14% !important;
+  }
+
+  .district-map-panel{
+    min-width:0 !important;
+    width:100% !important;
+  }
+
+  .real-district-map{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* lateral derecho más compacto */
+  .summary-right-stack .card,
+  .summary-right-stack article{
+    max-width:100% !important;
+  }
+
+  .v60-summary-table{
+    min-width:0 !important;
+    width:100% !important;
+    font-size:8px !important;
+    table-layout:fixed !important;
+  }
+
+  .v60-summary-table th,
+  .v60-summary-table td{
+    padding:4px 3px !important;
+  }
+
+  .rei-table,
+  .rie-table{
+    min-width:0 !important;
+    width:100% !important;
+    font-size:7.5px !important;
+  }
+
+  /* KPI más compactos */
+  .kpis{
+    gap:8px !important;
+  }
+
+  .kpi{
+    padding:10px !important;
+    min-width:0 !important;
+  }
+
+  .kpi-copy b{
+    font-size:20px !important;
+  }
+}
+
+/* protección global: ningún elemento debe ensanchar el documento en escritorio */
+@media (min-width:901px){
+  body{
+    overflow-x:hidden;
+  }
+  .view,
+  .card,
+  .district-dashboard,
+  .summary-analytics-grid{
+    max-width:100%;
+  }
+}
+
+
+/* =========================================================
+   V73 — Abreviaturas de columnas + acciones compactas Resumen
+   ========================================================= */
+.summary-actions{
+  display:flex;
+  gap:7px;
+  align-items:center;
+}
+.summary-action-btn{
+  border:1px solid #9dbbd5;
+  background:#fff;
+  color:#064779;
+  border-radius:7px;
+  padding:7px 9px;
+  font-size:10px;
+  font-weight:800;
+  line-height:1;
+  cursor:pointer;
+  white-space:nowrap;
+}
+.summary-action-btn:hover{
+  background:#eef6fc;
+}
+
+/* Encabezados abreviados: compactos y centrados */
+th[title="Servicios educativos"],
+th[title="Locales educativos"]{
+  text-align:center !important;
+  white-space:nowrap !important;
+}
+
+/* Impresión del Resumen conservando colores */
+@media print{
+  *{
+    -webkit-print-color-adjust:exact !important;
+    print-color-adjust:exact !important;
+  }
+
+  body.print-summary-view .sidebar,
+  body.print-summary-view .topbar,
+  body.print-summary-view #topnav,
+  body.print-summary-view .summary-actions,
+  body.print-summary-view #scope{
+    display:none !important;
+  }
+
+  body.print-summary-view .view{
+    display:none !important;
+  }
+
+  body.print-summary-view #resumen{
+    display:block !important;
+    width:100% !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:5mm !important;
+    background:#fff !important;
+  }
+
+  body.print-summary-view #resumen .table-scroll,
+  body.print-summary-view #resumen .ugel-summary-scroll{
+    overflow:visible !important;
+    max-height:none !important;
+  }
+
+  body.print-summary-view #resumen .card,
+  body.print-summary-view #resumen .district-dashboard,
+  body.print-summary-view #resumen .rei-overview{
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+
+  @page{
+    size:A4 landscape;
+    margin:6mm;
+  }
+}
+
+@media(max-width:900px){
+  .summary-actions{
+    width:100%;
+  }
+  .summary-action-btn{
+    flex:1;
+    padding:8px 7px;
+  }
+}
+
+
+/* =========================================================
+   V75 — RESPONSIVE REAL
+   Reemplaza ajustes rígidos de escritorio.
+   PC grande: Resumen + lateral.
+   Laptop/PC 1100–1599: mapa completo arriba y lateral debajo.
+   Tablet/celular: apilado y tablas con scroll.
+   ========================================================= */
+
+/* Regla base: ningún bloque fuerza ancho del documento */
+html,body{max-width:100%;overflow-x:hidden}
+.app-shell,.main-area,main,.view{max-width:100%;min-width:0}
+
+/* ---------- PC GRANDE ---------- */
+@media (min-width:1600px){
+  #resumen .summary-analytics-grid{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) 330px !important;
+    gap:12px !important;
+    align-items:start !important;
+  }
+
+  #resumen .district-layout{
+    display:grid !important;
+    grid-template-columns:minmax(230px,255px) minmax(420px,1fr) minmax(230px,255px) !important;
+    gap:8px !important;
+    align-items:start !important;
+  }
+
+  #resumen .district-map-panel{
+    min-width:0 !important;
+    width:100% !important;
+  }
+
+  #resumen .real-district-map{
+    width:100% !important;
+    height:500px !important;
+  }
+
+  #resumen .summary-right-stack{
+    width:330px !important;
+    max-width:330px !important;
+  }
+}
+
+/* ---------- LAPTOP / PC NORMAL ---------- */
+@media (min-width:1100px) and (max-width:1599px){
+
+  /* El lateral deja de apretar el mapa: pasa debajo */
+  #resumen .summary-analytics-grid{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  #resumen .summary-left-stack{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  #resumen .district-dashboard{
+    width:100% !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+    padding:10px !important;
+  }
+
+  #resumen .district-layout{
+    display:grid !important;
+    grid-template-columns:225px minmax(390px,1fr) 225px !important;
+    gap:8px !important;
+    align-items:start !important;
+    justify-content:center !important;
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  #resumen .ugel-table-column{
+    width:225px !important;
+    min-width:225px !important;
+    max-width:225px !important;
+    gap:8px !important;
+  }
+
+  #resumen .ugel-summary-box{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* Cuadros del mapa compactos, pero completos */
+  #resumen .ugel-summary-scroll{
+    overflow:hidden !important;
+  }
+
+  #resumen .ugel-summary-scroll table{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+    table-layout:fixed !important;
+    font-size:7.3px !important;
+  }
+
+  #resumen .ugel-summary-scroll th,
+  #resumen .ugel-summary-scroll td{
+    padding:3px 2px !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+  }
+
+  #resumen .ugel-summary-scroll th:nth-child(1),
+  #resumen .ugel-summary-scroll td:nth-child(1){
+    width:42% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    white-space:normal !important;
+  }
+  #resumen .ugel-summary-scroll th:nth-child(2),
+  #resumen .ugel-summary-scroll td:nth-child(2){width:14% !important}
+  #resumen .ugel-summary-scroll th:nth-child(3),
+  #resumen .ugel-summary-scroll td:nth-child(3){width:12% !important}
+  #resumen .ugel-summary-scroll th:nth-child(4),
+  #resumen .ugel-summary-scroll td:nth-child(4){width:18% !important}
+  #resumen .ugel-summary-scroll th:nth-child(5),
+  #resumen .ugel-summary-scroll td:nth-child(5){width:14% !important}
+
+  #resumen .district-map-panel{
+    min-width:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    min-height:470px !important;
+  }
+
+  #resumen .real-district-map{
+    width:100% !important;
+    height:440px !important;
+    max-width:100% !important;
+  }
+
+  /* Resumen por modalidad + RIE pasan debajo del mapa */
+  #resumen .summary-right-stack{
+    width:100% !important;
+    max-width:100% !important;
+    margin-top:12px !important;
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:12px !important;
+    align-items:start !important;
+  }
+
+  #resumen .summary-right-stack > *{
+    min-width:0 !important;
+    width:100% !important;
+    max-width:100% !important;
+    position:static !important;
+  }
+
+  #resumen .v60-summary-table,
+  #resumen .rei-table{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:100% !important;
+  }
+}
+
+/* ---------- TABLET ---------- */
+@media (min-width:701px) and (max-width:1099px){
+
+  #resumen .summary-analytics-grid{display:block !important}
+
+  #resumen .district-layout{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:10px !important;
+  }
+
+  #resumen .district-map-panel{
+    grid-column:1 / -1 !important;
+    grid-row:1 !important;
+    width:100% !important;
+    min-height:410px !important;
+  }
+
+  #resumen .real-district-map{
+    width:100% !important;
+    height:380px !important;
+  }
+
+  #resumen .ugel-table-column{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  #resumen .summary-right-stack{
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    gap:10px !important;
+    margin-top:10px !important;
+    width:100% !important;
+  }
+}
+
+/* ---------- CELULAR ---------- */
+@media (max-width:700px){
+
+  #resumen .summary-analytics-grid{display:block !important}
+
+  #resumen .district-layout{
+    display:flex !important;
+    flex-direction:column !important;
+    gap:10px !important;
+  }
+
+  #resumen .district-map-panel{
+    order:-1 !important;
+    width:100% !important;
+    min-height:340px !important;
+  }
+
+  #resumen .real-district-map{
+    width:100% !important;
+    height:320px !important;
+  }
+
+  #resumen .ugel-table-column{
+    width:100% !important;
+    max-width:100% !important;
+  }
+
+  /* en celular sí conserva el scroll de las tablas */
+  #resumen .ugel-summary-scroll{
+    overflow-x:auto !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #resumen .ugel-summary-scroll table{
+    min-width:500px !important;
+    width:max-content !important;
+    table-layout:auto !important;
+  }
+
+  #resumen .summary-right-stack{
+    display:block !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin-top:10px !important;
+  }
+
+  #resumen .summary-right-stack > *{
+    width:100% !important;
+    max-width:100% !important;
+    margin-bottom:10px !important;
+  }
+}

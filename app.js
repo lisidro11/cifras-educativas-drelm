@@ -94,7 +94,7 @@ function ugelBox(ugel,stats){
     totals.estudiantes+=x.estudiantes||0;
     totals.docentes+=x.docentes||0;
   });
-  return `<div class="ugel-summary-box" style="--ugel-color:${UGEL_COLORS[ugel]}"><div class="ugel-summary-title">${ugel}</div><table><thead><tr><th>Distrito</th><th>Servicios educativos</th><th>Locales educativos</th><th>Estudiantes</th><th>Docentes</th></tr></thead><tbody>${rows.map(x=>`<tr data-map-district="${x.distrito}"><td>${x.distrito}</td><td>${fmt(x.servicios)}</td><td>${fmt(x.locales)}</td><td>${fmt(x.estudiantes||0)}</td><td>${fmt(x.docentes||0)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total</td><td>${fmt(totals.servicios)}</td><td>${fmt(totals.locales)}</td><td>${fmt(totals.estudiantes)}</td><td>${fmt(totals.docentes)}</td></tr></tfoot></table></div>`;
+  return `<div class="ugel-summary-box" style="--ugel-color:${UGEL_COLORS[ugel]}"><div class="ugel-summary-title">${ugel}</div><div class="ugel-summary-scroll"><table><thead><tr><th>Distrito</th><th title="Servicios educativos">SS.EE.</th><th title="Locales educativos">L.E.</th><th>Estudiantes</th><th>Docentes</th></tr></thead><tbody>${rows.map(x=>`<tr data-map-district="${x.distrito}"><td>${x.distrito}</td><td>${fmt(x.servicios)}</td><td>${fmt(x.locales)}</td><td>${fmt(x.estudiantes||0)}</td><td>${fmt(x.docentes||0)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total</td><td>${fmt(totals.servicios)}</td><td>${fmt(totals.locales)}</td><td>${fmt(totals.estudiantes)}</td><td>${fmt(totals.docentes)}</td></tr></tfoot></table></div></div>`;
 }
 function projectGeoJSON(features,w=520,h=500,pad=12){
   const pts=[];features.forEach(f=>{const g=f.geometry;if(!g)return;const polys=g.type==="Polygon"?[g.coordinates]:g.coordinates;polys.flat(2).forEach(p=>{if(Array.isArray(p)&&typeof p[0]==="number")pts.push(p)})});
@@ -206,7 +206,29 @@ function renderSummary(){
   const mg=document.getElementById("summaryManagement");
   if(mg){const items=[["Estudiantes",pubR.estudiantes,priR.estudiantes],["Docentes",pubR.docentes,priR.docentes],["Servicios educativos",pubP.servicios,priP.servicios],["Locales educativos",pubP.locales,priP.locales]];mg.innerHTML=`<div class="management-donut-grid">${items.map(([label,pv,qv])=>{const total=pv+qv,pp=total?pv/total*100:0,qp=100-pp;return `<div class="management-donut-item"><div class="management-donut" style="--public-pct:${pp.toFixed(2)}%"><div class="management-donut-hole"><b>${pp.toFixed(1)}%</b><small>Pública</small></div></div><div class="management-donut-copy"><b>${label}</b><span><i class="public"></i>Pública ${fmt(pv)} · ${pp.toFixed(1)}%</span><span><i class="private"></i>Privada ${fmt(qv)} · ${qp.toFixed(1)}%</span></div></div>`}).join("")}</div><div class="management-donut-note"><span><i class="public"></i>Pública</span><span><i class="private"></i>Privada</span></div>`;}
   renderReiOverview(pa);renderDistrictDashboard();
-  const ex=document.getElementById("exportSummaryExcel");if(ex)ex.onclick=()=>{const rows=pa.map(x=>[x.u||"",x.d||"",x.l||"",x.c||"",x.i||"",x.n||"",x.g||"",x.mod||"",x.niv||"",x.rei||"",x.geo||""]);exportExcelFile("Padron_Educativo_DRELM_"+(PMETA.cut||"corte"),["UGEL","Distrito","Código local","Código modular","Código IE (CODINST)","Institución educativa","Gestión","Modalidad","Nivel","REI","Código geográfico"],rows)};
+  const ex=document.getElementById("exportSummaryExcel");if(ex)ex.onclick=()=>{
+    const statByCode=new Map();
+    a.forEach(r=>{
+      const code=String(r.cod_mod||"");
+      if(!code)return;
+      if(!statByCode.has(code))statByCode.set(code,{estudiantes:0,docentes:0,secciones:0});
+      const s=statByCode.get(code);
+      s.estudiantes+=Number(r.estudiantes)||0;
+      s.docentes+=Number(r.docentes)||0;
+      s.secciones+=Number(r.secciones)||0;
+    });
+    const rows=pa.map(x=>{
+      const s=statByCode.get(String(x.c||""))||{estudiantes:0,docentes:0,secciones:0};
+      return [x.u||"",x.d||"",x.l||"",x.c||"",x.i||"",x.n||"",x.g||"",x.mod||"",x.niv||"",s.estudiantes,s.docentes,s.secciones,x.rei||"",x.geo||""];
+    });
+    exportExcelFile(
+      "Padron_Educativo_DRELM_"+(PMETA.cut||"corte"),
+      ["UGEL","Distrito","Código local","Código modular","Código IE (CODINST)","Institución educativa","Gestión","Modalidad","Nivel","Estudiantes","Docentes","Secciones","REI","Código geográfico"],
+      rows
+    )
+  };
+  const ps=document.getElementById("printSummary");
+  if(ps)ps.onclick=()=>{document.body.classList.add("print-summary-view");window.print();setTimeout(()=>document.body.classList.remove("print-summary-view"),500)};
 }
 $$("#scope button").forEach(b=>b.onclick=()=>{$$("#scope button").forEach(x=>x.classList.remove("active"));b.classList.add("active");scope=b.dataset.scope;renderSummary()});
 const districtSearch=document.getElementById("districtSchoolSearch");if(districtSearch)districtSearch.addEventListener("input",e=>renderDistrictSchoolRows(e.target.value));
@@ -450,7 +472,7 @@ function renderModule(view,sector){
       <div class="table-scroll">
         <table class="summary-table module-cetpro-direct-table">
           <thead>
-            <tr><th>UGEL</th><th>Estudiantes</th><th>Docentes</th><th>Servicios educativos</th><th>Locales educativos</th><th>Secciones</th></tr>
+            <tr><th>UGEL</th><th>Estudiantes</th><th>Docentes</th><th title="Servicios educativos">SS.EE.</th><th title="Locales educativos">L.E.</th><th>Secciones</th></tr>
           </thead>
           <tbody>${rows}</tbody>
           <tfoot>
