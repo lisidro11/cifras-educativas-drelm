@@ -4238,3 +4238,138 @@ main{
     white-space:nowrap !important;
   }
 }
+
+
+/* =========================================================
+   V90 — CELULAR HORIZONTAL SIN SUPERPOSICIÓN
+   El problema ocurre porque un celular en horizontal entra
+   por ancho como "tablet". Se corrige también por altura/orientación.
+   ========================================================= */
+
+@media (orientation: landscape) and (max-height:600px) and (max-width:1000px){
+
+  :root{
+    --v90-blue-h:52px;
+    --v90-nav-h:44px;
+    --v90-header-total:96px;
+  }
+
+  /* Franja azul compacta y SOLO con logo institucional */
+  .institutional-banner{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:var(--v90-blue-h) !important;
+    min-height:var(--v90-blue-h) !important;
+    max-height:var(--v90-blue-h) !important;
+    z-index:6000 !important;
+    overflow:hidden !important;
+  }
+
+  .institutional-banner-inner{
+    height:var(--v90-blue-h) !important;
+    min-height:var(--v90-blue-h) !important;
+    max-height:var(--v90-blue-h) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    padding:3px 8px !important;
+    overflow:hidden !important;
+  }
+
+  .institutional-logo{
+    display:block !important;
+    width:auto !important;
+    max-width:90% !important;
+    height:44px !important;
+    max-height:44px !important;
+    object-fit:contain !important;
+    object-position:left center !important;
+    flex:0 1 auto !important;
+  }
+
+  /* Esta era la letra blanca que invadía el menú */
+  .institutional-title-wrap,
+  .institutional-title,
+  .institutional-subtitle{
+    display:none !important;
+    visibility:hidden !important;
+    width:0 !important;
+    height:0 !important;
+    overflow:hidden !important;
+  }
+
+  /* Menú totalmente separado debajo */
+  .topbar{
+    position:fixed !important;
+    top:var(--v90-blue-h) !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:var(--v90-nav-h) !important;
+    min-height:var(--v90-nav-h) !important;
+    max-height:var(--v90-nav-h) !important;
+    z-index:5990 !important;
+    display:block !important;
+    padding:0 !important;
+    margin:0 !important;
+    background:#fff !important;
+    overflow:hidden !important;
+  }
+
+  .topbar .top-source{
+    display:none !important;
+  }
+
+  #topnav{
+    display:flex !important;
+    align-items:center !important;
+    width:100% !important;
+    height:100% !important;
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+    gap:4px !important;
+    padding:4px 8px !important;
+    margin:0 !important;
+  }
+
+  #topnav::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  #topnav button{
+    flex:0 0 auto !important;
+    min-width:max-content !important;
+    height:34px !important;
+    padding:0 10px !important;
+    margin:0 !important;
+    font-size:10px !important;
+    line-height:34px !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+  }
+
+  body{
+    padding-top:var(--v90-header-total) !important;
+  }
+
+  .app-shell{
+    padding-top:0 !important;
+    margin-top:0 !important;
+  }
+
+  main{
+    padding-top:6px !important;
+  }
+
+  .view,
+  .district-detail-panel,
+  .institution-map-section{
+    scroll-margin-top:calc(var(--v90-header-total) + 6px) !important;
+  }
+}

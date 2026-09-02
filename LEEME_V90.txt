@@ -1,0 +1,8 @@
+V90
+- Corrige específicamente celulares en orientación horizontal.
+- La causa era que el teléfono horizontal entraba en las reglas de tablet por su ancho.
+- En horizontal se oculta completamente el título blanco de la franja azul.
+- Se conserva solo el logo institucional en la franja azul.
+- El menú de módulos queda en una fila independiente debajo y puede deslizarse horizontalmente.
+- Se ajustan alturas de cabecera y espacio superior del contenido.
+- No se modifican filtros, datos, mapa, Excel ni escritorio.
