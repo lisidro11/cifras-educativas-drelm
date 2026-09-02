@@ -4060,3 +4060,181 @@ main{
   }
   #resumen .real-district-map{height:500px!important}
 }
+
+
+/* =========================================================
+   V89 — CABECERA MÓVIL CORREGIDA
+   Parte de V87 limpia. Evita cualquier superposición entre
+   franja institucional y menú de módulos.
+   ========================================================= */
+
+@media (max-width:700px){
+
+  :root{
+    --v89-blue-h:64px;
+    --v89-nav-h:48px;
+    --v89-header-total:112px;
+  }
+
+  /* FRANJA AZUL: bloque independiente */
+  .institutional-banner{
+    position:fixed !important;
+    top:0 !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:var(--v89-blue-h) !important;
+    min-height:var(--v89-blue-h) !important;
+    z-index:5000 !important;
+    overflow:hidden !important;
+  }
+
+  .institutional-banner-inner{
+    height:100% !important;
+    min-height:var(--v89-blue-h) !important;
+    display:flex !important;
+    align-items:center !important;
+    justify-content:flex-start !important;
+    padding:4px 8px !important;
+    gap:0 !important;
+    overflow:hidden !important;
+  }
+
+  /* En celular dejamos SOLO el logo institucional completo */
+  .institutional-logo{
+    display:block !important;
+    width:auto !important;
+    max-width:92% !important;
+    height:52px !important;
+    max-height:52px !important;
+    object-fit:contain !important;
+    object-position:left center !important;
+    flex:0 1 auto !important;
+  }
+
+  /* El título central de la franja se oculta en móvil:
+     ya existe el título del Resumen debajo. */
+  .institutional-title-wrap{
+    display:none !important;
+  }
+
+  /* MENÚ: fila totalmente separada debajo de la franja azul */
+  .topbar{
+    position:fixed !important;
+    top:var(--v89-blue-h) !important;
+    left:0 !important;
+    right:0 !important;
+    width:100% !important;
+    height:var(--v89-nav-h) !important;
+    min-height:var(--v89-nav-h) !important;
+    max-height:var(--v89-nav-h) !important;
+    z-index:4990 !important;
+    display:block !important;
+    background:#fff !important;
+    overflow:hidden !important;
+    padding:0 !important;
+    margin:0 !important;
+    box-shadow:0 2px 6px rgba(20,54,80,.14) !important;
+  }
+
+  /* Quitar el texto derecho que competía por espacio */
+  .topbar .top-source{
+    display:none !important;
+  }
+
+  #topnav{
+    display:flex !important;
+    align-items:center !important;
+    flex-wrap:nowrap !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch !important;
+    scrollbar-width:none !important;
+    padding:5px 8px !important;
+    margin:0 !important;
+    gap:5px !important;
+    white-space:nowrap !important;
+  }
+
+  #topnav::-webkit-scrollbar{
+    display:none !important;
+  }
+
+  #topnav button{
+    flex:0 0 auto !important;
+    min-width:max-content !important;
+    max-width:none !important;
+    height:36px !important;
+    padding:0 11px !important;
+    margin:0 !important;
+    border-radius:7px !important;
+    font-size:11px !important;
+    line-height:36px !important;
+    white-space:nowrap !important;
+    overflow:visible !important;
+    text-overflow:clip !important;
+  }
+
+  /* El contenido empieza después de las DOS franjas fijas */
+  body{
+    padding-top:var(--v89-header-total) !important;
+  }
+
+  .app-shell{
+    padding-top:0 !important;
+    margin-top:0 !important;
+  }
+
+  main{
+    padding-top:8px !important;
+  }
+
+  .view,
+  .district-detail-panel,
+  .institution-map-section{
+    scroll-margin-top:calc(var(--v89-header-total) + 8px) !important;
+  }
+
+  /* Evitar que cualquier regla anterior vuelva a posicionar texto encima */
+  .institutional-title,
+  .institutional-subtitle,
+  .top-source{
+    pointer-events:none !important;
+  }
+}
+
+/* Tablet angosta: misma separación estructural */
+@media (min-width:701px) and (max-width:900px){
+
+  .institutional-banner{
+    position:fixed !important;
+    top:0 !important;
+    z-index:5000 !important;
+  }
+
+  .topbar{
+    position:fixed !important;
+    top:58px !important;
+    z-index:4990 !important;
+  }
+
+  .topbar .top-source{
+    display:none !important;
+  }
+
+  #topnav{
+    width:100% !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    flex-wrap:nowrap !important;
+    -webkit-overflow-scrolling:touch !important;
+  }
+
+  #topnav button{
+    flex:0 0 auto !important;
+    white-space:nowrap !important;
+  }
+}
