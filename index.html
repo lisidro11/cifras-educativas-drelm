@@ -67,25 +67,22 @@
 <main>
 
 <section id="resumen" class="view active">
-  <div class="page-head">
-    <div>
-      <small>DRELM · LIMA METROPOLITANA</small>
-      <h1>Resumen de cifras educativas</h1>
-      <p>Vista integrada de gestión pública y privada.</p>
+  <div class="summary-toolbar">
+    <div class="summary-compact-title">
+      <h1 id="summaryMainTitle">Resumen de cifras educativas</h1>
+      <span id="summaryScopeSubtitle">Lima Metropolitana · Gestión total</span>
     </div>
-    <div class="filters compact">
-      <div class="summary-actions">
-        <button type="button" class="summary-action-btn" id="exportSummaryExcel">↓ Descargar Excel</button>
-        <button type="button" class="summary-action-btn" id="printSummary">🖨 Imprimir</button>
+    <div class="summary-actions">
+      <button type="button" class="summary-action-btn" id="exportSummaryExcel">↓ Descargar Excel</button>
+      <button type="button" class="summary-action-btn" id="printSummary">🖨 Imprimir</button>
+    </div>
+    <label class="summary-gestion-label">Gestión
+      <div class="segmented" id="scope">
+        <button class="active" data-scope="total">Total</button>
+        <button data-scope="publica">Pública</button>
+        <button data-scope="privada">Privada</button>
       </div>
-      <label>Gestión
-        <div class="segmented" id="scope">
-          <button class="active" data-scope="total">Total</button>
-          <button data-scope="publica">Pública</button>
-          <button data-scope="privada">Privada</button>
-        </div>
-      </label>
-    </div>
+    </label>
   </div>
 
   <div class="kpis" id="mainKpis"></div>
@@ -93,7 +90,7 @@
     <div class="summary-left-stack">
       <section class="district-dashboard" id="districtDashboard">
         <div class="district-map-title">
-          <h2>Mapa distrital de Lima Metropolitana</h2>
+          <h2 id="districtMapMainTitle">Mapa distrital de Lima Metropolitana</h2>
           <span>Pasa el mouse para consultar cifras y haz clic en un distrito para ver sus instituciones educativas.</span>
         </div>
         <div class="district-layout">
@@ -114,7 +111,7 @@
 
     <aside class="summary-side-stack">
       <article class="card summary-modal-side">
-        <div class="cardhead"><h2>Resumen por modalidad</h2><span>Según Padrón Educativo</span></div>
+        <div class="cardhead"><h2 id="summaryModalCardTitle">Resumen por modalidad</h2><span>Según Padrón Educativo</span></div>
         <div id="ugelBars"></div>
       </article>
       <section id="reiOverview" class="rei-overview"></section>

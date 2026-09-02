@@ -1,0 +1,7 @@
+V87
+- Corrige específicamente los dos cuadros laterales del Resumen.
+- Resumen por modalidad ahora cambia con Total / Pública / Privada.
+- RIE ahora vuelve a renderizarse porque renderSummary ya no se detiene al desaparecer #ugelBars.
+- Se identificó la causa: el parche V60 reemplazaba el contenedor #ugelBars y luego renderSummary fallaba antes de actualizar RIE.
+- El cuadro V60 usa scopedPadron() y conserva la jerarquía EBR/PRONOEI y EBE/PRITE.
+- No se modifica el diseño que ya fue aprobado ni las tablas del mapa que ya funcionan.

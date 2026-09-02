@@ -72,18 +72,36 @@ const LIMA_GEOJSON_URL="https://raw.githubusercontent.com/joseluisq/peru-geojson
 let limaGeoJSONCache=null;
 function normDistrict(v){return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().trim()}
 function districtNameFromRow(r){const p=String(r.distrito||"").split("/");return normDistrict((p[p.length-1]||"").trim())}
-function districtStats(rows){
-  const m={};
-  rows.forEach(r=>{
-    const d=districtNameFromRow(r); if(!d||!String(r.distrito||"").startsWith("1501"))return;
-    if(!m[d])m[d]={distrito:d,rows:[],ugel:""}; m[d].rows.push(r);
-    if(/^UGEL 0[1-7]$/.test(r.ugel||""))m[d].ugel=r.ugel;
+function districtStats(rows=scopedRows(),pdRows=scopedPadron()){
+  const out={};
+  const byDistrict={};
+
+  // El padrón filtrado define servicios/locales/UGEL/distrito.
+  pdRows.forEach(p=>{
+    const d=padronDistrict(p);
+    if(!d)return;
+    (byDistrict[d]??=[]).push(p);
   });
-  const pd=scopedPadron();
-  const pByD={};pd.forEach(x=>{const d=padronDistrict(x);if(!d)return;(pByD[d]??=[]).push(x)});
-  Object.keys(pByD).forEach(d=>{if(!m[d])m[d]={distrito:d,rows:[],ugel:pByD[d].map(x=>x.u).find(u=>/^UGEL 0[1-7]$/.test(u||""))||""}});
-  Object.values(m).forEach(x=>{const r=agg(x.rows),pp=padronAgg(pByD[x.distrito]||[]);Object.assign(x,r,{servicios:pp.servicios,locales:pp.locales});if(!x.ugel)x.ugel=(pByD[x.distrito]||[]).map(y=>y.u).find(u=>/^UGEL 0[1-7]$/.test(u||""))||""});
-  return m;
+
+  Object.entries(byDistrict).forEach(([d,prows])=>{
+    const codes=new Set(prows.map(p=>String(p.c||"")).filter(Boolean));
+    // rows ya viene filtrado por gestión. Además se restringe a códigos del padrón filtrado.
+    const rr=rows.filter(r=>codes.has(String(r.cod_mod||"")));
+    const rs=agg(rr);
+    const ps=padronAgg(prows);
+    out[d]={
+      distrito:d,
+      rows:rr,
+      ugel:prows.map(p=>p.u).find(u=>/^UGEL 0[1-7]$/.test(u||""))||"",
+      estudiantes:rs.estudiantes,
+      docentes:rs.docentes,
+      secciones:rs.secciones,
+      servicios:ps.servicios,
+      locales:ps.locales
+    };
+  });
+
+  return out;
 }
 function ugelBox(ugel,stats){
   const rows=Object.values(stats).filter(x=>x.ugel===ugel).sort((a,b)=>a.distrito.localeCompare(b.distrito,"es"));
@@ -107,7 +125,8 @@ function projectGeoJSON(features,w=520,h=500,pad=12){
 }
 
 function districtLocalRows(district){
-  const prows=padronRowsForDistrict(district),byLocal=new Map();
+  const allowed=scopedPadron();
+  const prows=padronRowsForDistrict(district).filter(p=>allowed.includes(p)),byLocal=new Map();
   prows.forEach(x=>{if(!x.l)return;const k=String(x.l);if(!byLocal.has(k))byLocal.set(k,[]);byLocal.get(k).push(x)});
   return [...byLocal.entries()].map(([codlocal,services])=>{
     const codes=new Set(services.map(x=>String(x.c)).filter(Boolean)),rr=scopedRows().filter(r=>codes.has(String(r.cod_mod))),rs=agg(rr),pp=padronAgg(services),base=services[0];
@@ -146,10 +165,19 @@ function selectDistrict(district){
   panel.scrollIntoView({behavior:"smooth",block:"start"});
 }
 window.selectDistrict=selectDistrict;
-async function renderDistrictDashboard(){
+function renderDistrictTables(rows=scopedRows(),pRows=scopedPadron()){
+  const left=document.getElementById("ugelTablesLeft"),right=document.getElementById("ugelTablesRight");
+  if(!left||!right)return null;
+  const stats=districtStats(rows,pRows);
+  left.innerHTML=["UGEL 02","UGEL 03","UGEL 07"].map(u=>ugelBox(u,stats)).join("");
+  right.innerHTML=["UGEL 04","UGEL 05","UGEL 06","UGEL 01"].map(u=>ugelBox(u,stats)).join("");
+  left.querySelectorAll("[data-map-district]").forEach(tr=>tr.addEventListener("click",()=>selectDistrict(tr.dataset.mapDistrict)));
+  right.querySelectorAll("[data-map-district]").forEach(tr=>tr.addEventListener("click",()=>selectDistrict(tr.dataset.mapDistrict)));
+  return stats;
+}
+async function renderDistrictDashboard(rows=scopedRows(),pRows=scopedPadron()){
   const left=document.getElementById("ugelTablesLeft"),right=document.getElementById("ugelTablesRight"),map=document.getElementById("realDistrictMap"),legend=document.getElementById("districtMapLegend"),tt=document.getElementById("districtTooltip"); if(!left||!right||!map)return;
-  const stats=districtStats(scopedRows());
-  left.innerHTML=["UGEL 02","UGEL 03","UGEL 07"].map(u=>ugelBox(u,stats)).join("");right.innerHTML=["UGEL 04","UGEL 05","UGEL 06","UGEL 01"].map(u=>ugelBox(u,stats)).join("");
+  const stats=renderDistrictTables(rows,pRows)||districtStats(rows,pRows);
   legend.innerHTML=Object.entries(UGEL_COLORS).map(([u,c])=>`<span><i style="background:${c}"></i>${u}</span>`).join("");
   try{
     if(!limaGeoJSONCache){const r=await fetch(LIMA_GEOJSON_URL);if(!r.ok)throw new Error("GeoJSON");limaGeoJSONCache=await r.json()}
@@ -183,13 +211,22 @@ function renderReiOverview(pRows){
   const el=document.getElementById("reiOverview");if(!el)return;
   const total=padronRieStats(pRows),ugels=["UGEL 01","UGEL 02","UGEL 03","UGEL 04","UGEL 05","UGEL 06","UGEL 07"];
   const rows=ugels.map(u=>({u,...padronRieStats(pRows.filter(x=>x.u===u))}));
-  el.innerHTML=`<div class="rei-head"><div><small>REGISTRO DE INSTITUCIONES EDUCATIVAS</small><h2>Servicios educativos con código de IE</h2><p>Registrados con código de IE en el Sistema de Registro de Instituciones Educativas (RIE).</p></div><div class="rei-big"><span>Avance DRELM</span><b>${total.pct.toFixed(1)}%</b><small>${fmt(total.con)} de ${fmt(total.total)} códigos modulares</small></div></div>
+  el.innerHTML=`<div class="rei-head"><div><small>REGISTRO DE INSTITUCIONES EDUCATIVAS</small><h2>Servicios educativos con código de IE${scope==="total"?"":` · ${scope==="publica"?"Gestión pública":"Gestión privada"}`}</h2><p>Registrados con código de IE en el Sistema de Registro de Instituciones Educativas (RIE).</p></div><div class="rei-big"><span>Avance DRELM</span><b>${total.pct.toFixed(1)}%</b><small>${fmt(total.con)} de ${fmt(total.total)} códigos modulares</small></div></div>
   <div class="rei-formula">Cálculo: códigos modulares únicos con <b>CODINST</b> ÷ total de códigos modulares únicos del ámbito considerado.</div>
   <div class="rei-table-wrap"><table class="rei-table"><thead><tr><th>UGEL</th><th>Total cód. mod.</th><th>Con código de IE</th><th>Pendientes</th><th>% avance</th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${r.u}</b></td><td>${fmt(r.total)}</td><td>${fmt(r.con)}</td><td>${fmt(r.pendientes)}</td><td><div class="rei-progress"><span style="width:${Math.min(100,r.pct)}%"></span></div><b>${r.pct.toFixed(1)}%</b></td></tr>`).join("")}</tbody><tfoot><tr><td>DRELM</td><td>${fmt(total.total)}</td><td>${fmt(total.con)}</td><td>${fmt(total.pendientes)}</td><td><b>${total.pct.toFixed(1)}%</b></td></tr></tfoot></table></div>
   <small class="rei-note">Unidad de conteo: código modular único. Los anexos no incrementan el total.</small>`;
 }
 function renderSummary(){
   const a=scopedRows(),rt=agg(a),pa=scopedPadron(),pt=padronAgg(pa),rie=padronRieStats(pa);
+  const scopeText=scope==="publica"?"Gestión pública":scope==="privada"?"Gestión privada":"Gestión total";
+  const title=document.getElementById("summaryMainTitle");
+  const sub=document.getElementById("summaryScopeSubtitle");
+  const mapTitle=document.getElementById("districtMapMainTitle");
+  const modalTitle=document.getElementById("summaryModalCardTitle");
+  if(title)title.textContent="Resumen de cifras educativas";
+  if(sub)sub.textContent=`Lima Metropolitana · ${scopeText}`;
+  if(mapTitle)mapTitle.textContent=`Mapa distrital de Lima Metropolitana · ${scopeText}`;
+  if(modalTitle)modalTitle.textContent=`Resumen por modalidad · ${scopeText}`;
   kpis($("#mainKpis"),[
     ["Servicios educativos",fmt(pt.servicios),"Códigos modulares únicos · Padrón"],
     ["Locales educativos",fmt(pt.locales),"Códigos de local únicos · Padrón"],
@@ -200,12 +237,26 @@ function renderSummary(){
   const note=document.getElementById("padronSourceNote");if(note)note.innerHTML=`<b>Fuente institucional:</b> Padrón Educativo DRELM · fecha de corte <b>${PMETA.cut||"13-08-2026"}</b> · actualización quincenal. Servicios educativos = códigos modulares únicos activos; locales = códigos de local únicos.`;
   const sec={};["EBR","EBA","EBE","Superior","ETP"].forEach(s=>sec[moduleNames[s]]=a.filter(x=>x.sector===s).reduce((z,x)=>z+x.estudiantes,0));
   bars($("#sectorBars"),sec);
-  const modalRows=PADRON_MODAL_ORDER.map(mod=>{const pr=pa.filter(x=>x.mod===mod),ps=padronAgg(pr),rr=rowsByPadronCodes(pr),rs=agg(rr);return {mod,nombre:PADRON_MODAL_LABELS[mod]||mod,...rs,servicios:ps.servicios,locales:ps.locales}});
-  $("#ugelBars").innerHTML=`<div class="summary-modal-table-wrap"><table class="summary-modal-table"><thead><tr><th>Modalidad del padrón</th><th>Estudiantes*</th><th>Docentes*</th><th>Servicios</th><th>Locales</th></tr></thead><tbody>${modalRows.map(r=>`<tr><td><span class="modal-table-name"><b>${r.nombre}</b></span></td><td>${fmt(r.estudiantes)}</td><td>${fmt(r.docentes)}</td><td>${fmt(r.servicios)}</td><td>${fmt(r.locales)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total DRELM</td><td>${fmt(rt.estudiantes)}</td><td>${fmt(rt.docentes)}</td><td>${fmt(pt.servicios)}</td><td>${fmt(pt.locales)}</td></tr></tfoot></table><small class="table-footnote">* Estudiantes y docentes se vinculan por código modular con las fuentes estadísticas disponibles.</small></div>`;
+  const modalRows=PADRON_MODAL_ORDER.map(mod=>{
+    const pr=pa.filter(x=>x.mod===mod);
+    const ps=padronAgg(pr);
+    const codes=new Set(pr.map(x=>String(x.c||"")).filter(Boolean));
+    const rr=a.filter(x=>codes.has(String(x.cod_mod||"")));
+    const rs=agg(rr);
+    return {mod,nombre:PADRON_MODAL_LABELS[mod]||mod,...rs,servicios:ps.servicios,locales:ps.locales};
+  });
+  const ugelBarsEl=$("#ugelBars");
+  if(ugelBarsEl){
+    ugelBarsEl.innerHTML=`<div class="summary-modal-table-wrap"><table class="summary-modal-table"><thead><tr><th>Modalidad del padrón</th><th>Estudiantes*</th><th>Docentes*</th><th>Servicios</th><th>Locales</th></tr></thead><tbody>${modalRows.map(r=>`<tr><td><span class="modal-table-name"><b>${r.nombre}</b></span></td><td>${fmt(r.estudiantes)}</td><td>${fmt(r.docentes)}</td><td>${fmt(r.servicios)}</td><td>${fmt(r.locales)}</td></tr>`).join("")}</tbody><tfoot><tr><td>Total DRELM</td><td>${fmt(rt.estudiantes)}</td><td>${fmt(rt.docentes)}</td><td>${fmt(pt.servicios)}</td><td>${fmt(pt.locales)}</td></tr></tfoot></table><small class="table-footnote">* Estudiantes y docentes se vinculan por código modular con las fuentes estadísticas disponibles.</small></div>`;
+  }
   const pubR=agg(R.filter(x=>x.gestion==="Pública")),priR=agg(R.filter(x=>x.gestion==="Privada")),pubP=padronAgg(P.filter(x=>x.g==="Pública")),priP=padronAgg(P.filter(x=>x.g==="Privada"));
   const mg=document.getElementById("summaryManagement");
   if(mg){const items=[["Estudiantes",pubR.estudiantes,priR.estudiantes],["Docentes",pubR.docentes,priR.docentes],["Servicios educativos",pubP.servicios,priP.servicios],["Locales educativos",pubP.locales,priP.locales]];mg.innerHTML=`<div class="management-donut-grid">${items.map(([label,pv,qv])=>{const total=pv+qv,pp=total?pv/total*100:0,qp=100-pp;return `<div class="management-donut-item"><div class="management-donut" style="--public-pct:${pp.toFixed(2)}%"><div class="management-donut-hole"><b>${pp.toFixed(1)}%</b><small>Pública</small></div></div><div class="management-donut-copy"><b>${label}</b><span><i class="public"></i>Pública ${fmt(pv)} · ${pp.toFixed(1)}%</span><span><i class="private"></i>Privada ${fmt(qv)} · ${qp.toFixed(1)}%</span></div></div>`}).join("")}</div><div class="management-donut-note"><span><i class="public"></i>Pública</span><span><i class="private"></i>Privada</span></div>`;}
-  renderReiOverview(pa);renderDistrictDashboard();
+  renderReiOverview(pa);
+  renderDistrictDashboard(a,pa);
+  // V60 reemplaza el cuadro lateral original; por eso debe redibujarse
+  // explícitamente con la gestión seleccionada.
+  v60RenderResumenModalidad();
   const ex=document.getElementById("exportSummaryExcel");if(ex)ex.onclick=()=>{
     const statByCode=new Map();
     a.forEach(r=>{
@@ -230,7 +281,15 @@ function renderSummary(){
   const ps=document.getElementById("printSummary");
   if(ps)ps.onclick=()=>{document.body.classList.add("print-summary-view");window.print();setTimeout(()=>document.body.classList.remove("print-summary-view"),500)};
 }
-$$("#scope button").forEach(b=>b.onclick=()=>{$$("#scope button").forEach(x=>x.classList.remove("active"));b.classList.add("active");scope=b.dataset.scope;renderSummary()});
+$$("#scope button").forEach(b=>{
+  b.onclick=()=>{
+    $$("#scope button").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    scope=b.dataset.scope||"total";
+    renderDistrictTables(scopedRows(),scopedPadron());
+    renderSummary();
+  };
+});
 const districtSearch=document.getElementById("districtSchoolSearch");if(districtSearch)districtSearch.addEventListener("input",e=>renderDistrictSchoolRows(e.target.value));
 const districtExport=document.getElementById("exportDistrictExcel");if(districtExport)districtExport.addEventListener("click",()=>{if(!selectedDistrict)return;exportExcelFile("Instituciones_"+selectedDistrict,["Código local","Institución educativa","UGEL","Distrito","Gestión","Modalidad","Estudiantes","Docentes","Servicios","Dirección"],selectedDistrictLocals.map(x=>[x.codlocal,x.nombre,x.base.u||"",selectedDistrict,x.gestion,x.niveles,x.total.estudiantes,x.total.docentes,x.total.servicios,x.direccion]));});
 const closeDistrict=document.getElementById("closeDistrictDetail");if(closeDistrict)closeDistrict.addEventListener("click",()=>{const p=document.getElementById("districtDetail");if(p)p.hidden=true;selectedDistrict="";document.querySelectorAll(".district-shape.is-selected,[data-map-district].is-selected").forEach(el=>el.classList.remove("is-selected"))});
@@ -2133,8 +2192,8 @@ function v62MetricCells(rows){
   ].map(v=>`<td>${fmt(v)}</td>`).join("");
 }
 
-function v62ResumenHierarchyHTML(){
-  const groups=v62SummaryGroups(P);
+function v62ResumenHierarchyHTML(rows=scopedPadron()){
+  const groups=v62SummaryGroups(rows);
   let html="";
   groups.forEach((g,i)=>{
     const id=`v62grp${i}`;
@@ -2150,7 +2209,7 @@ function v62ResumenHierarchyHTML(){
   });
 
   html+=`<tr class="v60-total">
-    <td>TOTAL DRELM</td>${v62MetricCells(P)}
+    <td>TOTAL DRELM</td>${v62MetricCells(rows)}
   </tr>`;
   return html;
 }
@@ -2175,10 +2234,12 @@ function v62BindSummaryToggles(card){
 function v60RenderResumenModalidad(){
   const card=v60FindResumenModalidadCard();
   if(!card)return;
+  const rows=scopedPadron();
+  const scopeText=scope==="publica"?"Gestión pública":scope==="privada"?"Gestión privada":"Gestión total";
   card.classList.add("v60-resumen-modalidad");
   card.innerHTML=`
     <div class="cardhead">
-      <h2>Resumen por modalidad</h2>
+      <h2>Resumen por modalidad · ${scopeText}</h2>
       <span>Según Padrón Educativo</span>
     </div>
     <div class="table-scroll">
@@ -2192,7 +2253,7 @@ function v60RenderResumenModalidad(){
             <th>Locales</th>
           </tr>
         </thead>
-        <tbody>${v62ResumenHierarchyHTML()}</tbody>
+        <tbody>${v62ResumenHierarchyHTML(rows)}</tbody>
       </table>
     </div>
     <div class="v60-source">* Estudiantes y docentes: Censo Educativo 2025. Servicios y locales: Padrón Web IE. Clic en una modalidad para ver sus niveles.</div>`;
