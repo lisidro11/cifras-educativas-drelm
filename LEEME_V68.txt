@@ -1,8 +1,0 @@
-V68
-- Indicadores: PRONOEI queda dentro de EBR y PRITE dentro de EBE.
-- Se mantiene Pública / Privada / Total en Indicadores.
-- EBR, EBA, EBE, Superior y CETPRO incorporan Exportar Excel e Imprimir.
-- Excel exporta los cuadros visibles del módulo con Gestión y UGEL seleccionadas.
-- Imprimir usa la vista actual del módulo y conserva colores; desde el navegador se puede Guardar como PDF.
-- CETPRO mantiene sus indicadores directos.
-- No se modifican mapas, Resumen, Infraestructura ni Ficha IE.

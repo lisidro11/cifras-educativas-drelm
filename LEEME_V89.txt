@@ -1,9 +1,0 @@
-V89
-- Parte directamente de V87, no de V88.
-- Corrige la superposición de cabecera y menú en celular.
-- La franja azul y el menú son dos bloques fijos independientes.
-- En celular se muestra solo el logo institucional completo en la franja azul.
-- Se oculta el título central de la franja en móvil para evitar duplicación y superposición.
-- El menú de módulos queda en una fila separada y deslizable horizontalmente.
-- Se oculta el texto superior derecho en móvil/tablet angosta.
-- No se modifican filtros, datos, mapas, Excel ni diseño de escritorio.
