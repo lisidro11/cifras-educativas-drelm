@@ -349,7 +349,11 @@
         const root=stage.querySelector('.page')||stage;
         root.style.width='718px';
         root.style.maxWidth='718px';
-        const opt={margin:[10,10,10,10],filename:`Ficha_tecnica_CL_${codlocal}.pdf`,image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0,windowWidth:718,windowHeight:1047,x:0,y:0,letterRendering:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait',hotfixes:['px_scaling']},pagebreak:{mode:['css','legacy'],avoid:['.kpis','.legal','.keep-together']}};
+        // V91: el archivo PDF incluye código local + nombre de la IE.
+        const rawIeName=(pl.map(x=>String(x.n||'').trim()).find(Boolean) || rs.map(x=>String(x.nombre||'').trim()).find(Boolean) || 'Local educativo');
+        const safeIeName=rawIeName.normalize('NFC').replace(/[\\/:*?"<>|]/g,' ').replace(/\s+/g,' ').trim().replace(/\s/g,'_').replace(/_+/g,'_').slice(0,120);
+        const pdfFilename=`${codlocal}_${safeIeName||'Local_educativo'}.pdf`;
+        const opt={margin:[10,10,10,10],filename:pdfFilename,image:{type:'jpeg',quality:.98},html2canvas:{scale:2,useCORS:true,backgroundColor:'#ffffff',scrollX:0,scrollY:0,windowWidth:718,windowHeight:1047,x:0,y:0,letterRendering:true},jsPDF:{unit:'mm',format:'a4',orientation:'portrait',hotfixes:['px_scaling']},pagebreak:{mode:['css','legacy'],avoid:['.kpis','.legal','.keep-together']}};
         await window.html2pdf().set(opt).from(root).save();
       }catch(e){
         console.error('Error PDF V36',e);

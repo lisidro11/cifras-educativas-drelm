@@ -1,0 +1,5 @@
+V91
+- El nombre del archivo PDF descargado ahora usa: CODIGOLOCAL_NOMBRE_IE.pdf.
+- El nombre de la IE se obtiene del Padrón del local seleccionado.
+- Se limpian caracteres no permitidos en nombres de archivo.
+- No se modifica el contenido del PDF ni otras funciones del aplicativo.
