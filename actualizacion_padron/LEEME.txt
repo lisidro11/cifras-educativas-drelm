@@ -1,12 +1,15 @@
-ACTUALIZACIÓN QUINCENAL DEL PADRÓN
+ACTUALIZADOR DEL PADRÓN CON FECHA DE FUENTE AUTOMÁTICA
 
-1. Reemplace PW_DRELM.xlsx por el nuevo padrón, conservando exactamente ese nombre.
-2. Ejecute ACTUALIZAR_PADRON.bat.
-3. Se regenerará padron.js automáticamente.
-4. Revise la app y luego publique los archivos actualizados en GitHub.
+1. Abre la carpeta de tu aplicación: Cifras educativas V30.
+2. Entra en actualizacion_padron.
+3. Sustituye ACTUALIZAR_PADRON.py por el de este ZIP.
+4. Copia ACTUALIZAR_FUENTES.py en la MISMA carpeta.
+5. Mantén tu ACTUALIZAR_PADRON.bat y el Excel PW_DRELM.xlsx.
+6. Ejecuta ACTUALIZAR_PADRON.bat como siempre.
 
-Reglas de conteo:
-- Servicios educativos: COD_MOD únicos activos. Los anexos no incrementan el total.
-- Locales educativos: CODLOCAL únicos válidos.
-- Modalidad, nivel, UGEL, distrito, gestión y coordenadas: Padrón Educativo.
-- Avance RIE: COD_MOD únicos con CODINST / total COD_MOD únicos, solo Educación Básica + CETPRO; Superior se excluye.
+El proceso regenera padron.js y actualiza las referencias de fecha de corte
+ESCALE - Padrón Web IE que estén escritas en index.html y app.js.
+NO cambia los datos ni la referencia al Censo Educativo 2025.
+La fecha procede del metadato cut del padrón, obtenido por el script original.
+Después de actualizar, refresca el navegador con Ctrl+F5.
+Si publicas en GitHub, sube padron.js, index.html y app.js si cambiaron.

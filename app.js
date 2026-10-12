@@ -2293,7 +2293,7 @@ function v60ExportIndicadoresExcel(){
   ${cards}
   <h2>Información por UGEL y nivel educativo — Indicador: ${indicador}</h2>
   ${matrix}
-  <p><b>Fuente:</b> Estudiantes y docentes: Censo Educativo 2025. Servicios y locales educativos: ESCALE – Padrón Web IE (actualizado al 13/08/2026).</p>
+  <p><b>Fuente:</b> Estudiantes y docentes: Censo Educativo 2025. Servicios y locales educativos: ESCALE – Padrón Web IE (actualizado al 09/10/2026).</p>
   <p><b>Elaborado por:</b> EEM-OPP-DRELM</p></body></html>`;
 
   const blob=new Blob(["\ufeff",html],{type:"application/vnd.ms-excel"});

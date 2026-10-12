@@ -39,6 +39,9 @@ meta={'cut':cut,'services':services,'locals':locals_,'institutions':insts,'rieEl
 with open(OUT,'w',encoding='utf-8') as f:
     f.write('window.DRELM_PADRON_META='+json.dumps(meta,ensure_ascii=False,separators=(',',':'))+';\n')
     f.write('window.DRELM_PADRON='+json.dumps(p,ensure_ascii=False,separators=(',',':'))+';\n')
+# Actualizar las referencias de fuente despues de regenerar padron.js.
+import subprocess, sys
+subprocess.run([sys.executable, os.path.join(BASE, 'ACTUALIZAR_FUENTES.py')], check=True)
 print('PADRÓN ACTUALIZADO')
 print('Corte:',cut)
 print('Servicios educativos:',services)
